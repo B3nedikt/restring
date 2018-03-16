@@ -1,0 +1,24 @@
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'restring'
+
+    publishedGroupId = 'com.ice.restring'
+    artifact = 'restring'
+    libraryVersion = '1.0.0'
+
+    libraryName = 'Restring'
+    libraryDescription = 'Replace Strings dynamically, or provide new translations, for Android'
+    siteUrl = 'https://github.com/hamidness/restring'
+    gitUrl = 'https://github.com/hamidness/restring.git'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+    developerId = 'hamidfri'
+    developerName = 'Hamid Gharehdaghi'
+    developerEmail = 'hamidice@gmail.com'
+    organization = ''
+}
+
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'

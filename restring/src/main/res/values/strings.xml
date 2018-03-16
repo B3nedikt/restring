@@ -1,0 +1,10 @@
+<resources>
+    <string name="header">header</string>
+    <string name="header_hint">hint</string>
+    <string name="menu1title">Menu 1</string>
+    <string name="menu1titleCondensed">Menu1</string>
+    <string name="menu2title">Menu 2</string>
+    <string name="menu2titleCondensed">Menu2</string>
+    <string name="menu3title">Menu 3</string>
+    <string name="menu3titleCondensed">Menu3</string>
+</resources>

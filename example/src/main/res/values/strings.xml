@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Restring</string>
+    <string name="title">This is title.</string>
+    <string name="subtitle">This is subtitle.</string>
+</resources>

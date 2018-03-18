@@ -1,5 +1,5 @@
 ## Restring 1.0
-An easy way to replace Strings dynamically, or provide new translations in Android
+An easy way to replace bundled Strings dynamically, or provide new translations in Android
 
 ### 1. Add dependency
 ```groovy

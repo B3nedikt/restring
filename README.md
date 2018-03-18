@@ -88,6 +88,8 @@ Restring.init(context,
         );
 ```
 
+3. For displaying a string, Restring tries to find that in dynamic strings, and will use bundled version as fallback. In the other words, Only the new provided strings will be overriden and for the rest the bundled version will be used.
+
 ## License
 <pre>
 Copyright 2018 Hamid Gharehdaghi

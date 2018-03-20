@@ -1,3 +1,5 @@
+<a href='https://bintray.com/hamidfri/maven/restring/_latestVersion'><img src='https://api.bintray.com/packages/hamidfri/maven/restring/images/download.svg'></a>
+
 ## Restring 1.0
 An easy way to replace bundled Strings dynamically, or provide new translations in Android
 

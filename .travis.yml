@@ -1,0 +1,21 @@
+language: android
+jdk: oraclejdk8
+env:
+  global:
+    - ANDROID_TARGET=android-16
+    - ANDROID_ABI=armeabi-v7a
+    - BUILD_TOOLS_VERSION=27.0.3
+    - ANDROID_TARGET=27
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-${BUILD_TOOLS_VERSION}
+  - android-${ANDROID_TARGET}
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+script:
+  - ./gradlew build jacocoTestReport
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

@@ -44,19 +44,27 @@ artifacts {
 /*--------------------------------*/
 
 // Bintray
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+String localProperty(propertyName) {
+    Properties properties = new Properties()
+    File file = project.rootProject.file('local.properties')
+    if (file.exists()) {
+        properties.load(file.newDataInputStream())
+        return properties.getProperty(propertyName)
+    }
+    return ""
+}
 
 bintray {
-    user = properties.getProperty("bintrayUser")
-    key = properties.getProperty("bintrayApiKey")
+    user = localProperty("bintrayUser")
+    key = localProperty("bintrayApiKey")
 
     configurations = ['archives']
     pkg {
         repo = bintrayRepo
         name = bintrayName
         desc = libraryDescription
-        userOrg = organization   // If the repository is hosted by an organization instead of personal account.
+        userOrg = organization
+        // If the repository is hosted by an organization instead of personal account.
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = allLicenses

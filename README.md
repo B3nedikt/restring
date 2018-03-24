@@ -100,6 +100,10 @@ Restring.init(context,
 1. Plurals are not supported yet.
 2. String arrays are not supported yet.
 
+## Docs
+* <a href="https://medium.com/@hamidgh/dynamically-change-bundled-strings-a24b97bfd306">Medium</a>
+* <a href="https://hamidness.github.io/restring/index.html">Javadocs</a>
+
 ## License
 <pre>
 Copyright 2018 Hamid Gharehdaghi

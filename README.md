@@ -3,6 +3,7 @@
 <a href="https://codecov.io/gh/hamidness/restring">
   <img src="https://codecov.io/gh/hamidness/restring/branch/master/graph/badge.svg" />
 </a>
+[![](https://img.shields.io/badge/AndroidWeekly-%23307-yellow.svg)](http://androidweekly.net/issues/issue-307)
 <a href="https://android-arsenal.com/details/1/6886"><img src="https://img.shields.io/badge/Android%20Arsenal-Restring-brightgreen.svg?style=flat" border="0" alt="Android Arsenal"></a>
 
 

@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply from: 'jacoco.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -11,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -39,15 +40,22 @@ android {
 }
 
 dependencies {
-    // Support libraries
-    implementation deps.supportAppCompat
-    implementation deps.supportDesign
+    implementation deps.kotlin
+
+    // UI libraries
+    implementation deps.appCompat
+    implementation deps.material
 
     // Test libraries
     testImplementation deps.junit
     testImplementation deps.hamcrest
     testImplementation deps.mockito
     testImplementation deps.robolectric
+    testImplementation deps.mockitoKotlin
+    testImplementation deps.testCore
 }
 
 apply from: 'publish.gradle'
+repositories {
+    mavenCentral()
+}

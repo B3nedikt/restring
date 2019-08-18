@@ -7,4 +7,5 @@
     <string name="menu2titleCondensed">Menu2</string>
     <string name="menu3title">Menu 3</string>
     <string name="menu3titleCondensed">Menu3</string>
+    <string name="STR_KEY">STR_FROM_RESOURCE_VALUE</string>
 </resources>

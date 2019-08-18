@@ -8,11 +8,13 @@
 
 
 ## Restring 1.0
-An easy way to replace bundled Strings dynamically, or provide new translations in Android
+An easy way to replace bundled Strings dynamically, or provide new translations in Android.
+This is a fork of a library originally developed by Hamid Gharehdaghi, I only ported it to kotlin
+& fixed a few bugs.
 
 ### 1. Add dependency
 ```groovy
-implementation 'com.ice.restring:restring:1.0.0'
+implementation 'com.b3nedikt.restring:restring:1.0.0'
 ```
 
 ### 2. Initialize
@@ -109,7 +111,7 @@ Restring.init(context,
 
 ## License
 <pre>
-Copyright 2018 Hamid Gharehdaghi
+Copyright 2018 Hamid Gharehdaghi & Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -2,21 +2,21 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'restring'
 
-    publishedGroupId = 'com.ice.restring'
+    publishedGroupId = 'com.b3nedikt.restring'
     artifact = 'restring'
     libraryVersion = '1.0.0'
 
     libraryName = 'Restring'
     libraryDescription = 'Replace Strings dynamically, or provide new translations, for Android'
-    siteUrl = 'https://github.com/hamidness/restring'
-    gitUrl = 'https://github.com/hamidness/restring.git'
+    siteUrl = 'https://github.com/B3nedikt/restring'
+    gitUrl = 'https://github.com/B3nedikt/restring.git'
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 
-    developerId = 'hamidfri'
-    developerName = 'Hamid Gharehdaghi'
-    developerEmail = 'hamidice@gmail.com'
+    developerId = 'b3nedikt'
+    developerName = 'Benedikt Löbbecke'
+    developerEmail = 'benedikt.loebbecke@gmail.com'
     organization = ''
 }
 

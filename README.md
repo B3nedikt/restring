@@ -1,4 +1,4 @@
-[ ![Download](null/packages/b3nedikt/restring/restring/images/download.svg?version=1.0.0) ](https://bintray.com/b3nedikt/restring/restring/1.0.0/link)
+<a href='https://bintray.com/b3nedikt/restring/restring/1.0.0/link'><img src='https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=1.0.0'></a>
 
 ## Restring 1.0
 An easy way to replace bundled Strings dynamically, or provide new translations in Android.

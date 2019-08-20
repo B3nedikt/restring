@@ -1,20 +1,24 @@
 language: android
-jdk: oraclejdk8
+dist: trusty
 env:
   global:
     - ANDROID_TARGET=android-16
     - ANDROID_ABI=armeabi-v7a
-    - BUILD_TOOLS_VERSION=27.0.3
     - ANDROID_TARGET=27
 android:
   components:
   - tools
   - platform-tools
-  - build-tools-${BUILD_TOOLS_VERSION}
   - android-${ANDROID_TARGET}
   - extra-google-m2repository
   - extra-android-m2repository
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+  licenses:
+    - 'android-sdk-license-.+'
+before_install:
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "build-tools;28.0.3"
 script:
   - ./gradlew build jacocoTestReport
 after_success:

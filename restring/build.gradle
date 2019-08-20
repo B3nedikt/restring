@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply from: 'jacoco.gradle'
+apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -58,4 +59,9 @@ dependencies {
 apply from: 'publish.gradle'
 repositories {
     mavenCentral()
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/docs"
 }

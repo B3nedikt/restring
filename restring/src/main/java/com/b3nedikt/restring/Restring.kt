@@ -62,14 +62,14 @@ object Restring {
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
-        if (config.isPersist) {
-            stringRepository = SharedPrefStringRepository(context)
+        stringRepository = if (config.isPersist) {
+            SharedPrefStringRepository(context)
         } else {
-            stringRepository = MemoryStringRepository()
+            MemoryStringRepository()
         }
 
         if (config.stringsLoader != null) {
-            StringsLoaderTask(config.stringsLoader!!, stringRepository).run()
+            StringsLoaderTask(config.stringsLoader, stringRepository).run()
         }
     }
 

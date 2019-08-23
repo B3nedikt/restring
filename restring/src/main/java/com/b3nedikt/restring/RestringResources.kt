@@ -1,8 +1,7 @@
 package com.b3nedikt.restring
 
 import android.content.res.Resources
-import android.os.Build
-import android.text.Html
+import androidx.core.text.HtmlCompat
 
 
 /**
@@ -47,11 +46,6 @@ internal class RestringResources(res: Resources,
         }
     }
 
-    private fun fromHtml(source: String): CharSequence {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Html.fromHtml(source)
-        } else {
-            Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
-        }
-    }
+    private fun fromHtml(source: String) =
+            HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_COMPACT)
 }

@@ -1,8 +1,8 @@
 package com.b3nedikt.restring
 
-import androidx.appcompat.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 
 /**
  * A transformer which transforms Toolbar(from support library): it transforms the text set as title.
@@ -18,8 +18,7 @@ internal class SupportToolbarTransformer : ViewTransformerManager.Transformer {
         val resources = view.context.resources
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_APP_TITLE, ATTRIBUTE_TITLE -> {
                     val value = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
@@ -35,8 +34,7 @@ internal class SupportToolbarTransformer : ViewTransformerManager.Transformer {
         (view as Toolbar).title = text
     }
 
-    companion object {
-
+    private companion object {
         private const val ATTRIBUTE_TITLE = "title"
         private const val ATTRIBUTE_APP_TITLE = "app:title"
     }

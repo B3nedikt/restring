@@ -19,8 +19,7 @@ internal class TextViewTransformer : ViewTransformerManager.Transformer {
         val resources = view.context.resources
 
         for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_ANDROID_TEXT, ATTRIBUTE_TEXT -> {
                     val value = attrs.getAttributeValue(index)
                     if (value != null && value.startsWith("@")) {
@@ -46,8 +45,7 @@ internal class TextViewTransformer : ViewTransformerManager.Transformer {
         (view as TextView).hint = text
     }
 
-    companion object {
-
+    private companion object {
         private const val ATTRIBUTE_TEXT = "text"
         private const val ATTRIBUTE_ANDROID_TEXT = "android:text"
         private const val ATTRIBUTE_HINT = "hint"

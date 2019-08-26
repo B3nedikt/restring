@@ -1,4 +1,4 @@
-<a href='https://bintray.com/b3nedikt/restring/restring/1.0.0/link'><img src='https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=1.0.1'></a>
+[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=1.0.1) ](https://bintray.com/b3nedikt/restring/restring/1.0.1/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 

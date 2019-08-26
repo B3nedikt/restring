@@ -22,13 +22,13 @@ internal class TextViewTransformer : ViewTransformerManager.Transformer {
             when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_ANDROID_TEXT, ATTRIBUTE_TEXT -> {
                     val value = attrs.getAttributeValue(index)
-                    if (value != null && value.startsWith("@")) {
+                    if (isValidResourceId(value)) {
                         setTextForView(view, resources.getString(attrs.getAttributeResourceValue(index, 0)))
                     }
                 }
                 ATTRIBUTE_ANDROID_HINT, ATTRIBUTE_HINT -> {
-                    val value = attrs.getAttributeValue(index)
-                    if (value != null && value.startsWith("@")) {
+                    val value: String? = attrs.getAttributeValue(index)
+                    if (isValidResourceId(value)) {
                         setHintForView(view, resources.getString(attrs.getAttributeResourceValue(index, 0)))
                     }
                 }
@@ -36,6 +36,9 @@ internal class TextViewTransformer : ViewTransformerManager.Transformer {
         }
         return view
     }
+
+    private fun isValidResourceId(value: String?) =
+            value?.run { startsWith("@") && equals("@0").not() } ?: false
 
     private fun setTextForView(view: View, text: String) {
         (view as TextView).text = text

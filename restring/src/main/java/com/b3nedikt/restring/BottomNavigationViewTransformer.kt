@@ -158,8 +158,7 @@ internal class BottomNavigationViewTransformer : ViewTransformerManager.Transfor
         var titleCondensed: Int = 0
     }
 
-    companion object {
-
+    private companion object {
         private const val ATTRIBUTE_MENU = "menu"
         private const val ATTRIBUTE_APP_MENU = "app:menu"
         private const val ATTRIBUTE_ID = "id"

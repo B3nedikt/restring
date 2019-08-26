@@ -134,8 +134,7 @@ internal class RestringLayoutInflater(original: LayoutInflater,
         }
     }
 
-    private fun createCustomViewInternal(parent: View?, view: View?, name: String, viewContext: Context, attrs: AttributeSet): View? {
-        var view = view
+    private fun createCustomViewInternal(view: View?, name: String, viewContext: Context, attrs: AttributeSet): View? {
         // I by no means advise anyone to do this normally, but Google have locked down access to
         // the createView() method, so we never get a callback with attributes at the end of the
         // createViewFromTag chain (which would solve all this unnecessary rubbish).
@@ -149,6 +148,7 @@ internal class RestringLayoutInflater(original: LayoutInflater,
             if (mConstructorArgs == null)
                 mConstructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "mConstructorArgs")
 
+            @Suppress("UNCHECKED_CAST")
             val mConstructorArgsArr = ReflectionUtils.getValue(mConstructorArgs!!, this) as Array<Any>?
             val lastContext = mConstructorArgsArr!![0]
             // The LayoutInflater actually finds out the correct context to use. We just need to set
@@ -157,7 +157,7 @@ internal class RestringLayoutInflater(original: LayoutInflater,
             mConstructorArgsArr[0] = viewContext
             ReflectionUtils.setValue(mConstructorArgs!!, this, mConstructorArgsArr)
             try {
-                view = createView(name, null, attrs)
+                return createView(name, null, attrs)
             } catch (ignored: ClassNotFoundException) {
             } finally {
                 mConstructorArgsArr[0] = lastContext
@@ -172,7 +172,7 @@ internal class RestringLayoutInflater(original: LayoutInflater,
 
         override fun onCreateView(parent: View?, name: String?, context: Context?, attrs: AttributeSet?): View? {
             var view: View? = factory2.onCreateView(parent, name, context, attrs)
-            view = createCustomViewInternal(parent, view, name!!, context!!, attrs!!)
+            view = createCustomViewInternal(view, name!!, context!!, attrs!!)
             if(view != null){
                 return applyChange(view, attrs)!!
             }
@@ -181,7 +181,7 @@ internal class RestringLayoutInflater(original: LayoutInflater,
 
         override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View {
             var view: View? = factory2.onCreateView(name, context, attrs)
-            view = createCustomViewInternal(null, view, name!!, context!!, attrs!!)
+            view = createCustomViewInternal(view, name!!, context!!, attrs!!)
             return applyChange(view!!, attrs)!!
         }
     }

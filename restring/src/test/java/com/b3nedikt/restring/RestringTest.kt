@@ -2,11 +2,11 @@ package com.b3nedikt.restring
 
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.b3nedikt.restring.activity.TestActivity
 import com.b3nedikt.restring.shadow.MyShadowAsyncTask
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.hamcrest.core.StringStartsWith.startsWith
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -21,9 +21,6 @@ import kotlin.collections.LinkedHashMap
 @RunWith(RobolectricTestRunner::class)
 @Config(shadows = [MyShadowAsyncTask::class])
 class RestringTest {
-
-    private val language: String
-        get() = Locale.getDefault().language
 
     @Before
     fun setUp() {
@@ -48,21 +45,19 @@ class RestringTest {
 
             val childCount = viewGroup.childCount
             for (i in 0 until childCount) {
-                val view = viewGroup.getChildAt(i)
-                when (view) {
+                when (val view = viewGroup.getChildAt(i)) {
                     is TextView -> {
-                        assertThat("TextView[text]", view.text.toString(), startsWith(language))
-                        assertThat("TextView[hint]", view.hint.toString(), startsWith(language))
+                        assertThat("TextView[text]", view.text.toString(), startsWith(lang))
+                        assertThat("TextView[hint]", view.hint.toString(), startsWith(lang))
                     }
-                    is Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(language))
-                    is androidx.appcompat.widget.Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(language))
+                    is Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(lang))
                     is BottomNavigationView -> {
                         val itemCount = view.menu.size()
                         for (item in 0 until itemCount) {
                             assertThat("BottomNavigationView#$item[title]",
-                                    view.menu.getItem(item).title.toString(), startsWith(language))
+                                    view.menu.getItem(item).title.toString(), startsWith(lang))
                             assertThat("BottomNavigationView#$item[titleCondensed]",
-                                    view.menu.getItem(item).titleCondensed.toString(), startsWith(language))
+                                    view.menu.getItem(item).titleCondensed.toString(), startsWith(lang))
                         }
                     }
                 }

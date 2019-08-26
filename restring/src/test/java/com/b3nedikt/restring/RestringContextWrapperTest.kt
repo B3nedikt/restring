@@ -59,7 +59,6 @@ class RestringContextWrapperTest {
         assertEquals(STR_VALUE, real)
     }
 
-
     @Test
     fun shouldProvideCustomLayoutInflaterToApplyViewTransformation() {
         val layoutInflater = restringContextWrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -75,7 +74,7 @@ class RestringContextWrapperTest {
         }
     }
 
-    companion object {
+    private companion object {
         private val STR_RES_ID = R.string.STR_KEY
         private const val STR_KEY = "STR_KEY"
         private const val STR_VALUE = "STR_VALUE"

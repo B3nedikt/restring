@@ -3,33 +3,18 @@ package com.b3nedikt.restring
 /**
  * Contains configuration properties for initializing Restring.
  */
-class RestringConfig private constructor() {
+class RestringConfig private constructor(
+        val isPersist: Boolean = false,
+        val stringsLoader: Restring.StringsLoader? = null) {
 
-    var isPersist: Boolean = false
-        private set
-    var stringsLoader: Restring.StringsLoader? = null
-        private set
+    data class Builder(
+            private var persist: Boolean = false,
+            private var stringsLoader: Restring.StringsLoader? = null) {
 
-    class Builder {
-        private var persist: Boolean = false
-        private var stringsLoader: Restring.StringsLoader? = null
+        fun persist(persist: Boolean) = apply { this.persist = persist }
+        fun stringsLoader(loader: Restring.StringsLoader) = apply { this.stringsLoader = loader }
 
-        fun persist(persist: Boolean): Builder {
-            this.persist = persist
-            return this
-        }
-
-        fun stringsLoader(loader: Restring.StringsLoader): Builder {
-            this.stringsLoader = loader
-            return this
-        }
-
-        fun build(): RestringConfig {
-            val config = RestringConfig()
-            config.isPersist = persist
-            config.stringsLoader = stringsLoader
-            return config
-        }
+        fun build() = RestringConfig(persist, stringsLoader)
     }
 
     companion object {

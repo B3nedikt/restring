@@ -1,10 +1,7 @@
 package com.b3nedikt.restring
 
 import android.util.AttributeSet
-import android.util.Pair
 import android.view.View
-
-import java.util.ArrayList
 
 /**
  * Manages all view transformers as a central point for layout inflater.
@@ -12,7 +9,7 @@ import java.util.ArrayList
  */
 internal class ViewTransformerManager {
 
-    private val transformers = ArrayList<Pair<Class<out View>, Transformer>>()
+    private val transformers = mutableListOf<Transformer>()
 
     /**
      * Register a new view transformer to be applied on newly inflating views.
@@ -20,7 +17,7 @@ internal class ViewTransformerManager {
      * @param transformer to be added to transformers list.
      */
     fun registerTransformer(transformer: Transformer) {
-        transformers.add(Pair(transformer.viewType, transformer))
+        transformers.add(transformer)
     }
 
     /**
@@ -32,24 +29,10 @@ internal class ViewTransformerManager {
      * @param attrs attributes of the view.
      * @return the transformed view.
      */
-    fun transform(view: View?, attrs: AttributeSet): View? {
-        if (view == null) {
-            return null
-        }
-
-        var newView: View = view
-        for (pair in transformers) {
-            val type = pair.first
-            if (!type.isInstance(view)) {
-                continue
-            }
-
-            val transformer = pair.second
-            newView = transformer.transform(newView, attrs)
-        }
-
-        return newView
-    }
+    fun transform(view: View, attrs: AttributeSet) =
+            transformers.find { it.viewType.isInstance(view) }
+                    ?.run { transform(view, attrs) }
+                    ?: view
 
     /**
      * A view transformer skeleton.

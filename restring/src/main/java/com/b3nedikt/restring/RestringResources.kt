@@ -40,7 +40,7 @@ internal class RestringResources(res: Resources,
     private fun getStringFromRepository(id: Int): String? {
         return try {
             val stringKey = getResourceEntryName(id)
-            stringRepository.getString(RestringUtil.currentLanguage, stringKey)
+            stringRepository.getString(RestringUtil.currentLocale, stringKey)
         } catch (ex: NotFoundException) {
             null
         }

@@ -1,41 +1,43 @@
 package com.b3nedikt.restring
 
+import java.util.*
+
 /**
  * Repository of strings.
  */
 internal interface StringRepository {
 
     /**
-     * Set strings(key, value) for a specific language.
+     * Set strings(key, value) for a specific locale.
      *
-     * @param language the strings belongs to.
-     * @param strings  new strings for the language.
+     * @param locale the strings belongs to.
+     * @param strings  new strings for the locale.
      */
-    fun setStrings(language: String, strings: Map<String, String>)
+    fun setStrings(locale: Locale, strings: Map<String, String>)
 
     /**
-     * set a single string(key, value) for a specific language.
+     * set a single string(key, value) for a specific locale.
      *
-     * @param language the string belongs to.
+     * @param locale the string belongs to.
      * @param key      the key of the string which is the string resource id.
      * @param value    the new string.
      */
-    fun setString(language: String, key: String, value: String)
+    fun setString(locale: Locale, key: String, value: String)
 
     /**
-     * Get a string for a language & key.
+     * Get a string for a locale & key.
      *
-     * @param language the language of the string.
+     * @param locale the locale of the string.
      * @param key      the string resource id.
      * @return the string if exists, otherwise NULL.
      */
-    fun getString(language: String, key: String): String?
+    fun getString(locale: Locale, key: String): String?
 
     /**
-     * Get all strings for a specific language.
+     * Get all strings for a specific locale.
      *
-     * @param language the lanugage of the strings.
+     * @param locale the locale of the strings.
      * @return the map of string key & values. return empty map if there's no.
      */
-    fun getStrings(language: String): Map<String, String>
+    fun getStrings(locale: Locale): Map<String, String>
 }

@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 
-## Restring 1.0
+## Restring 2.0
 An easy way to replace bundled Strings dynamically, or provide new translations in Android.
 This is a fork of a library originally developed by Hamid Gharehdaghi, I only ported it to kotlin
 & fixed a few bugs.
@@ -45,7 +45,7 @@ public class MyStringsLoader implements Restring.StringsLoader {
 
     //This will be called on background thread.
     @Override
-    public List<Locale> getLanguages() {
+    public List<Locale> getLocales() {
         //return your supported locales(e.g. Locale.EN, ...)
     }
 

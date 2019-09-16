@@ -1,5 +1,7 @@
 package com.b3nedikt.restring
 
+import java.util.*
+
 /**
  * A StringRepository which keeps the strings ONLY in memory.
  *
@@ -8,20 +10,22 @@ package com.b3nedikt.restring
  */
 internal class MemoryStringRepository : StringRepository {
 
-    private val strings = mutableMapOf<String, MutableMap<String, String>>()
+    private val strings = mutableMapOf<Locale, MutableMap<String, String>>()
 
-    override fun setStrings(language: String, strings: Map<String, String>) {
-        this.strings[language] = strings.toMutableMap()
+    override var supportedLocales: Set<Locale> = strings.keys
+
+    override fun setStrings(locale: Locale, strings: Map<String, String>) {
+        this.strings[locale] = strings.toMutableMap()
     }
 
-    override fun setString(language: String, key: String, value: String) {
-        if (!strings.containsKey(language)) {
-            strings[language] = mutableMapOf()
+    override fun setString(locale: Locale, key: String, value: String) {
+        if (!strings.containsKey(locale)) {
+            strings[locale] = mutableMapOf()
         }
-        strings[language]?.put(key, value)
+        strings[locale]?.put(key, value)
     }
 
-    override fun getString(language: String, key: String) = strings[language]?.get(key)
+    override fun getString(locale: Locale, key: String) = strings[locale]?.get(key)
 
-    override fun getStrings(language: String) = strings[language]?.toMap() ?: mapOf()
+    override fun getStrings(locale: Locale) = strings[locale]?.toMap() ?: mapOf()
 }

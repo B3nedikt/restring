@@ -11,6 +11,8 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import java.util.*
+import kotlin.collections.HashMap
 
 @RunWith(RobolectricTestRunner::class)
 class StringsLoaderTaskTest {
@@ -21,7 +23,7 @@ class StringsLoaderTaskTest {
 
     @Test
     fun shouldLoadStringsAndSaveInRepository() {
-        val langs = listOf("en", "de")
+        val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
         val enStrings = HashMap<String, String>()
         enStrings["string1"] = "value1"
         enStrings["string2"] = "value2"
@@ -30,9 +32,9 @@ class StringsLoaderTaskTest {
         deStrings["string4"] = "value4"
 
         val loader = mock<Restring.StringsLoader>()
-        whenever(loader.languages).thenReturn(langs)
-        whenever(loader.getStrings("en")).thenReturn(enStrings)
-        whenever(loader.getStrings("de")).thenReturn(deStrings)
+        whenever(loader.locales).thenReturn(locales)
+        whenever(loader.getStrings(Locale.ENGLISH)).thenReturn(enStrings)
+        whenever(loader.getStrings(Locale.GERMAN)).thenReturn(deStrings)
 
         val repository = mock<StringRepository>()
 
@@ -43,11 +45,11 @@ class StringsLoaderTaskTest {
         Robolectric.flushForegroundThreadScheduler()
 
         val enCaptor = argumentCaptor<Map<String,String>>()
-        verify(repository).setStrings(eq("en"), enCaptor.capture() )
+        verify(repository).setStrings(eq(Locale.ENGLISH), enCaptor.capture() )
         assertEquals(enStrings, enCaptor.firstValue)
 
         val deCaptor = argumentCaptor<Map<String,String>>()
-        verify(repository).setStrings(eq("de"), deCaptor.capture())
+        verify(repository).setStrings(eq(Locale.GERMAN), deCaptor.capture())
         assertEquals(deStrings, deCaptor.firstValue)
     }
 }

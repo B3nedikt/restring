@@ -2,6 +2,7 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import java.util.*
 
 /**
  * Entry point for Restring. it will be used for initializing Restring components, setting new strings,
@@ -11,7 +12,15 @@ object Restring {
 
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
-    private lateinit var viewTransformerManager: ViewTransformerManager
+
+    private val viewTransformerManager: ViewTransformerManager by lazy {
+        ViewTransformerManager().apply {
+            registerTransformer(TextViewTransformer())
+            registerTransformer(ToolbarTransformer())
+            registerTransformer(SupportToolbarTransformer())
+            registerTransformer(BottomNavigationViewTransformer())
+        }
+    }
 
     /**
      * Initialize Restring with the specified configuration.
@@ -27,7 +36,6 @@ object Restring {
 
         isInitialized = true
         initStringRepository(context, config)
-        initViewTransformer()
     }
 
     /**
@@ -43,11 +51,11 @@ object Restring {
     /**
      * Set strings of a language.
      *
-     * @param language   the strings are for.
+     * @param locale the strings are for.
      * @param newStrings the strings of the language.
      */
-    fun setStrings(language: String, newStrings: Map<String, String>) {
-        stringRepository.setStrings(language, newStrings)
+    fun setStrings(locale: Locale, newStrings: Map<String, String>) {
+        stringRepository.setStrings(locale, newStrings)
     }
 
     /**
@@ -57,8 +65,8 @@ object Restring {
      * @param key      the string key.
      * @param value    the string value.
      */
-    fun setString(language: String, key: String, value: String) {
-        stringRepository.setString(language, key, value)
+    fun setString(locale: Locale, key: String, value: String) {
+        stringRepository.setString(locale, key, value)
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
@@ -73,14 +81,6 @@ object Restring {
         }
     }
 
-    private fun initViewTransformer() {
-        viewTransformerManager = ViewTransformerManager()
-        viewTransformerManager.registerTransformer(TextViewTransformer())
-        viewTransformerManager.registerTransformer(ToolbarTransformer())
-        viewTransformerManager.registerTransformer(SupportToolbarTransformer())
-        viewTransformerManager.registerTransformer(BottomNavigationViewTransformer())
-    }
-
     /**
      * Loader of strings skeleton. Clients can implement this interface if they want to load strings on initialization.
      * First the list of languages will be asked, then strings of each language.
@@ -88,18 +88,16 @@ object Restring {
     interface StringsLoader {
 
         /**
-         * Get supported languages.
-         *
-         * @return the list of languages.
+         * List of supported languages
          */
-        val languages: List<String>
+        val locales: List<Locale>
 
         /**
          * Get strings of a language as keys &amp; values.
          *
-         * @param language of the strings.
+         * @param locale of the strings.
          * @return the strings as (key, value).
          */
-        fun getStrings(language: String): Map<String, String>
+        fun getStrings(locale: Locale): Map<String, String>
     }
 }

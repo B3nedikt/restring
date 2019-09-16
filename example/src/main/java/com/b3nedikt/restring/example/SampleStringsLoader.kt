@@ -12,25 +12,29 @@ import java.util.*
  */
 class SampleStringsLoader : Restring.StringsLoader {
 
-    override val languages: List<String>
-        get() = listOf("en", "de", "fa")
+    override val locales: List<Locale>
+        get() = listOf(Locale.ENGLISH, Locale.US, LOCALE_AUSTRIAN_GERMAN)
 
-    override fun getStrings(language: String): Map<String, String> {
-        val map = HashMap<String, String>()
-        when (language) {
-            "en" -> {
-                map["title"] = "This is title (from restring)."
-                map["subtitle"] = "This is subtitle (from restring)."
+    override fun getStrings(locale: Locale): Map<String, String> {
+        val map = mutableMapOf<String, String>()
+        when (locale) {
+            Locale.ENGLISH -> {
+                map["title"] = "Title (from restring)."
+                map["subtitle"] = "Subtitle (from restring)."
             }
-            "de" -> {
-                map["title"] = "Das ist Titel (from restring)."
-                map["subtitle"] = "Das ist Untertitel (from restring)."
+            Locale.US -> {
+                map["title"] = "Title US (from restring)."
+                map["subtitle"] = "Subtitle US (from restring)."
             }
-            "fa" -> {
-                map["title"] = "In sarkhat ast (from restring)."
-                map["subtitle"] = "In matn ast (from restring)."
+            LOCALE_AUSTRIAN_GERMAN -> {
+                map["title"] = "Titel (from restring)."
+                map["subtitle"] = "Untertitel (from restring)."
             }
         }
         return map
+    }
+
+    companion object {
+        private val LOCALE_AUSTRIAN_GERMAN = Locale("de", "AT")
     }
 }

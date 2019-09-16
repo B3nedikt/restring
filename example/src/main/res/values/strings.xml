@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Restring</string>
-    <string name="title">This is title.</string>
-    <string name="subtitle">This is subtitle.</string>
+    <string name="title">Title.</string>
+    <string name="subtitle">Subtitle.</string>
+    <string name="untranslated">Untranslated</string>
 </resources>

@@ -3,6 +3,7 @@ package com.b3nedikt.restring
 import android.content.Context
 import android.content.SharedPreferences
 import org.json.JSONObject
+import java.util.*
 
 /**
  * A StringRepository which saves/loads the strings in Shared Preferences.
@@ -21,25 +22,27 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         loadStrings()
     }
 
-    override fun setStrings(language: String, strings: Map<String, String>) {
-        memoryStringRepository.setStrings(language, strings)
-        saveStrings(language, strings)
+    override var supportedLocales: Set<Locale> = setOf()
+
+    override fun setStrings(locale: Locale, strings: Map<String, String>) {
+        memoryStringRepository.setStrings(locale, strings)
+        saveStrings(locale, strings)
     }
 
-    override fun setString(language: String, key: String, value: String) {
-        memoryStringRepository.setString(language, key, value)
+    override fun setString(locale: Locale, key: String, value: String) {
+        memoryStringRepository.setString(locale, key, value)
 
-        val keyValues = memoryStringRepository.getStrings(language).toMutableMap()
-        keyValues[key]= value
-        saveStrings(language, keyValues)
+        val keyValues = memoryStringRepository.getStrings(locale).toMutableMap()
+        keyValues[key] = value
+        saveStrings(locale, keyValues)
     }
 
-    override fun getString(language: String, key: String): String? {
-        return memoryStringRepository.getString(language, key)
+    override fun getString(locale: Locale, key: String): String? {
+        return memoryStringRepository.getString(locale, key)
     }
 
-    override fun getStrings(language: String): Map<String, String> {
-        return memoryStringRepository.getStrings(language)
+    override fun getStrings(locale: Locale): Map<String, String> {
+        return memoryStringRepository.getStrings(locale)
     }
 
     private fun initSharedPreferences(context: Context) {
@@ -48,20 +51,20 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
     private fun loadStrings() {
         val strings = sharedPreferences.all
-        for ((language, value) in strings) {
+        for ((locale, value) in strings) {
             if (value !is String) {
                 continue
             }
 
             val keyValues = deserializeKeyValues(value)
-            memoryStringRepository.setStrings(language, keyValues)
+            memoryStringRepository.setStrings(localeFromString(locale), keyValues)
         }
     }
 
-    private fun saveStrings(language: String, strings: Map<String, String>) {
+    private fun saveStrings(locale: Locale, strings: Map<String, String>) {
         val content = serializeKeyValues(strings)
         sharedPreferences.edit()
-                .putString(language, content)
+                .putString(localeToString(locale), content)
                 .apply()
     }
 
@@ -78,7 +81,18 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         return JSONObject(keyValues).toString()
     }
 
+    private fun localeToString(locale: Locale): String {
+        return locale.language + "-" + locale.country
+    }
+
+    private fun localeFromString(locale: String): Locale {
+        val language = locale.split("-")[0]
+        val country = locale.split("-")[1]
+
+        return Locale(language, country)
+    }
+
     private companion object {
-        private const val SHARED_PREF_NAME = "Restrings2"
+        private const val SHARED_PREF_NAME = "Restrings3"
     }
 }

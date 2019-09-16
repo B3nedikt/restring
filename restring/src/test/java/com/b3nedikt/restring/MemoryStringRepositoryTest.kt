@@ -19,36 +19,36 @@ class MemoryStringRepositoryTest {
 
     @Test
     fun shouldSetAndGetStringPairs() {
-        val language = "en"
+        val locale = Locale.ENGLISH
         val strings = generateStrings(10)
 
-        stringRepository.setStrings(language, strings)
+        stringRepository.setStrings(locale, strings)
 
-        assertEquals(strings, stringRepository.getStrings(language))
+        assertEquals(strings, stringRepository.getStrings(locale))
     }
 
     @Test
     fun shouldGetSingleString() {
-        val language = "en"
+        val locale = Locale.ENGLISH
         val stringCount = 10
         val strings = generateStrings(stringCount)
-        stringRepository.setStrings(language, strings)
+        stringRepository.setStrings(locale, strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(stringRepository.getString(language, "key$i"), "value$i")
+            assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
         }
     }
 
     @Test
     fun shouldSetSingleString() {
-        val language = "en"
+        val locale = Locale.ENGLISH
         val stringCount = 10
         val strings = generateStrings(stringCount)
 
-        stringRepository.setStrings(language, strings)
-        stringRepository.setString(language, "key5", "aNewValue")
+        stringRepository.setStrings(locale, strings)
+        stringRepository.setString(locale, "key5", "aNewValue")
 
-        assertEquals(stringRepository.getString(language, "key5"), "aNewValue")
+        assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
     }
 
     private fun generateStrings(count: Int): Map<String, String> {

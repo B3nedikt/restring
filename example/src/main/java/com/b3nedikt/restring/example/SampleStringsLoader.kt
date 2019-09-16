@@ -13,7 +13,7 @@ import java.util.*
 class SampleStringsLoader : Restring.StringsLoader {
 
     override val locales: List<Locale>
-        get() = listOf(Locale.US, Locale.GERMAN)
+        get() = listOf(Locale.ENGLISH, Locale.US, LOCALE_AUSTRIAN_GERMAN)
 
     override fun getStrings(locale: Locale): Map<String, String> {
         val map = mutableMapOf<String, String>()
@@ -26,11 +26,15 @@ class SampleStringsLoader : Restring.StringsLoader {
                 map["title"] = "Title US (from restring)."
                 map["subtitle"] = "Subtitle US (from restring)."
             }
-            Locale.GERMAN -> {
+            LOCALE_AUSTRIAN_GERMAN -> {
                 map["title"] = "Titel (from restring)."
                 map["subtitle"] = "Untertitel (from restring)."
             }
         }
         return map
+    }
+
+    companion object {
+        private val LOCALE_AUSTRIAN_GERMAN = Locale("de", "AT")
     }
 }

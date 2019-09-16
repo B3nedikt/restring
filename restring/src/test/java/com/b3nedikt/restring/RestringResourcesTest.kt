@@ -25,20 +25,22 @@ class RestringResourcesTest {
 
     private lateinit var restringResources: RestringResources
 
-    private val language: String
-        get() = Locale.getDefault().language
+    private val locale: Locale
+        get() = Locale.getDefault()
 
     @Before
     fun setUp() {
         repository = mock()
         resources =  (ApplicationProvider.getApplicationContext() as Context).resources
 
+        whenever(repository.supportedLocales).thenReturn(setOf(locale))
+
         restringResources = spy(RestringResources(resources, repository))
     }
 
     @Test
     fun shouldGetStringFromRepositoryIfExists() {
-        whenever(repository.getString(language, STR_KEY)).thenReturn(STR_VALUE)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE)
 
         val stringValue = restringResources.getString(STR_RES_ID)
 
@@ -47,7 +49,7 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetStringFromResourceIfNotExists() {
-        whenever(repository.getString(language, STR_KEY)).thenReturn(null)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
 
         val stringValue = restringResources.getString(STR_RES_ID)
 
@@ -58,7 +60,7 @@ class RestringResourcesTest {
     @Test
     fun shouldGetStringWithParamsFromRepositoryIfExists() {
         val param = "PARAM"
-        whenever(repository.getString(language, STR_KEY)).thenReturn(STR_VALUE_WITH_PARAM)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE_WITH_PARAM)
 
         val stringValue = restringResources.getString(STR_RES_ID, param)
 
@@ -68,7 +70,7 @@ class RestringResourcesTest {
     @Test
     fun shouldGetStringWithParamsFromResourceIfNotExists() {
         val param = "PARAM"
-        whenever(repository.getString(language, STR_KEY)).thenReturn(null)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
 
         val stringValue = restringResources.getString(STR_RES_ID, param)
 
@@ -78,7 +80,7 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetHtmlTextFromRepositoryIfExists() {
-        whenever(repository.getString(language, STR_KEY)).thenReturn(STR_VALUE_HTML)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE_HTML)
 
         val realValue = restringResources.getText(STR_RES_ID)
 
@@ -88,7 +90,7 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetHtmlTextFromResourceIfNotExists() {
-        whenever(repository.getString(language, STR_KEY)).thenReturn(null)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
 
         val realValue = restringResources.getText(STR_RES_ID)
 
@@ -99,7 +101,7 @@ class RestringResourcesTest {
     @Test
     fun shouldReturnDefaultHtmlTextFromRepositoryIfResourceIdIsInvalid() {
         val def = Html.fromHtml("<b>def</b>", Html.FROM_HTML_MODE_COMPACT)
-        whenever(repository.getString(language, STR_KEY)).thenReturn(null)
+        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
 
         val realValue = restringResources.getText(0, def)
 

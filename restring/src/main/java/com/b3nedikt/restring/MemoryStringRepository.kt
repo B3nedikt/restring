@@ -12,6 +12,8 @@ internal class MemoryStringRepository : StringRepository {
 
     private val strings = mutableMapOf<Locale, MutableMap<String, String>>()
 
+    override var supportedLocales: Set<Locale> = strings.keys
+
     override fun setStrings(locale: Locale, strings: Map<String, String>) {
         this.strings[locale] = strings.toMutableMap()
     }

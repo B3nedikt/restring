@@ -2,6 +2,7 @@ package com.b3nedikt.restring
 
 import android.content.res.Resources
 import androidx.core.text.HtmlCompat
+import java.util.*
 
 
 /**
@@ -38,10 +39,22 @@ internal class RestringResources(res: Resources,
     }
 
     private fun getStringFromRepository(id: Int): String? {
+
+        val currentLocale = RestringUtil.currentLocale
+        val supportedLocales = stringRepository.supportedLocales
+
+        val resultLocale = if (supportedLocales.contains(currentLocale)) {
+            currentLocale
+        } else {
+            supportedLocales.find { it.language == currentLocale.language }
+        }
+
+        resultLocale ?: return null
+
         return try {
             val stringKey = getResourceEntryName(id)
-            stringRepository.getString(RestringUtil.currentLocale, stringKey)
-        } catch (ex: NotFoundException) {
+            return stringRepository.getString(resultLocale, stringKey)
+        } catch (e: NotFoundException) {
             null
         }
     }

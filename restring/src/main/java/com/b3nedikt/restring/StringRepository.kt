@@ -8,6 +8,11 @@ import java.util.*
 internal interface StringRepository {
 
     /**
+     * The [Locale]s supported by the repository
+     */
+    var supportedLocales: Set<Locale>
+
+    /**
      * Set strings(key, value) for a specific locale.
      *
      * @param locale the strings belongs to.

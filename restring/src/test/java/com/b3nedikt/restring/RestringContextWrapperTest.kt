@@ -31,14 +31,16 @@ class RestringContextWrapperTest {
 
     private lateinit var transformerManager: ViewTransformerManager
 
-    private val language: String
-        get() = Locale.getDefault().language
+    private val locale: Locale
+        get() = Locale.getDefault()
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         stringRepository = mock()
         transformerManager = mock()
+
+        whenever(stringRepository.supportedLocales).thenReturn(setOf(locale))
 
         originalResources = context.resources
 
@@ -52,7 +54,7 @@ class RestringContextWrapperTest {
 
     @Test
     fun shouldWrapResourcesAndGetStringsFromRepository() {
-        whenever(stringRepository.getString(language, STR_KEY)).thenReturn(STR_VALUE)
+        whenever(stringRepository.getString(locale, STR_KEY)).thenReturn(STR_VALUE)
 
         val real = restringContextWrapper.resources.getString(STR_RES_ID)
 

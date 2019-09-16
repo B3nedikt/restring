@@ -9,10 +9,9 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Locale.setDefault(Locale.US)
+        // Swiss german
+        Locale.setDefault(Locale("de", "CH"))
 
         setContentView(R.layout.activity_main)
-
-        subtitleTextView.text  = getString(R.string.subtitle)
     }
 }

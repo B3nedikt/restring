@@ -36,8 +36,8 @@ class RestringTest {
 
     @Test
     fun shouldInflateAndTransformViewsOnActivityCreation() {
-        val languages = listOf("en", "fa", "de")
-        for (lang in languages) {
+        val locales = listOf("en", "fa", "de")
+        for (lang in locales) {
             Locale.setDefault(Locale(lang))
             val activityController = Robolectric.buildActivity(TestActivity::class.java)
             val activity = activityController.create().start().resume().visible().get()
@@ -69,19 +69,19 @@ class RestringTest {
 
     private inner class MyStringLoader : Restring.StringsLoader {
 
-        override val languages: List<String>
-            get() = listOf("en", "fa", "de")
+        override val locales: List<Locale>
+            get() = listOf(Locale.ENGLISH, Locale("fa"), Locale.GERMAN)
 
-        override fun getStrings(language: String): Map<String, String> {
+        override fun getStrings(locale: Locale): Map<String, String> {
             val strings = LinkedHashMap<String, String>()
-            strings["header"] = language + "_" + "header"
-            strings["header_hint"] = language + "_" + "hint"
-            strings["menu1title"] = language + "_" + "Menu 1"
-            strings["menu1titleCondensed"] = language + "_" + "Menu1"
-            strings["menu2title"] = language + "_" + "Menu 2"
-            strings["menu2titleCondensed"] = language + "_" + "Menu2"
-            strings["menu3title"] = language + "_" + "Menu 3"
-            strings["menu3titleCondensed"] = language + "_" + "Menu3"
+            strings["header"] = locale.language + "_" + "header"
+            strings["header_hint"] = locale.language + "_" + "hint"
+            strings["menu1title"] = locale.language + "_" + "Menu 1"
+            strings["menu1titleCondensed"] = locale.language + "_" + "Menu1"
+            strings["menu2title"] = locale.language + "_" + "Menu 2"
+            strings["menu2titleCondensed"] = locale.language + "_" + "Menu2"
+            strings["menu3title"] = locale.language + "_" + "Menu 3"
+            strings["menu3titleCondensed"] = locale.language + "_" + "Menu3"
             return strings
         }
     }

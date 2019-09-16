@@ -23,6 +23,9 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
         val localizedStrings = mutableMapOf<Locale, Map<String, String>>()
 
         val languages = stringsLoader.locales
+
+        stringRepository.supportedLocales = languages.toSet()
+
         for (lang in languages) {
             val keyValues = stringsLoader.getStrings(lang)
             if (keyValues.isNotEmpty()) {

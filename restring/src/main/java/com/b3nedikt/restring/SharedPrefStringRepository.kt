@@ -22,6 +22,8 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         loadStrings()
     }
 
+    override var supportedLocales: Set<Locale> = setOf()
+
     override fun setStrings(locale: Locale, strings: Map<String, String>) {
         memoryStringRepository.setStrings(locale, strings)
         saveStrings(locale, strings)

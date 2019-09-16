@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=1.0.1) ](https://bintray.com/b3nedikt/restring/restring/1.0.1/link)
+[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=2.0.0) ](https://bintray.com/b3nedikt/restring/restring/2.0.0/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 
@@ -9,7 +9,7 @@ This is a fork of a library originally developed by Hamid Gharehdaghi, I only po
 
 ### 1. Add dependency
 ```groovy
-implementation 'com.b3nedikt.restring:restring:1.0.1'
+implementation 'com.b3nedikt.restring:restring:2.0.0'
 ```
 
 ### 2. Initialize
@@ -45,13 +45,13 @@ public class MyStringsLoader implements Restring.StringsLoader {
 
     //This will be called on background thread.
     @Override
-    public List<String> getLanguages() {
-        //return your supported languages(e.g. "en", ...)
+    public List<Locale> getLanguages() {
+        //return your supported locales(e.g. Locale.EN, ...)
     }
 
     //This will be called on background thread.
     @Override
-    public Map<String, String> getStrings(String language) {
+    public Map<String, String> getStrings(Locale locale) {
         Map<String, String> map = new HashMap<>();
         // Load your strings here into a map of (key,value)s for this language!
         return map;
@@ -71,8 +71,8 @@ Restring.init(context,
 Second way:
 Load your Strings in any way / any time / any place and just call this:
 ```java
-// e.g. language="en" newStrings=map of (key-value)s
-Restring.setStrings(language, newStrings);
+// e.g. locale=Locale.EN newStrings=map of (key-value)s
+Restring.setStrings(locale, newStrings);
 ```
 
 ### 5. Done!

@@ -1,7 +1,6 @@
 package com.b3nedikt.restring
 
 import android.content.Context
-import android.content.SharedPreferences
 import org.json.JSONObject
 import java.util.*
 
@@ -14,11 +13,13 @@ import java.util.*
  */
 internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private val sharedPreferences by lazy {
+        context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    }
+
     private val memoryStringRepository = MemoryStringRepository()
 
     init {
-        initSharedPreferences(context)
         loadStrings()
     }
 
@@ -45,10 +46,6 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         return memoryStringRepository.getStrings(locale)
     }
 
-    private fun initSharedPreferences(context: Context) {
-        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
-    }
-
     private fun loadStrings() {
         val strings = sharedPreferences.all
         for ((locale, value) in strings) {
@@ -57,14 +54,14 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
             }
 
             val keyValues = deserializeKeyValues(value)
-            memoryStringRepository.setStrings(localeFromString(locale), keyValues)
+            memoryStringRepository.setStrings(LocaleUtil.fromSimpleLanguageTag(locale), keyValues)
         }
     }
 
     private fun saveStrings(locale: Locale, strings: Map<String, String>) {
         val content = serializeKeyValues(strings)
         sharedPreferences.edit()
-                .putString(localeToString(locale), content)
+                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
                 .apply()
     }
 
@@ -79,20 +76,5 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
     private fun serializeKeyValues(keyValues: Map<String, String>): String {
         return JSONObject(keyValues).toString()
-    }
-
-    private fun localeToString(locale: Locale): String {
-        return locale.language + "-" + locale.country
-    }
-
-    private fun localeFromString(locale: String): Locale {
-        val language = locale.split("-")[0]
-        val country = locale.split("-")[1]
-
-        return Locale(language, country)
-    }
-
-    private companion object {
-        private const val SHARED_PREF_NAME = "Restrings3"
     }
 }

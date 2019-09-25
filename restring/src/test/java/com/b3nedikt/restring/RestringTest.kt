@@ -36,35 +36,49 @@ class RestringTest {
 
     @Test
     fun shouldInflateAndTransformViewsOnActivityCreation() {
+        RestringLocale.isInitial = true
         val locales = listOf("en", "fa", "de")
         for (lang in locales) {
             Locale.setDefault(Locale(lang))
-            val activityController = Robolectric.buildActivity(TestActivity::class.java)
-            val activity = activityController.create().start().resume().visible().get()
-            val viewGroup = activity.findViewById<ViewGroup>(R.id.root_container)
+            shouldInflateAndTransformViewsOnActivityCreation(lang)
+        }
+    }
 
-            val childCount = viewGroup.childCount
-            for (i in 0 until childCount) {
-                when (val view = viewGroup.getChildAt(i)) {
-                    is TextView -> {
-                        assertThat("TextView[text]", view.text.toString(), startsWith(lang))
-                        assertThat("TextView[hint]", view.hint.toString(), startsWith(lang))
-                    }
-                    is Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(lang))
-                    is BottomNavigationView -> {
-                        val itemCount = view.menu.size()
-                        for (item in 0 until itemCount) {
-                            assertThat("BottomNavigationView#$item[title]",
-                                    view.menu.getItem(item).title.toString(), startsWith(lang))
-                            assertThat("BottomNavigationView#$item[titleCondensed]",
-                                    view.menu.getItem(item).titleCondensed.toString(), startsWith(lang))
-                        }
+    @Test
+    fun shouldInflateAndTransformViewsOnActivityCreationFromRestringLocale() {
+        val locales = listOf("en", "fa", "de")
+        for (lang in locales) {
+            RestringLocale.currentLocale = Locale(lang)
+            shouldInflateAndTransformViewsOnActivityCreation(lang)
+        }
+    }
+
+    private fun shouldInflateAndTransformViewsOnActivityCreation(lang: String) {
+        val activityController = Robolectric.buildActivity(TestActivity::class.java)
+        val activity = activityController.create().start().resume().visible().get()
+        val viewGroup = activity.findViewById<ViewGroup>(R.id.root_container)
+
+        val childCount = viewGroup.childCount
+        for (i in 0 until childCount) {
+            when (val view = viewGroup.getChildAt(i)) {
+                is TextView -> {
+                    assertThat("TextView[text]", view.text.toString(), startsWith(lang))
+                    assertThat("TextView[hint]", view.hint.toString(), startsWith(lang))
+                }
+                is Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(lang))
+                is BottomNavigationView -> {
+                    val itemCount = view.menu.size()
+                    for (item in 0 until itemCount) {
+                        assertThat("BottomNavigationView#$item[title]",
+                                view.menu.getItem(item).title.toString(), startsWith(lang))
+                        assertThat("BottomNavigationView#$item[titleCondensed]",
+                                view.menu.getItem(item).titleCondensed.toString(), startsWith(lang))
                     }
                 }
             }
-
-            activityController.pause().stop().destroy()
         }
+
+        activityController.pause().stop().destroy()
     }
 
     private inner class MyStringLoader : Restring.StringsLoader {

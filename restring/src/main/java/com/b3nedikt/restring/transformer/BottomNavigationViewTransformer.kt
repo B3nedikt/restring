@@ -1,10 +1,11 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.content.res.Resources
 import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml
 import android.view.View
+import com.b3nedikt.restring.ViewTransformerManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException

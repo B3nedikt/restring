@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.transformer.TextViewTransformer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.*

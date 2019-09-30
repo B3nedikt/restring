@@ -1,10 +1,11 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.annotation.TargetApi
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Toolbar
+import com.b3nedikt.restring.ViewTransformerManager
 
 /**
  * A transformer which transforms Toolbar: it transforms the text set as title.

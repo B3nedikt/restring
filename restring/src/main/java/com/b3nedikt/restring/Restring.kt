@@ -2,6 +2,10 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import com.b3nedikt.restring.transformer.BottomNavigationViewTransformer
+import com.b3nedikt.restring.transformer.SupportToolbarTransformer
+import com.b3nedikt.restring.transformer.TextViewTransformer
+import com.b3nedikt.restring.transformer.ToolbarTransformer
 import java.util.*
 
 /**

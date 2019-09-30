@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.transformer.SupportToolbarTransformer
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertSame

@@ -1,8 +1,9 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
+import com.b3nedikt.restring.ViewTransformerManager
 
 /**
  * A transformer which transforms TextView(or any view extends it like Button, EditText, ...):

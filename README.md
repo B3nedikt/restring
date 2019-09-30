@@ -1,15 +1,15 @@
-[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=2.0.0) ](https://bintray.com/b3nedikt/restring/restring/2.0.0/link)
+[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=2.1.0) ](https://bintray.com/b3nedikt/restring/restring/2.1.0/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 
-## Restring 2.0
+## Restring 2.1.0
 An easy way to replace bundled Strings dynamically, or provide new translations in Android.
 This is a fork of a library originally developed by Hamid Gharehdaghi, I only ported it to kotlin
 & fixed a few bugs.
 
 ### 1. Add dependency
 ```groovy
-implementation 'com.b3nedikt.restring:restring:2.0.0'
+implementation 'com.b3nedikt.restring:restring:2.1.0'
 ```
 
 ### 2. Initialize

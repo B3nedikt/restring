@@ -1,10 +1,8 @@
 package com.b3nedikt.restring.example
 
 import android.app.Application
-
 import com.b3nedikt.restring.Restring
 import com.b3nedikt.restring.RestringConfig
-import java.util.*
 
 class SampleApplication : Application() {
 

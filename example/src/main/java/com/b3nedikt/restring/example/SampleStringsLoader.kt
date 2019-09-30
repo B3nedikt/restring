@@ -35,6 +35,6 @@ class SampleStringsLoader : Restring.StringsLoader {
     }
 
     companion object {
-        private val LOCALE_AUSTRIAN_GERMAN = Locale("de", "AT")
+        private val LOCALE_AUSTRIAN_GERMAN = Locale("de", "DE")
     }
 }

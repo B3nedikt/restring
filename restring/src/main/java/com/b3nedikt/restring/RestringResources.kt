@@ -10,6 +10,7 @@ import androidx.core.text.HtmlCompat
  * For getting strings and texts, it checks the strings repository first and if there's a new string
  * that will be returned, otherwise it will fallback to the original resource strings.
  */
+@Suppress("DEPRECATION")
 internal class RestringResources(val res: Resources,
                                  private val stringRepository: StringRepository)
     : Resources(res.assets, res.displayMetrics, res.configuration) {
@@ -74,11 +75,9 @@ internal class RestringResources(val res: Resources,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(RestringLocale.currentLocale)
         } else {
-            @Suppress("DEPRECATION")
             conf.locale = RestringLocale.currentLocale
         }
 
-        @Suppress("DEPRECATION")
         res.updateConfiguration(conf, res.displayMetrics)
     }
 

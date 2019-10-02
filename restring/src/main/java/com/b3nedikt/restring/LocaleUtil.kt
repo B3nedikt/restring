@@ -15,4 +15,3 @@ internal object LocaleUtil{
         return Locale(language, country)
     }
 }
-

@@ -1,8 +1,8 @@
 package com.b3nedikt.restring
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.res.Resources
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 
 /**
@@ -13,7 +13,7 @@ internal class RestringContextWrapper private constructor(
         base: Context,
         stringRepository: StringRepository,
         private val viewTransformerManager: ViewTransformerManager
-) : ContextWrapper(base) {
+) : ContextThemeWrapper(base, base.applicationInfo.theme) {
 
     private val res: Resources by lazy {
         val baseResources = super.getResources()

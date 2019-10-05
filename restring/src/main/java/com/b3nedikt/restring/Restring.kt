@@ -17,7 +17,7 @@ object Restring {
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
 
-    private val viewTransformerManager: ViewTransformerManager by lazy {
+    internal val viewTransformerManager: ViewTransformerManager by lazy {
         ViewTransformerManager().apply {
             registerTransformer(TextViewTransformer())
             registerTransformer(ToolbarTransformer())
@@ -49,7 +49,7 @@ object Restring {
      * @return the Restring wrapped context.
      */
     fun wrapContext(base: Context): ContextWrapper {
-        return RestringContextWrapper.wrap(base, stringRepository, viewTransformerManager)
+        return RestringContextWrapper.wrap(base, stringRepository)
     }
 
     /**
@@ -65,7 +65,7 @@ object Restring {
     /**
      * Set a single string for a language.
      *
-     * @param language the string is for.
+     * @param locale the string is for.
      * @param key      the string key.
      * @param value    the string value.
      */
@@ -102,6 +102,6 @@ object Restring {
          * @param locale of the strings.
          * @return the strings as (key, value).
          */
-        fun getStrings(locale: Locale): Map<String, String>
+        fun getStrings(locale: Locale): Map<String, CharSequence>
     }
 }

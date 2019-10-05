@@ -1,6 +1,8 @@
 package com.b3nedikt.restring
 
 import android.content.Context
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import org.json.JSONObject
 import java.util.*
 
@@ -25,12 +27,12 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
 
     override var supportedLocales: Set<Locale> = setOf()
 
-    override fun setStrings(locale: Locale, strings: Map<String, String>) {
+    override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         memoryStringRepository.setStrings(locale, strings)
         saveStrings(locale, strings)
     }
 
-    override fun setString(locale: Locale, key: String, value: String) {
+    override fun setString(locale: Locale, key: String, value: CharSequence) {
         memoryStringRepository.setString(locale, key, value)
 
         val keyValues = memoryStringRepository.getStrings(locale).toMutableMap()
@@ -38,11 +40,11 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         saveStrings(locale, keyValues)
     }
 
-    override fun getString(locale: Locale, key: String): String? {
+    override fun getString(locale: Locale, key: String): CharSequence? {
         return memoryStringRepository.getString(locale, key)
     }
 
-    override fun getStrings(locale: Locale): Map<String, String> {
+    override fun getStrings(locale: Locale): Map<String, CharSequence> {
         return memoryStringRepository.getStrings(locale)
     }
 
@@ -58,23 +60,31 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         }
     }
 
-    private fun saveStrings(locale: Locale, strings: Map<String, String>) {
+    private fun saveStrings(locale: Locale, strings: Map<String, CharSequence>) {
         val content = serializeKeyValues(strings)
         sharedPreferences.edit()
                 .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
                 .apply()
     }
 
-    private fun deserializeKeyValues(content: String): Map<String, String> {
-        val keyValues = mutableMapOf<String, String>()
+    private fun deserializeKeyValues(content: String) =
+            JSONObject(content).run {
+                keys().asSequence()
+                        .map { key -> key to HtmlCompat.fromHtml(getString(key), HtmlCompat.FROM_HTML_MODE_COMPACT) }
+                        .toMap()
+            }
 
-        val jsonObject = JSONObject(content)
-        jsonObject.keys()
-                .forEach { key -> keyValues[key] = jsonObject.getString(key) }
-        return keyValues
+    private fun serializeKeyValues(keyValues: Map<String, CharSequence>): String {
+        val stringsMap = keyValues.map { it.key to serializeCharSequence(it.value) }.toMap()
+        return JSONObject(stringsMap).toString()
     }
 
-    private fun serializeKeyValues(keyValues: Map<String, String>): String {
-        return JSONObject(keyValues).toString()
+    private fun serializeCharSequence(value: CharSequence): String {
+        if(value is Spanned){
+            return HtmlCompat.toHtml(value, HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
+        }
+        return value.toString()
     }
+
+    internal const val SHARED_PREF_NAME = "Restrings3"
 }

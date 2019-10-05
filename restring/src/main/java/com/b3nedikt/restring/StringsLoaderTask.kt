@@ -13,14 +13,14 @@ import java.util.*
  */
 internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoader,
                                  private val stringRepository: StringRepository)
-    : AsyncTask<Void, Void, Map<Locale, Map<String, String>>>() {
+    : AsyncTask<Void, Void, Map<Locale, Map<String, CharSequence>>>() {
 
     fun run() {
         executeOnExecutor(THREAD_POOL_EXECUTOR)
     }
 
-    override fun doInBackground(vararg voids: Void): Map<Locale, Map<String, String>> {
-        val localizedStrings = mutableMapOf<Locale, Map<String, String>>()
+    override fun doInBackground(vararg voids: Void): Map<Locale, Map<String, CharSequence>> {
+        val localizedStrings = mutableMapOf<Locale, Map<String, CharSequence>>()
 
         val languages = stringsLoader.locales
 
@@ -36,7 +36,7 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
         return localizedStrings
     }
 
-    override fun onPostExecute(langStrings: Map<Locale, Map<String, String>>) {
+    override fun onPostExecute(langStrings: Map<Locale, Map<String, CharSequence>>) {
         for ((key, value) in langStrings) {
             stringRepository.setStrings(key, value)
         }

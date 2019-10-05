@@ -2,7 +2,6 @@ package com.b3nedikt.restring
 
 import android.content.res.Resources
 import android.os.Build
-import androidx.core.text.HtmlCompat
 
 
 /**
@@ -20,7 +19,7 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getString(id)
+        return value?.toString() ?: super.getString(id)
     }
 
     @Throws(NotFoundException::class)
@@ -28,7 +27,7 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        if (value != null) return String.format(value, *formatArgs)
+        if (value != null) return String.format(value.toString(), *formatArgs)
         return super.getString(id, *formatArgs)
     }
 
@@ -37,17 +36,17 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id)
+        return value ?: super.getText(id)
     }
 
     override fun getText(id: Int, def: CharSequence): CharSequence {
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id, def)
+        return value ?: super.getText(id, def)
     }
 
-    private fun getStringFromRepository(id: Int): String? {
+    private fun getStringFromRepository(id: Int): CharSequence? {
         val currentLocale = RestringLocale.currentLocale
         val supportedLocales = stringRepository.supportedLocales
 
@@ -80,7 +79,4 @@ internal class RestringResources(val res: Resources,
 
         res.updateConfiguration(conf, res.displayMetrics)
     }
-
-    private fun fromHtml(source: String) =
-            HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_COMPACT)
 }

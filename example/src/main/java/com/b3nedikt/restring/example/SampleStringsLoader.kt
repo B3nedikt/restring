@@ -14,8 +14,8 @@ class SampleStringsLoader : Restring.StringsLoader {
 
     override val locales = listOf(Locale.ENGLISH, Locale.US, LOCALE_AUSTRIAN_GERMAN)
 
-    override fun getStrings(locale: Locale): Map<String, String> {
-        val map = mutableMapOf<String, String>()
+    override fun getStrings(locale: Locale): Map<String, CharSequence> {
+        val map = mutableMapOf<String, CharSequence>()
         when (locale) {
             Locale.ENGLISH -> {
                 map["title"] = "Title (from restring)."
@@ -26,8 +26,8 @@ class SampleStringsLoader : Restring.StringsLoader {
                 map["subtitle"] = "Subtitle US (from restring)."
             }
             LOCALE_AUSTRIAN_GERMAN -> {
-                map["title"] = "Titel (from restring)."
-                map["subtitle"] = "Untertitel (from restring)."
+                map["title"] = "Titel (aus restring)."
+                map["subtitle"] = "Untertitel (aus restring)."
             }
         }
         return map

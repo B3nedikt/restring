@@ -2,21 +2,14 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.res.Resources
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.atLeastOnce
-import org.mockito.Mockito.verify
 import org.robolectric.RobolectricTestRunner
 import java.util.*
 
@@ -47,8 +40,7 @@ class RestringContextWrapperTest {
         whenever(transformerManager.transform(any(), any())).thenAnswer { i -> i.getArgument(0) }
         restringContextWrapper = RestringContextWrapper.wrap(
                 context,
-                stringRepository,
-                transformerManager
+                stringRepository
         )
     }
 
@@ -59,21 +51,6 @@ class RestringContextWrapperTest {
         val real = restringContextWrapper.resources.getString(STR_RES_ID)
 
         assertEquals(STR_VALUE, real)
-    }
-
-    @Test
-    fun shouldProvideCustomLayoutInflaterToApplyViewTransformation() {
-        val layoutInflater = restringContextWrapper.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        assertTrue(layoutInflater is RestringLayoutInflater)
-
-        val viewGroup = layoutInflater.inflate(R.layout.test_layout, null, false) as ViewGroup
-
-        val captor = argumentCaptor<View>()
-        verify(transformerManager, atLeastOnce()).transform(captor.capture(), any())
-        for (i in 0 until viewGroup.childCount) {
-            val child = viewGroup.getChildAt(i)
-            captor.allValues.contains(child)
-        }
     }
 
     private companion object {

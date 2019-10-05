@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.b3nedikt.restring.activity.TestActivity
 import com.b3nedikt.restring.shadow.MyShadowAsyncTask
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.github.inflationx.viewpump.ViewPump
 import org.hamcrest.core.StringStartsWith.startsWith
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -31,6 +32,8 @@ class RestringTest {
                         .stringsLoader(MyStringLoader())
                         .build()
         )
+        ViewPump.init(ViewPump.builder().addInterceptor(RestringInterceptor).build())
+
         Robolectric.flushBackgroundThreadScheduler()
     }
 

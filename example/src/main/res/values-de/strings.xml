@@ -2,5 +2,5 @@
     <string name="app_name">Restring</string>
     <string name="title">Titel.</string>
     <string name="subtitle">Untertitel.</string>
-    <string name="untranslated">Nicht übersetzt</string>
+    <string name="untranslated"><b>Nicht übersetzt</b></string>
 </resources>

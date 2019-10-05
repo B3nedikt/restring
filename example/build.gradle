@@ -28,6 +28,7 @@ dependencies {
     implementation deps.appCompat
     implementation deps.constraintLayout
     implementation deps.kotlin
+    implementation deps.viewPump
 }
 repositories {
     mavenCentral()

@@ -10,15 +10,15 @@ import java.util.*
  */
 internal class MemoryStringRepository : StringRepository {
 
-    private val strings = mutableMapOf<Locale, MutableMap<String, String>>()
+    private val strings = mutableMapOf<Locale, MutableMap<String, CharSequence>>()
 
     override var supportedLocales: Set<Locale> = strings.keys
 
-    override fun setStrings(locale: Locale, strings: Map<String, String>) {
+    override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         this.strings[locale] = strings.toMutableMap()
     }
 
-    override fun setString(locale: Locale, key: String, value: String) {
+    override fun setString(locale: Locale, key: String, value: CharSequence) {
         if (!strings.containsKey(locale)) {
             strings[locale] = mutableMapOf()
         }

@@ -3,7 +3,6 @@ package com.b3nedikt.restring
 import android.content.Context
 import android.content.res.Resources
 import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
 
 /**
  * Main Restring context wrapper which wraps the context for providing another layout inflater
@@ -11,8 +10,7 @@ import android.view.LayoutInflater
  */
 internal class RestringContextWrapper private constructor(
         base: Context,
-        stringRepository: StringRepository,
-        private val viewTransformerManager: ViewTransformerManager
+        stringRepository: StringRepository
 ) : ContextThemeWrapper(base, base.applicationInfo.theme) {
 
     private val res: Resources by lazy {
@@ -20,31 +18,13 @@ internal class RestringContextWrapper private constructor(
         RestringResources(baseResources, stringRepository)
     }
 
-    private val layoutInflater: RestringLayoutInflater by lazy {
-        RestringLayoutInflater(
-                original = LayoutInflater.from(baseContext),
-                newContext = this,
-                viewTransformerManager = viewTransformerManager,
-                cloned = true
-        )
-    }
-
-    override fun getSystemService(name: String): Any? {
-        if (Context.LAYOUT_INFLATER_SERVICE == name) {
-            return layoutInflater
-        }
-
-        return super.getSystemService(name)
-    }
-
     override fun getResources() = res
 
     companion object {
 
         fun wrap(context: Context,
-                 stringRepository: StringRepository,
-                 viewTransformerManager: ViewTransformerManager): RestringContextWrapper {
-            return RestringContextWrapper(context, stringRepository, viewTransformerManager)
+                 stringRepository: StringRepository): RestringContextWrapper {
+            return RestringContextWrapper(context, stringRepository)
         }
     }
 }

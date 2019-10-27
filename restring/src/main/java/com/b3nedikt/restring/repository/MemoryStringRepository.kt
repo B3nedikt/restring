@@ -1,5 +1,6 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.repository
 
+import com.b3nedikt.restring.StringRepository
 import java.util.*
 
 /**
@@ -8,7 +9,7 @@ import java.util.*
  *
  * it's not ThreadSafe.
  */
-internal class MemoryStringRepository : StringRepository {
+class MemoryStringRepository : StringRepository {
 
     private val strings = mutableMapOf<Locale, MutableMap<String, CharSequence>>()
 

@@ -1,20 +1,27 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.repository
 
-import org.junit.Assert.assertEquals
+import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.StringRepository
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.robolectric.RobolectricTestRunner
 import java.util.*
 
-@RunWith(JUnit4::class)
-class MemoryStringRepositoryTest {
+@RunWith(RobolectricTestRunner::class)
+class CachedStringRepositoryTest {
 
     private lateinit var stringRepository: StringRepository
 
     @Before
     fun setUp() {
-        stringRepository = MemoryStringRepository()
+        val persistentRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+
+        stringRepository = CachedStringRepository(
+                cacheRepository = MemoryStringRepository(),
+                persistentRepository = persistentRepository
+        )
     }
 
     @Test
@@ -24,7 +31,7 @@ class MemoryStringRepositoryTest {
 
         stringRepository.setStrings(locale, strings)
 
-        assertEquals(strings, stringRepository.getStrings(locale))
+        Assert.assertEquals(strings, stringRepository.getStrings(locale))
     }
 
     @Test
@@ -35,7 +42,7 @@ class MemoryStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
+            Assert.assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
         }
     }
 
@@ -48,7 +55,7 @@ class MemoryStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
         stringRepository.setString(locale, "key5", "aNewValue")
 
-        assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
+        Assert.assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
     }
 
     private fun generateStrings(count: Int): Map<String, String> {

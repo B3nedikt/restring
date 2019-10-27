@@ -1,31 +1,81 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.repository
 
 import android.content.Context
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
+import com.b3nedikt.restring.LocaleUtil
+import com.b3nedikt.restring.StringRepository
 import org.json.JSONObject
 import java.util.*
 
 /**
  * A StringRepository which saves/loads the strings in Shared Preferences.
- * it also keeps the strings in memory by using MemoryStringRepository internally for faster access.
- *
  *
  * it's not ThreadSafe.
  */
-internal class SharedPrefStringRepository(context: Context) : StringRepository {
+class SharedPrefStringRepository(context: Context,
+                                 stringsSharedPrefName: String = STRINGS_SHARED_PREF_NAME,
+                                 textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME
+) : StringRepository {
 
     private val stringsSharedPreferences by lazy {
-        context.getSharedPreferences(STRINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(stringsSharedPrefName, Context.MODE_PRIVATE)
     }
 
     private val textsSharedPreferences by lazy {
-        context.getSharedPreferences(TEXTS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        context.getSharedPreferences(textsSharedPrefName, Context.MODE_PRIVATE)
     }
 
-    private val memoryStringRepository = MemoryStringRepository()
+    override var supportedLocales: Set<Locale> = setOf()
 
-    init {
+    override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
+        saveStringsAndTexts(locale, strings)
+    }
+
+    override fun setString(locale: Locale, key: String, value: CharSequence) {
+        val result = loadStringsAndTexts().toMutableMap()
+
+        val map = mutableMapOf<String, CharSequence>()
+        map[key] = value
+
+        val newStringMap = mutableMapOf<Locale, Map<String, CharSequence>>()
+        newStringMap[locale] = map
+
+        result.putAll(newStringMap)
+
+        saveStringsAndTexts(locale, result[locale] ?: emptyMap())
+    }
+
+    override fun getString(locale: Locale, key: String) = loadStringsAndTexts()[locale]?.get(key)
+
+    override fun getStrings(locale: Locale): Map<String, CharSequence> {
+        val stringsAndTexts = loadStringsAndTexts()
+        return stringsAndTexts[locale] ?: emptyMap()
+    }
+
+    private fun saveStringsAndTexts(locale: Locale, strings: Map<String, CharSequence>) {
+        strings.filterValues { it is String }
+                .run { saveStrings(locale, this) }
+
+        strings.filterValues { it !is String }
+                .run { saveTexts(locale, this) }
+    }
+
+    private fun saveStrings(locale: Locale, strings: Map<String, CharSequence>) {
+        val content = serializeKeyValues(strings)
+        stringsSharedPreferences.edit()
+                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
+                .apply()
+    }
+
+    private fun saveTexts(locale: Locale, texts: Map<String, CharSequence>) {
+        val content = serializeKeyValues(texts)
+        textsSharedPreferences.edit()
+                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
+                .apply()
+    }
+
+    private fun loadStringsAndTexts(): Map<Locale, Map<String, CharSequence>> {
         val result = mutableMapOf<Locale, Map<String, CharSequence>>()
 
         val strings = loadStrings()
@@ -42,39 +92,7 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
             }
             combined?.run { result[it] = combined }
         }
-
-        result.forEach { memoryStringRepository.setStrings(it.key, it.value) }
-    }
-
-    override var supportedLocales: Set<Locale> = setOf()
-
-    override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
-        memoryStringRepository.setStrings(locale, strings)
-        saveStringsAndTexts(locale, strings)
-    }
-
-    override fun setString(locale: Locale, key: String, value: CharSequence) {
-        memoryStringRepository.setString(locale, key, value)
-
-        val keyValues = memoryStringRepository.getStrings(locale).toMutableMap()
-        keyValues[key] = value
-        saveStringsAndTexts(locale, keyValues)
-    }
-
-    private fun saveStringsAndTexts(locale: Locale, strings: Map<String, CharSequence>) {
-        strings.filterValues { it is String }
-                .run { saveStrings(locale, this) }
-
-        strings.filterValues { it !is String }
-                .run { saveTexts(locale, this) }
-    }
-
-    override fun getString(locale: Locale, key: String): CharSequence? {
-        return memoryStringRepository.getString(locale, key)
-    }
-
-    override fun getStrings(locale: Locale): Map<String, CharSequence> {
-        return memoryStringRepository.getStrings(locale)
+        return result
     }
 
     private fun loadStrings(): MutableMap<Locale, Map<String, String>> {
@@ -107,20 +125,6 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         return result
     }
 
-    private fun saveStrings(locale: Locale, strings: Map<String, CharSequence>) {
-        val content = serializeKeyValues(strings)
-        stringsSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
-                .apply()
-    }
-
-    private fun saveTexts(locale: Locale, strings: Map<String, CharSequence>) {
-        val content = serializeKeyValues(strings)
-        textsSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
-                .apply()
-    }
-
     private fun deserializeStringsKeyValues(content: String) =
             JSONObject(content).run {
                 keys().asSequence()
@@ -151,5 +155,4 @@ internal class SharedPrefStringRepository(context: Context) : StringRepository {
         private const val STRINGS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Strings"
         private const val TEXTS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Texts"
     }
-
 }

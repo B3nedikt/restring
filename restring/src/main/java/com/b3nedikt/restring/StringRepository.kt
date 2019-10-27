@@ -5,7 +5,7 @@ import java.util.*
 /**
  * Repository of strings.
  */
-internal interface StringRepository {
+interface StringRepository {
 
     /**
      * The [Locale]s supported by the repository

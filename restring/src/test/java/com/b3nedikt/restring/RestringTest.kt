@@ -28,7 +28,6 @@ class RestringTest {
         Restring.init(
                 ApplicationProvider.getApplicationContext(),
                 RestringConfig.Builder()
-                        .persist(false)
                         .stringsLoader(MyStringLoader())
                         .build()
         )

@@ -2,6 +2,9 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import com.b3nedikt.restring.repository.CachedStringRepository
+import com.b3nedikt.restring.repository.MemoryStringRepository
+import com.b3nedikt.restring.repository.SharedPrefStringRepository
 import com.b3nedikt.restring.transformer.BottomNavigationViewTransformer
 import com.b3nedikt.restring.transformer.SupportToolbarTransformer
 import com.b3nedikt.restring.transformer.TextViewTransformer
@@ -74,16 +77,17 @@ object Restring {
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
-        stringRepository = if (config.isPersist) {
-            SharedPrefStringRepository(context)
-        } else {
-            MemoryStringRepository()
-        }
+        stringRepository = config.stringRepository ?: defaultRepository(context)
 
         if (config.stringsLoader != null) {
             StringsLoaderTask(config.stringsLoader, stringRepository).run()
         }
     }
+
+    private fun defaultRepository(context: Context) = CachedStringRepository(
+            cacheRepository = MemoryStringRepository(),
+            persistentRepository = SharedPrefStringRepository(context)
+    )
 
     /**
      * Loader of strings skeleton. Clients can implement this interface if they want to load strings on initialization.

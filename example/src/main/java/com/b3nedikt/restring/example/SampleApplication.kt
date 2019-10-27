@@ -13,7 +13,6 @@ class SampleApplication : Application() {
 
         Restring.init(this,
                 RestringConfig.Builder()
-                        .persist(true)
                         .stringsLoader(SampleStringsLoader())
                         .build()
         )

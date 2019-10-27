@@ -1,4 +1,4 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.repository
 
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
@@ -30,14 +30,14 @@ class SharedPrefStringRepositoryTest {
     @Test
     fun shouldGetSingleString() {
         val locale = Locale.ENGLISH
-        val STR_COUNT = 10
-        val strings = generateStrings(STR_COUNT)
+        val stringCount = 10
+        val strings = generateStrings(stringCount)
 
         val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStrings(locale, strings)
 
         val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        for (i in 0 until STR_COUNT) {
+        for (i in 0 until stringCount) {
             assertEquals(newRepository.getString(locale, "key$i"), "value$i")
         }
     }
@@ -45,8 +45,8 @@ class SharedPrefStringRepositoryTest {
     @Test
     fun shouldSetSingleString() {
         val locale = Locale.ENGLISH
-        val STR_COUNT = 10
-        val strings = generateStrings(STR_COUNT)
+        val stringCount = 10
+        val strings = generateStrings(stringCount)
 
         val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStrings(locale, strings)

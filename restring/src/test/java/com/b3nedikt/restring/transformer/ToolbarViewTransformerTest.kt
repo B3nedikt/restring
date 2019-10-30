@@ -1,27 +1,24 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
 import android.util.AttributeSet
 import android.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
-import com.b3nedikt.restring.transformer.ToolbarViewTransformer
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertSame
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class ToolbarViewTransformerTest {
 
-    private var transformer: ToolbarViewTransformer? = null
+    private var transformer = ToolbarViewTransformer
 
     private val context: Context
         get() {
@@ -34,21 +31,16 @@ class ToolbarViewTransformerTest {
             return context
         }
 
-    @Before
-    fun setUp() {
-        transformer = ToolbarViewTransformer()
-    }
-
     @Test
     fun shouldTransformToolbar() {
         val context = context
 
-        var view = transformer!!.transform(Toolbar(context), getAttributeSet(false))
+        var view = transformer.transform(Toolbar(context), getAttributeSet(false))
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
 
-        view = transformer!!.transform(Toolbar(context), getAttributeSet(true))
+        view = transformer.transform(Toolbar(context), getAttributeSet(true))
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
@@ -60,14 +52,14 @@ class ToolbarViewTransformerTest {
         val attributeSet = getAttributeSet(false)
         val recyclerView = androidx.recyclerview.widget.RecyclerView(context)
 
-        val view = transformer!!.transform(recyclerView, attributeSet)
+        val view = transformer.transform(recyclerView, attributeSet)
 
         assertSame(view, recyclerView)
         verifyZeroInteractions(attributeSet)
     }
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {
-        val attributeSet = Mockito.mock(AttributeSet::class.java)
+        val attributeSet = mock(AttributeSet::class.java)
         `when`(attributeSet.attributeCount).thenReturn(TITLE_ATTR_INDEX + 2)
 
         `when`(attributeSet.getAttributeName(anyInt())).thenReturn("other_attribute")

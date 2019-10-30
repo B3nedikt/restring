@@ -14,7 +14,7 @@ import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class ViewViewTransformerManagerTest {
+class ViewTransformerManagerTest {
 
     private lateinit var transformerManager: ViewTransformerManager
 

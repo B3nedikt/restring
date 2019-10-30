@@ -1,4 +1,4 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
-import com.b3nedikt.restring.transformer.TextViewViewTransformer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.*
@@ -37,7 +36,7 @@ class TextViewViewTransformerTest {
 
     @Before
     fun setUp() {
-        transformer = TextViewViewTransformer()
+        transformer = TextViewViewTransformer
     }
 
     @Test

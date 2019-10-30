@@ -1,11 +1,10 @@
-package com.b3nedikt.restring
+package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
-import com.b3nedikt.restring.transformer.SupportToolbarViewTransformer
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertSame
@@ -36,7 +35,7 @@ class SupportToolbarViewTransformerTest {
 
     @Before
     fun setUp() {
-        transformer = SupportToolbarViewTransformer()
+        transformer = SupportToolbarViewTransformer
     }
 
     @Test

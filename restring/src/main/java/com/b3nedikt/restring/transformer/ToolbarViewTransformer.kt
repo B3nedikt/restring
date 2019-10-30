@@ -24,14 +24,14 @@ internal object ToolbarViewTransformer : ViewTransformer {
     private fun Toolbar.transform(attributeSet: AttributeSet) {
         attributeSet.forEach {
             when (attributeSet.getAttributeName(it)) {
-                ATTRIBUTE_TITLE, ATTRIBUTE_APP_TITLE -> reword(attributeSet, it, this::setTitle)
-                ATTRIBUTE_SUBTITLE, ATTRIBUTE_APP_SUBTITLE -> reword(attributeSet, it, this::setSubtitle)
+                ATTRIBUTE_TITLE, ATTRIBUTE_ANDROID_TITLE -> reword(attributeSet, it, this::setTitle)
+                ATTRIBUTE_SUBTITLE, ATTRIBUTE_ANDROID_SUBTITLE -> reword(attributeSet, it, this::setSubtitle)
             }
         }
     }
 
     private const val ATTRIBUTE_TITLE = "title"
     private const val ATTRIBUTE_SUBTITLE = "subtitle"
-    private const val ATTRIBUTE_APP_TITLE = "app:title"
-    private const val ATTRIBUTE_APP_SUBTITLE = "app:subtitle"
+    private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
+    private const val ATTRIBUTE_ANDROID_SUBTITLE = "android:subtitle"
 }

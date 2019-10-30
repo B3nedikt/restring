@@ -5,7 +5,7 @@ import android.content.res.Resources
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
-import com.b3nedikt.restring.transformer.SupportToolbarTransformer
+import com.b3nedikt.restring.transformer.SupportToolbarViewTransformer
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertSame
@@ -19,9 +19,9 @@ import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class SupportToolbarTransformerTest {
+class SupportToolbarViewTransformerTest {
 
-    private var transformer: SupportToolbarTransformer? = null
+    private var transformer: SupportToolbarViewTransformer? = null
 
     private val context: Context
         get() {
@@ -36,7 +36,7 @@ class SupportToolbarTransformerTest {
 
     @Before
     fun setUp() {
-        transformer = SupportToolbarTransformer()
+        transformer = SupportToolbarViewTransformer()
     }
 
     @Test

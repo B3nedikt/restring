@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml
 import android.view.View
-import com.b3nedikt.restring.ViewTransformerManager
+import com.b3nedikt.restring.ViewTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -15,7 +15,7 @@ import java.util.*
 /**
  * A transformer which transforms BottomNavigationView: it transforms the texts coming from the menu.
  */
-internal class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
+internal object BottomNavigationViewViewTransformer : ViewTransformer {
 
     override val viewType = BottomNavigationView::class.java
 
@@ -128,8 +128,7 @@ internal class BottomNavigationViewTransformer : ViewTransformerManager.Transfor
             if (attrs.getAttributeName(index) == ATTRIBUTE_ANDROID_ID
                     || attrs.getAttributeName(index) == ATTRIBUTE_ID) {
                 menuId = attrs.getAttributeResourceValue(index, 0)
-            }
-            else if (attrs.getAttributeName(index) == ATTRIBUTE_ANDROID_TITLE
+            } else if (attrs.getAttributeName(index) == ATTRIBUTE_ANDROID_TITLE
                     || attrs.getAttributeName(index) == ATTRIBUTE_TITLE) {
                 val value = attrs.getAttributeValue(index)
                 if (value == null || !value.startsWith("@")) break
@@ -137,8 +136,7 @@ internal class BottomNavigationViewTransformer : ViewTransformerManager.Transfor
                     menuItemStrings = MenuItemStrings()
                 }
                 menuItemStrings.title = attrs.getAttributeResourceValue(index, 0)
-            }
-            else if (attrs.getAttributeName(index) == ATTRIBUTE_ANDROID_TITLE_CONDENSED
+            } else if (attrs.getAttributeName(index) == ATTRIBUTE_ANDROID_TITLE_CONDENSED
                     || attrs.getAttributeName(index) == ATTRIBUTE_TITLE_CONDENSED) {
                 val value = attrs.getAttributeValue(index)
                 if (value == null || !value.startsWith("@")) break
@@ -159,16 +157,14 @@ internal class BottomNavigationViewTransformer : ViewTransformerManager.Transfor
         var titleCondensed: Int = 0
     }
 
-    private companion object {
-        private const val ATTRIBUTE_MENU = "menu"
-        private const val ATTRIBUTE_APP_MENU = "app:menu"
-        private const val ATTRIBUTE_ID = "id"
-        private const val ATTRIBUTE_ANDROID_ID = "android:id"
-        private const val ATTRIBUTE_TITLE = "title"
-        private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
-        private const val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
-        private const val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
-        private const val XML_MENU = "menu"
-        private const val XML_ITEM = "item"
-    }
+    private const val ATTRIBUTE_MENU = "menu"
+    private const val ATTRIBUTE_APP_MENU = "app:menu"
+    private const val ATTRIBUTE_ID = "id"
+    private const val ATTRIBUTE_ANDROID_ID = "android:id"
+    private const val ATTRIBUTE_TITLE = "title"
+    private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
+    private const val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
+    private const val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
+    private const val XML_MENU = "menu"
+    private const val XML_ITEM = "item"
 }

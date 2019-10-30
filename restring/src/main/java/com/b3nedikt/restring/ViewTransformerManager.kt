@@ -9,15 +9,15 @@ import android.view.View
  */
 internal class ViewTransformerManager {
 
-    private val transformers = mutableListOf<Transformer>()
+    private val transformers = mutableListOf<ViewTransformer>()
 
     /**
-     * Register a new view transformer to be applied on newly inflating views.
+     * Register a new view viewTransformer to be applied on newly inflating views.
      *
-     * @param transformer to be added to transformers list.
+     * @param viewTransformer to be added to transformers list.
      */
-    fun registerTransformer(transformer: Transformer) {
-        transformers.add(transformer)
+    fun registerTransformer(viewTransformer: ViewTransformer) {
+        transformers.add(viewTransformer)
     }
 
     /**
@@ -34,24 +34,4 @@ internal class ViewTransformerManager {
                     ?.run { transform(view, attrs) }
                     ?: view
 
-    /**
-     * A view transformer skeleton.
-     */
-    internal interface Transformer {
-        /**
-         * The type of view this transformer is for.
-         *
-         * @return the type of view.
-         */
-        val viewType: Class<out View>
-
-        /**
-         * Apply transformation to a view.
-         *
-         * @param view  to be transformed.
-         * @param attrs attributes of the view.
-         * @return the transformed view.
-         */
-        fun transform(view: View, attrs: AttributeSet): View
-    }
 }

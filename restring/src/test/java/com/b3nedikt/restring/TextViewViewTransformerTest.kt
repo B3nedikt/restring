@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
-import com.b3nedikt.restring.transformer.TextViewTransformer
+import com.b3nedikt.restring.transformer.TextViewViewTransformer
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.*
@@ -19,9 +19,9 @@ import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class TextViewTransformerTest {
+class TextViewViewTransformerTest {
 
-    private lateinit var transformer: TextViewTransformer
+    private lateinit var transformer: TextViewViewTransformer
 
     private val context: Context
         get() {
@@ -37,7 +37,7 @@ class TextViewTransformerTest {
 
     @Before
     fun setUp() {
-        transformer = TextViewTransformer()
+        transformer = TextViewViewTransformer()
     }
 
     @Test

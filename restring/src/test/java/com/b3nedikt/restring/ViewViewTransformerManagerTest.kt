@@ -14,7 +14,7 @@ import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class ViewTransformerManagerTest {
+class ViewViewTransformerManagerTest {
 
     private lateinit var transformerManager: ViewTransformerManager
 
@@ -27,7 +27,7 @@ class ViewTransformerManagerTest {
     fun shouldTransformView() {
         val textView = TextView(ApplicationProvider.getApplicationContext())
 
-        val transformer = mock<ViewTransformerManager.Transformer>()
+        val transformer = mock<ViewTransformer>()
 
         whenever(transformer.viewType).thenReturn(TextView::class.java)
         whenever(transformer.transform(any(), any())).thenReturn(textView)

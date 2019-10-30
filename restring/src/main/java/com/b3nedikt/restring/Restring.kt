@@ -5,10 +5,10 @@ import android.content.ContextWrapper
 import com.b3nedikt.restring.repository.CachedStringRepository
 import com.b3nedikt.restring.repository.MemoryStringRepository
 import com.b3nedikt.restring.repository.SharedPrefStringRepository
-import com.b3nedikt.restring.transformer.BottomNavigationViewTransformer
-import com.b3nedikt.restring.transformer.SupportToolbarTransformer
-import com.b3nedikt.restring.transformer.TextViewTransformer
-import com.b3nedikt.restring.transformer.ToolbarTransformer
+import com.b3nedikt.restring.transformer.BottomNavigationViewViewTransformer
+import com.b3nedikt.restring.transformer.SupportToolbarViewTransformer
+import com.b3nedikt.restring.transformer.TextViewViewTransformer
+import com.b3nedikt.restring.transformer.ToolbarViewTransformer
 import java.util.*
 
 /**
@@ -22,10 +22,10 @@ object Restring {
 
     internal val viewTransformerManager: ViewTransformerManager by lazy {
         ViewTransformerManager().apply {
-            registerTransformer(TextViewTransformer())
-            registerTransformer(ToolbarTransformer())
-            registerTransformer(SupportToolbarTransformer())
-            registerTransformer(BottomNavigationViewTransformer())
+            registerTransformer(TextViewViewTransformer)
+            registerTransformer(ToolbarViewTransformer)
+            registerTransformer(SupportToolbarViewTransformer)
+            registerTransformer(BottomNavigationViewViewTransformer)
         }
     }
 
@@ -43,6 +43,8 @@ object Restring {
 
         isInitialized = true
         initStringRepository(context, config)
+
+        config.viewTransformers.forEach { viewTransformerManager.registerTransformer(it) }
     }
 
     /**

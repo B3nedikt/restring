@@ -13,6 +13,12 @@ internal object TextViewViewTransformer : ViewTransformer {
 
     override val viewType = TextView::class.java
 
+    override fun reword(view: View, attrs: AttributeSet) {
+        when (view) {
+            is TextView -> view.transform(attrs)
+        }
+    }
+
     override fun transform(view: View, attrs: AttributeSet): View = view.apply {
         when (this) {
             is TextView -> transform(attrs)

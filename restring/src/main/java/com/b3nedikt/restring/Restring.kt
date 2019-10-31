@@ -2,6 +2,7 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.view.View
 import com.b3nedikt.restring.repository.CachedStringRepository
 import com.b3nedikt.restring.repository.MemoryStringRepository
 import com.b3nedikt.restring.repository.SharedPrefStringRepository
@@ -10,6 +11,7 @@ import com.b3nedikt.restring.transformer.SupportToolbarViewTransformer
 import com.b3nedikt.restring.transformer.TextViewViewTransformer
 import com.b3nedikt.restring.transformer.ToolbarViewTransformer
 import java.util.*
+
 
 /**
  * Entry point for Restring. it will be used for initializing Restring components, setting new strings,
@@ -90,6 +92,10 @@ object Restring {
             cacheRepository = MemoryStringRepository(),
             persistentRepository = SharedPrefStringRepository(context)
     )
+
+    fun reword(topView: View) {
+        viewTransformerManager.transformChildren(topView)
+    }
 
     /**
      * Loader of strings skeleton. Clients can implement this interface if they want to load

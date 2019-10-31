@@ -23,11 +23,21 @@ interface ViewTransformer {
      */
     fun transform(view: View, attrs: AttributeSet): View
 
-    fun View.reword(attrs: AttributeSet, index: Int, setTextResAction: (CharSequence) -> Unit) {
+    /**
+     * Apply transformation to a view.
+     *
+     * @param view  to be transformed.
+     * @param attrs attributes of the view.
+     * @return the transformed view.
+     */
+    fun reword(view: View, attrs: AttributeSet)
+
+    fun View.reword(attrs: AttributeSet, index: Int, setTextFunction: (CharSequence) -> Unit) {
         val value: String? = attrs.getAttributeValue(index)
         if (isValidResourceId(value)) {
-            val resourceString = resources.getString(attrs.getAttributeResourceValue(index, 0))
-            setTextResAction(resourceString)
+            attrs.getAttributeResourceValue(index, -1)
+                    .takeIf { it != -1 }
+                    ?.let { setTextFunction(resources.getString(it)) }
         }
     }
 

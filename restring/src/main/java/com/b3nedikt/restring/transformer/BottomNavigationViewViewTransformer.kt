@@ -19,12 +19,20 @@ internal object BottomNavigationViewViewTransformer : ViewTransformer {
 
     override val viewType = BottomNavigationView::class.java
 
-    override fun transform(view: View, attrs: AttributeSet): View {
-        if (!viewType.isInstance(view)) {
-            return view
+    override fun reword(view: View, attrs: AttributeSet) {
+        when (view) {
+            is BottomNavigationView -> view.transform(attrs)
         }
-        val resources = view.context.resources
-        val bottomNavigationView = view as BottomNavigationView
+    }
+
+    override fun transform(view: View, attrs: AttributeSet) = view.apply {
+        when (this) {
+            is BottomNavigationView -> transform(attrs)
+        }
+    }
+
+    private fun BottomNavigationView.transform(attrs: AttributeSet) {
+        val resources = this.context.resources
 
         for (index in 0 until attrs.attributeCount) {
             val attributeName = attrs.getAttributeName(index)
@@ -38,16 +46,14 @@ internal object BottomNavigationViewViewTransformer : ViewTransformer {
                 for ((key, value1) in itemStrings) {
 
                     if (value1.title != 0) {
-                        bottomNavigationView.menu.findItem(key).title = resources.getString(value1.title)
+                        menu.findItem(key).title = resources.getString(value1.title)
                     }
                     if (value1.titleCondensed != 0) {
-                        bottomNavigationView.menu.findItem(key).titleCondensed = resources.getString(value1.titleCondensed)
+                        menu.findItem(key).titleCondensed = resources.getString(value1.titleCondensed)
                     }
                 }
             }
         }
-
-        return view
     }
 
     private fun getMenuItemsStrings(resources: Resources, resId: Int): Map<Int, MenuItemStrings> {

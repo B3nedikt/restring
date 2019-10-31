@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.b3nedikt.restring.Restring
 import com.b3nedikt.restring.RestringLocale
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,8 +29,9 @@ class MainActivity : BaseActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 RestringLocale.currentLocale = APP_LOCALES[position]
-
-                textView.text = getString(R.string.text_view_text)
+                
+                Restring.reword(topLayout)
+                topLayout.invalidate()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit

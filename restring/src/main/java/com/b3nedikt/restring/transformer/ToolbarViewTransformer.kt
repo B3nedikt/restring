@@ -15,6 +15,12 @@ internal object ToolbarViewTransformer : ViewTransformer {
 
     override val viewType = Toolbar::class.java
 
+    override fun reword(view: View, attrs: AttributeSet) {
+        when (view) {
+            is Toolbar -> view.transform(attrs)
+        }
+    }
+
     override fun transform(view: View, attrs: AttributeSet): View = view.apply {
         when (this) {
             is Toolbar -> transform(attrs)

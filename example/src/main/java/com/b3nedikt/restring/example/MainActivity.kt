@@ -31,7 +31,6 @@ class MainActivity : BaseActivity() {
                 RestringLocale.currentLocale = APP_LOCALES[position]
                 
                 Restring.reword(topLayout)
-                topLayout.invalidate()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit

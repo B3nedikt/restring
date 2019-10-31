@@ -17,30 +17,42 @@ import java.util.*
  */
 internal object BottomNavigationViewViewTransformer : ViewTransformer {
 
+    private const val ATTRIBUTE_MENU = "menu"
+    private const val ATTRIBUTE_APP_MENU = "app:menu"
+    private const val ATTRIBUTE_ID = "id"
+    private const val ATTRIBUTE_ANDROID_ID = "android:id"
+    private const val ATTRIBUTE_TITLE = "title"
+    private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
+    private const val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
+    private const val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
+    private const val XML_MENU = "menu"
+    private const val XML_ITEM = "item"
+
+    override val supportedAttributes = setOf(ATTRIBUTE_MENU, ATTRIBUTE_APP_MENU, ATTRIBUTE_ID,
+            ATTRIBUTE_ANDROID_ID, ATTRIBUTE_TITLE, ATTRIBUTE_ANDROID_TITLE, ATTRIBUTE_TITLE_CONDENSED,
+            ATTRIBUTE_ANDROID_TITLE_CONDENSED, XML_MENU, XML_ITEM)
+
     override val viewType = BottomNavigationView::class.java
 
-    override fun reword(view: View, attrs: AttributeSet) {
+    override fun reword(view: View, attributes: Map<String, Int>) {
         when (view) {
-            is BottomNavigationView -> view.transform(attrs)
+            is BottomNavigationView -> view.transform(attributes)
         }
     }
 
-    override fun transform(view: View, attrs: AttributeSet) = view.apply {
+    override fun transform(view: View, attributes: Map<String, Int>): View = view.apply {
         when (this) {
-            is BottomNavigationView -> transform(attrs)
+            is BottomNavigationView -> transform(attributes)
         }
     }
 
-    private fun BottomNavigationView.transform(attrs: AttributeSet) {
+    private fun BottomNavigationView.transform(attrs: Map<String, Int>) {
         val resources = this.context.resources
 
-        for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
+        for (attributeName in attrs.keys) {
             if (attributeName == ATTRIBUTE_APP_MENU || attributeName == ATTRIBUTE_MENU) {
-                val value = attrs.getAttributeValue(index)
-                if (value == null || !value.startsWith("@")) break
 
-                val resId = attrs.getAttributeResourceValue(index, 0)
+                val resId = attrs[attributeName] ?: continue
                 val itemStrings = getMenuItemsStrings(resources, resId)
 
                 for ((key, value1) in itemStrings) {
@@ -162,15 +174,4 @@ internal object BottomNavigationViewViewTransformer : ViewTransformer {
         var title: Int = 0
         var titleCondensed: Int = 0
     }
-
-    private const val ATTRIBUTE_MENU = "menu"
-    private const val ATTRIBUTE_APP_MENU = "app:menu"
-    private const val ATTRIBUTE_ID = "id"
-    private const val ATTRIBUTE_ANDROID_ID = "android:id"
-    private const val ATTRIBUTE_TITLE = "title"
-    private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
-    private const val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
-    private const val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
-    private const val XML_MENU = "menu"
-    private const val XML_ITEM = "item"
 }

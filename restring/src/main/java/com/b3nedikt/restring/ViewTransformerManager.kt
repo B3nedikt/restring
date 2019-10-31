@@ -3,7 +3,6 @@ package com.b3nedikt.restring
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 
 /**
  * Manages all view transformers as a central point for layout inflater.
@@ -12,7 +11,7 @@ import android.widget.TextView
 internal class ViewTransformerManager {
 
     private val transformers = mutableListOf<ViewTransformer>()
-    private val attributes = mutableMapOf<Int, AttributeSet>()
+    private val attributes = mutableMapOf<Int, Map<String, Int>>()
 
     /**
      * Register a new view viewTransformer to be applied on newly inflating views.
@@ -34,8 +33,11 @@ internal class ViewTransformerManager {
      */
     fun transform(view: View, attrs: AttributeSet) =
             transformers.find { it.viewType.isInstance(view) }
-                    ?.run { transform(view, attrs) }
-                    ?.also { attributes[view.id] = attrs }
+                    ?.run {
+                        val extractedAttributes = extractAttributes(view, attrs)
+                        attributes[view.id] = extractedAttributes
+                        transform(view, extractedAttributes)
+                    }
                     ?: view
 
     fun transformChildren(parentView: View) {
@@ -49,10 +51,6 @@ internal class ViewTransformerManager {
             attributes[child.id]?.let { attrs ->
                 transformers.find { it.viewType.isInstance(child) }
                         ?.reword(child, attrs)
-
-                if(child is TextView){
-                    child.text = child.id.toString()
-                }
             }
 
             visited.add(child)
@@ -61,6 +59,4 @@ internal class ViewTransformerManager {
             for (i in 0 until childCount) unvisited.add(child.getChildAt(i))
         }
     }
-
-
 }

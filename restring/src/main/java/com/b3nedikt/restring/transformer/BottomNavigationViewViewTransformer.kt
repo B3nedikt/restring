@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml
-import android.view.View
 import com.b3nedikt.restring.ViewTransformer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.xmlpull.v1.XmlPullParser
@@ -15,7 +14,7 @@ import java.util.*
 /**
  * A transformer which transforms BottomNavigationView: it transforms the texts coming from the menu.
  */
-internal object BottomNavigationViewViewTransformer : ViewTransformer {
+internal object BottomNavigationViewViewTransformer : ViewTransformer<BottomNavigationView> {
 
     private const val ATTRIBUTE_MENU = "menu"
     private const val ATTRIBUTE_APP_MENU = "app:menu"
@@ -28,25 +27,14 @@ internal object BottomNavigationViewViewTransformer : ViewTransformer {
     private const val XML_MENU = "menu"
     private const val XML_ITEM = "item"
 
+    override val viewType = BottomNavigationView::class.java
+
     override val supportedAttributes = setOf(ATTRIBUTE_MENU, ATTRIBUTE_APP_MENU, ATTRIBUTE_ID,
             ATTRIBUTE_ANDROID_ID, ATTRIBUTE_TITLE, ATTRIBUTE_ANDROID_TITLE, ATTRIBUTE_TITLE_CONDENSED,
             ATTRIBUTE_ANDROID_TITLE_CONDENSED, XML_MENU, XML_ITEM)
 
-    override val viewType = BottomNavigationView::class.java
 
-    override fun reword(view: View, attributes: Map<String, Int>) {
-        when (view) {
-            is BottomNavigationView -> view.transform(attributes)
-        }
-    }
-
-    override fun transform(view: View, attributes: Map<String, Int>): View = view.apply {
-        when (this) {
-            is BottomNavigationView -> transform(attributes)
-        }
-    }
-
-    private fun BottomNavigationView.transform(attrs: Map<String, Int>) {
+    override fun BottomNavigationView.transform(attrs: Map<String, Int>) {
         val resources = this.context.resources
 
         for (attributeName in attrs.keys) {

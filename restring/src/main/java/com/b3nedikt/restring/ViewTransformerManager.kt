@@ -10,7 +10,7 @@ import android.view.ViewGroup
  */
 internal class ViewTransformerManager {
 
-    private val transformers = mutableListOf<ViewTransformer>()
+    private val transformers = mutableListOf<ViewTransformer<View>>()
     private val attributes = mutableMapOf<Int, Map<String, Int>>()
 
     /**
@@ -18,8 +18,9 @@ internal class ViewTransformerManager {
      *
      * @param viewTransformer to be added to transformers list.
      */
-    fun registerTransformer(viewTransformer: ViewTransformer) {
-        transformers.add(viewTransformer)
+    @Suppress("UNCHECKED_CAST")
+    fun registerTransformer(viewTransformer: ViewTransformer<*>) {
+        transformers.add(viewTransformer as ViewTransformer<View>)
     }
 
     /**
@@ -31,26 +32,26 @@ internal class ViewTransformerManager {
      * @param attrs attributes of the view.
      * @return the transformed view.
      */
-    fun transform(view: View, attrs: AttributeSet) =
+    fun transform(view: View, attrs: AttributeSet): View =
             transformers.find { it.viewType.isInstance(view) }
                     ?.run {
                         val extractedAttributes = extractAttributes(view, attrs)
                         attributes[view.id] = extractedAttributes
-                        transform(view, extractedAttributes)
+                        view.transform(extractedAttributes)
+                        view
                     }
                     ?: view
 
     fun transformChildren(parentView: View) {
         val visited = mutableListOf<View>()
-        val unvisited = mutableListOf<View>()
-        unvisited.add(parentView)
+        val unvisited = mutableListOf(parentView)
 
         while (unvisited.isNotEmpty()) {
             val child = unvisited.removeAt(0)
 
             attributes[child.id]?.let { attrs ->
                 transformers.find { it.viewType.isInstance(child) }
-                        ?.reword(child, attrs)
+                        ?.run { child.transform(attrs) }
             }
 
             visited.add(child)

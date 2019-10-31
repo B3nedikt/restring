@@ -7,33 +7,13 @@ import com.b3nedikt.restring.transformer.associate
 /**
  * A view transformer skeleton.
  */
-interface ViewTransformer {
-    /**
-     * The type of view this transformer is for.
-     *
-     * @return the type of view.
-     */
-    val viewType: Class<out View>
+interface ViewTransformer<in T : View> {
 
     val supportedAttributes: Set<String>
 
-    /**
-     * Apply transformation to a view.
-     *
-     * @param view  to be transformed.
-     * @param attrs attributes of the view.
-     * @return the transformed view.
-     */
-    fun transform(view: View, attributes: Map<String, Int>): View
+    val viewType: Class<out View>
 
-    /**
-     * Apply transformation to a view.
-     *
-     * @param view  to be transformed.
-     * @param attrs attributes of the view.
-     * @return the transformed view.
-     */
-    fun reword(view: View, attributes: Map<String, Int>)
+    fun T.transform(attrs: Map<String, Int>)
 
     /**
      * Apply transformation to a view.
@@ -50,7 +30,7 @@ interface ViewTransformer {
         }.filterValues { it != -1 }
     }
 
-    fun View.reword(resId: Int, setTextFunction: (CharSequence) -> Unit) {
+    fun T.reword(resId: Int, setTextFunction: (CharSequence) -> Unit) {
         setTextFunction(resources.getString(resId))
     }
 

@@ -4,9 +4,9 @@ package com.b3nedikt.restring
  * Contains configuration properties for initializing Restring.
  */
 class RestringConfig private constructor(
-        val stringRepository: StringRepository? = null,
-        val viewTransformers: Set<ViewTransformer> = emptySet(),
-        val stringsLoader: Restring.StringsLoader? = null) {
+        internal val stringRepository: StringRepository? = null,
+        internal val viewTransformers: Set<ViewTransformer> = emptySet(),
+        internal val stringsLoader: Restring.StringsLoader? = null) {
 
     data class Builder(
             private var stringRepository: StringRepository? = null,

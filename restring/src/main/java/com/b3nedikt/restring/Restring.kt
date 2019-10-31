@@ -92,8 +92,9 @@ object Restring {
     )
 
     /**
-     * Loader of strings skeleton. Clients can implement this interface if they want to load strings on initialization.
-     * First the list of languages will be asked, then strings of each language.
+     * Loader of strings skeleton. Clients can implement this interface if they want to load
+     * strings on initialization. First the list of languages will be asked, then strings of each
+     * language.
      */
     interface StringsLoader {
 

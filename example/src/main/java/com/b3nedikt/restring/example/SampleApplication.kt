@@ -6,6 +6,7 @@ import com.b3nedikt.restring.RestringConfig
 import com.b3nedikt.restring.RestringInterceptor
 import io.github.inflationx.viewpump.ViewPump
 
+
 class SampleApplication : Application() {
 
     override fun onCreate() {
@@ -16,6 +17,10 @@ class SampleApplication : Application() {
                         .stringsLoader(SampleStringsLoader())
                         .build()
         )
-        ViewPump.init(ViewPump.builder().addInterceptor(RestringInterceptor).build())
+
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(RestringInterceptor)
+                .build()
+        )
     }
 }

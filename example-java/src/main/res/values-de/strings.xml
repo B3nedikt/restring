@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Restring</string>
+    <string name="title">Titel.</string>
+    <string name="text_view_text">TextView Text Deutsch</string>
+    <string name="subtitle">Untertitel.</string>
+    <string name="untranslated"><b>Nicht übersetzt</b></string>
+</resources>

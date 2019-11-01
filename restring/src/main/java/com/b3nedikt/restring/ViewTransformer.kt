@@ -7,11 +7,11 @@ import com.b3nedikt.restring.transformer.associate
 /**
  * A view transformer skeleton.
  */
-interface ViewTransformer<in T : View> {
+interface ViewTransformer<T : View> {
+
+    val viewType: Class<T>
 
     val supportedAttributes: Set<String>
-
-    val viewType: Class<out View>
 
     fun T.transform(attrs: Map<String, Int>)
 

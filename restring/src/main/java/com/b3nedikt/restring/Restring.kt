@@ -38,6 +38,7 @@ object Restring {
      * @param config  of the Restring.
      */
     @JvmOverloads
+    @JvmStatic
     fun init(context: Context, config: RestringConfig = RestringConfig.default) {
         if (isInitialized) {
             return
@@ -55,6 +56,7 @@ object Restring {
      * @param base context of an activity.
      * @return the Restring wrapped context.
      */
+    @JvmStatic
     fun wrapContext(base: Context): ContextWrapper {
         return RestringContextWrapper.wrap(base, stringRepository)
     }
@@ -65,6 +67,7 @@ object Restring {
      * @param locale the strings are for.
      * @param newStrings the strings of the language.
      */
+    @JvmStatic
     fun setStrings(locale: Locale, newStrings: Map<String, String>) {
         stringRepository.setStrings(locale, newStrings)
     }
@@ -76,8 +79,14 @@ object Restring {
      * @param key      the string key.
      * @param value    the string value.
      */
+    @JvmStatic
     fun setString(locale: Locale, key: String, value: String) {
         stringRepository.setString(locale, key, value)
+    }
+
+    @JvmStatic
+    fun reword(topView: View) {
+        viewTransformerManager.transformChildren(topView)
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
@@ -92,10 +101,6 @@ object Restring {
             cacheRepository = MemoryStringRepository(),
             persistentRepository = SharedPrefStringRepository(context)
     )
-
-    fun reword(topView: View) {
-        viewTransformerManager.transformChildren(topView)
-    }
 
     /**
      * Loader of strings skeleton. Clients can implement this interface if they want to load

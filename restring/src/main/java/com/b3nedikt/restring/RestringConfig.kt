@@ -17,7 +17,7 @@ class RestringConfig private constructor(
 
         fun stringRepository(stringRepository: StringRepository) = apply { this.stringRepository = stringRepository }
         fun stringsLoader(loader: Restring.StringsLoader) = apply { this.stringsLoader = loader }
-        fun addViewTransformer(vararg viewTransformer: ViewTransformer<View>) = apply { this.viewTransformers.plus(viewTransformer) }
+        fun addViewTransformer(vararg viewTransformer: ViewTransformer<*>) = apply { this.viewTransformers.plus(viewTransformer) }
 
         fun build() = RestringConfig(stringRepository, viewTransformers, stringsLoader)
     }

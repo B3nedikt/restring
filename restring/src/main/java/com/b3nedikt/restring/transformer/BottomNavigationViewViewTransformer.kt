@@ -33,7 +33,6 @@ internal object BottomNavigationViewViewTransformer : ViewTransformer<BottomNavi
             ATTRIBUTE_ANDROID_ID, ATTRIBUTE_TITLE, ATTRIBUTE_ANDROID_TITLE, ATTRIBUTE_TITLE_CONDENSED,
             ATTRIBUTE_ANDROID_TITLE_CONDENSED, XML_MENU, XML_ITEM)
 
-
     override fun BottomNavigationView.transform(attrs: Map<String, Int>) {
         val resources = this.context.resources
 

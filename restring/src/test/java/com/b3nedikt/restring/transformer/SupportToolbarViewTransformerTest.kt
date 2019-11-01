@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
-import org.junit.Assert.assertSame
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +19,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class SupportToolbarViewTransformerTest {
 
-    private var transformer: SupportToolbarViewTransformer? = null
+    private lateinit var transformer: SupportToolbarViewTransformer
 
     private val context: Context
         get() {
@@ -42,28 +41,38 @@ class SupportToolbarViewTransformerTest {
     fun shouldTransformToolbar() {
         val context = context
 
-        var view = transformer!!.transform(Toolbar(context), getAttributeSet(false))
+        val view = Toolbar(context)
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(false)))
+        }
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
 
-        view = transformer!!.transform(Toolbar(context), getAttributeSet(true))
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(true)))
+        }
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
     }
 
+    /*
     @Test
     fun shouldRejectOtherViewTypes() {
         val context = context
         val attributeSet = getAttributeSet(false)
         val recyclerView = androidx.recyclerview.widget.RecyclerView(context)
 
-        val view = transformer!!.transform(recyclerView, attributeSet)
+        transformer.apply {
+            recyclerView.transform(transformer.extractAttributes(view, getAttributeSet(false)))
+        }
 
         assertSame(view, recyclerView)
         verifyZeroInteractions(attributeSet)
     }
+
+     */
 
     private fun getAttributeSet(withAppPrefix: Boolean): AttributeSet {
         val attributeSet = Mockito.mock(AttributeSet::class.java)

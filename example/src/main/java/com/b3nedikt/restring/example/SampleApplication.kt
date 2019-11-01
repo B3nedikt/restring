@@ -15,7 +15,6 @@ class SampleApplication : Application() {
         Restring.init(this,
                 RestringConfig.Builder()
                         .stringsLoader(SampleStringsLoader())
-                        .loadAsync(true)
                         .build()
         )
 

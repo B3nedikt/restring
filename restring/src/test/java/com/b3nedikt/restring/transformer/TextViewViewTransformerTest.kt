@@ -8,13 +8,14 @@ import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.spy
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -43,16 +44,19 @@ class TextViewViewTransformerTest {
     fun shouldTransformTextView() {
         val context = context
 
-        var view = transformer.transform(TextView(context), getAttributeSet(false))
+        val view = TextView(context)
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(false)))
+        }
 
-        assertTrue(view is TextView)
-        assertEquals((view as TextView).text, TEXT_ATTR_VALUE)
+        assertEquals(view.text, TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
 
-        view = transformer.transform(TextView(context), getAttributeSet(true))
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(true)))
+        }
 
-        assertTrue(view is TextView)
-        assertEquals((view as TextView).text, TEXT_ATTR_VALUE)
+        assertEquals(view.text, TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
     }
 
@@ -60,29 +64,20 @@ class TextViewViewTransformerTest {
     fun shouldTransformExtendedViews() {
         val context = context
 
-        var view = transformer.transform(EditText(context), getAttributeSet(false))
+        val view = EditText(context)
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(false)))
+        }
 
-        assertTrue(view is EditText)
-        assertEquals((view as EditText).text.toString(), TEXT_ATTR_VALUE)
+        assertEquals(view.text.toString(), TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
 
-        view = transformer.transform(EditText(context), getAttributeSet(true))
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(true)))
+        }
 
-        assertTrue(view is EditText)
-        assertEquals((view as EditText).text.toString(), TEXT_ATTR_VALUE)
+        assertEquals(view.text.toString(), TEXT_ATTR_VALUE)
         assertEquals(view.hint, HINT_ATTR_VALUE)
-    }
-
-    @Test
-    fun shouldRejectOtherViewTypes() {
-        val context = context
-        val attributeSet = getAttributeSet(false)
-        val recyclerView = androidx.recyclerview.widget.RecyclerView(context)
-
-        val view = transformer.transform(recyclerView, attributeSet)
-
-        assertSame(view, recyclerView)
-        verifyZeroInteractions(attributeSet)
     }
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {

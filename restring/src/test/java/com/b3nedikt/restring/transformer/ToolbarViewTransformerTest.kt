@@ -7,7 +7,6 @@ import android.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
-import org.junit.Assert.assertSame
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
@@ -35,27 +34,20 @@ class ToolbarViewTransformerTest {
     fun shouldTransformToolbar() {
         val context = context
 
-        var view = transformer.transform(Toolbar(context), getAttributeSet(false))
+        val view = Toolbar(context)
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(false)))
+        }
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
 
-        view = transformer.transform(Toolbar(context), getAttributeSet(true))
+        transformer.apply {
+            view.transform(transformer.extractAttributes(view, getAttributeSet(true)))
+        }
 
         assertTrue(view is Toolbar)
         assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
-    }
-
-    @Test
-    fun shouldRejectOtherViewTypes() {
-        val context = context
-        val attributeSet = getAttributeSet(false)
-        val recyclerView = androidx.recyclerview.widget.RecyclerView(context)
-
-        val view = transformer.transform(recyclerView, attributeSet)
-
-        assertSame(view, recyclerView)
-        verifyZeroInteractions(attributeSet)
     }
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {

@@ -17,7 +17,6 @@ public class SampleApplication extends Application {
         Restring.init(this,
                 new RestringConfig.Builder()
                         .stringsLoader(new SampleStringsLoader())
-                        .loadAsync(false)
                         .build()
         );
 

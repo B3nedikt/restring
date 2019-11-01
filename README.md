@@ -1,38 +1,43 @@
-[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=2.1.0) ](https://bintray.com/b3nedikt/restring/restring/2.1.0/link)
+[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=3.0.0) ](https://bintray.com/b3nedikt/restring/restring/3.0.0/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 
-## Restring 2.1.0
-An easy way to replace bundled Strings dynamically, or provide new translations in Android.
-This is a fork of a library originally developed by Hamid Gharehdaghi, I only ported it to kotlin
-& fixed a few bugs.
+## Restring 3.0.0
+An easy way to replace bundled Strings dynamically, or provide new translations for Android.
 
 ### 1. Add dependency
 ```groovy
-implementation 'com.b3nedikt.restring:restring:2.1.0'
+implementation 'com.b3nedikt.restring:restring:3.0.0'
+implementation 'io.github.inflationx:viewpump:2.0.3'
 ```
 
 ### 2. Initialize
 Initialize Restring in your Application class:
 ```java
-Restring.init(context);
-```
-or if you want more configurations:
-```java
-Restring.init(context,
-              new RestringConfig.Builder()
-                  .persist(true)
-                  .stringsLoader(new SampleStringsLoader())
-                  .build()
+Restring.init(this,
+        new RestringConfig.Builder()
+                .stringsLoader(new SampleStringsLoader())
+                .loadAsync(false) // If string loader should load strings asynchronously, default true
+                .build()
+        );
+
+ViewPump.init(ViewPump.builder()
+        .addInterceptor(RestringInterceptor.INSTANCE)
+        .build()
         );
 ```
 
 ### 3. Inject into Context
 if you have a BaseActivity you can add this there, otherwise you have to add it to all of your activities!
 ```java
+ @Override
+ protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)));
+}
+
 @Override
-protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(Restring.wrapContext(newBase));
+public Resources getResources() {
+    return getBaseContext().getResources();
 }
 ```
 
@@ -41,19 +46,19 @@ There're two ways to provide new Strings. You can use either way or both.
 
 First way: You can implement Restring.StringsLoader like this:
 ```java
-public class MyStringsLoader implements Restring.StringsLoader {
+public class SampleStringsLoader implements Restring.StringsLoader {
 
-    //This will be called on background thread.
+    @NotNull
     @Override
     public List<Locale> getLocales() {
-        //return your supported locales(e.g. Locale.EN, ...)
+        return Arrays.asList(Locale.ENGLISH, Locale.US);
     }
 
-    //This will be called on background thread.
+    @NotNull
     @Override
-    public Map<String, String> getStrings(Locale locale) {
-        Map<String, String> map = new HashMap<>();
-        // Load your strings here into a map of (key,value)s for this language!
+    public Map<String, CharSequence> getStrings(@NotNull Locale locale) {
+        final Map<String, CharSequence> map = new HashMap<>();
+        // Load strings here...
         return map;
     }
 }
@@ -62,7 +67,6 @@ and initialize Restring like this:
 ```java
 Restring.init(context,
               new RestringConfig.Builder()
-                  .persist(true)
                   .stringsLoader(new MyStringsLoader())
                   .build()
         );
@@ -78,35 +82,43 @@ Restring.setStrings(locale, newStrings);
 ### 5. Done!
 Now all strings in your app will be overriden by new strings provided to Restring.
 
-## Notes:
-1. Please note that Restring works with current locale, so if you change locale with
+## Change Language of the app:
+1. Restring works with the current locale by default, however you can change your apps language like this:
 ```java
-Locale.setDefault(newLocale);
+Restring.setLocale(Locales.APP_LOCALES.get(position));
+
+// The layout containing the views you want to localize
+final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+Restring.reword(rootView);
 ```
 Restring will start using strings of the new locale.
 
-2. By default, Restring will use shared preferences to save all strings provided to. So if you set a StringsLoader or call .setString() to set the strings into Restring, the strings will be there on the next application launch. In case you don't want Restring saves strings into shared preferences, you can set it in initialization, like this:
+## Custom Repository:
+By default, Restring will hold strongs in memory for caching and persist them to shared preferences after loading. You can however change the repository for saving the strings, to e.g. only keep it in memory like this:
 ```java
-Restring.init(context,
-              new RestringConfig.Builder()
-                  .persist(false) //Set this to false to prevent saving into shared preferences.
-                  .build()
-        );
+Restring.init(this,
+        new RestringConfig.Builder()
+                .stringsLoader(new SampleStringsLoader())
+                .stringRepository(new MemoryStringRepository())
+                .build()
+);
 ```
+If needed you can also provide custom repositories if you want to e.g. save the strings in a database
+instead of the SharedPreferences, or if you don´t want to use the loader mechanism.
 
-3. For displaying a string, Restring tries to find that in dynamic strings, and will use bundled version as fallback. In the other words, Only the new provided strings will be overriden and for the rest the bundled version will be used.
+
+## Notes:
+For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback. In the other words, Only the new provided strings will be overriden and for the rest the bundled version will be used.
 
 ## Limitations
 1. Plurals are not supported yet.
 2. String arrays are not supported yet.
 
-## Docs
-* <a href="https://medium.com/@hamidgh/dynamically-change-bundled-strings-a24b97bfd306">Medium</a>
-* <a href="https://hamidness.github.io/restring/index.html">Javadocs</a>
-
 ## License
+This is a fork of a library originally developed by Hamid Gharehdaghi.
+Also takes some inspiration from Philology by JcMinarro.
 <pre>
-Copyright 2018 Hamid Gharehdaghi & Contributors
+Copyright 2018-present Restring Contributors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

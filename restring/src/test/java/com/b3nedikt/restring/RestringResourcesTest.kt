@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.text.Html
 import android.text.TextUtils
+import androidx.core.text.HtmlCompat
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
@@ -84,7 +85,7 @@ class RestringResourcesTest {
 
         val realValue = restringResources.getText(STR_RES_ID)
 
-        val expected = Html.fromHtml(STR_VALUE_HTML, Html.FROM_HTML_MODE_COMPACT)
+        val expected = Html.fromHtml(STR_VALUE_HTML.toString(), Html.FROM_HTML_MODE_COMPACT)
         assertTrue(TextUtils.equals(expected, realValue))
     }
 
@@ -113,6 +114,6 @@ class RestringResourcesTest {
         private const val STR_KEY = "STR_KEY"
         private const val STR_VALUE = "STR_VALUE"
         private const val STR_VALUE_WITH_PARAM = "STR_VALUE %s"
-        private const val STR_VALUE_HTML = "STR_<b>value</b>"
+        private val STR_VALUE_HTML = HtmlCompat.fromHtml("STR_<b>value</b>", HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 }

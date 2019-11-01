@@ -3,6 +3,9 @@ package com.b3nedikt.restring.example
 import android.app.Application
 import com.b3nedikt.restring.Restring
 import com.b3nedikt.restring.RestringConfig
+import com.b3nedikt.restring.RestringInterceptor
+import io.github.inflationx.viewpump.ViewPump
+
 
 class SampleApplication : Application() {
 
@@ -11,9 +14,13 @@ class SampleApplication : Application() {
 
         Restring.init(this,
                 RestringConfig.Builder()
-                        .persist(true)
                         .stringsLoader(SampleStringsLoader())
                         .build()
+        )
+
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(RestringInterceptor)
+                .build()
         )
     }
 }

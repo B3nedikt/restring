@@ -1,41 +1,30 @@
 package com.b3nedikt.restring
 
 import android.content.Context
-import android.content.ContextWrapper
-import android.view.LayoutInflater
+import android.content.res.Resources
+import android.view.ContextThemeWrapper
 
 /**
- * Main Restring context wrapper which wraps the context for providing another layout inflater & resources.
+ * Main Restring context wrapper which wraps the context for providing another layout inflater
+ * & resources.
  */
 internal class RestringContextWrapper private constructor(
         base: Context,
-        stringRepository: StringRepository,
-        private val viewTransformerManager: ViewTransformerManager
-) : ContextWrapper(CustomResourcesContextWrapper(base, RestringResources(base.resources, stringRepository))) {
+        stringRepository: StringRepository
+) : ContextThemeWrapper(base, base.applicationInfo.theme) {
 
-    private val layoutInflater: RestringLayoutInflater by lazy {
-        RestringLayoutInflater(
-                original = LayoutInflater.from(baseContext),
-                newContext = this,
-                viewTransformerManager = viewTransformerManager,
-                cloned = true
-        )
+    private val res: Resources by lazy {
+        val baseResources = super.getResources()
+        RestringResources(baseResources, stringRepository)
     }
 
-    override fun getSystemService(name: String): Any? {
-        if (Context.LAYOUT_INFLATER_SERVICE == name) {
-            return layoutInflater
-        }
-
-        return super.getSystemService(name)
-    }
+    override fun getResources() = res
 
     companion object {
 
         fun wrap(context: Context,
-                 stringRepository: StringRepository,
-                 viewTransformerManager: ViewTransformerManager): RestringContextWrapper {
-            return RestringContextWrapper(context, stringRepository, viewTransformerManager)
+                 stringRepository: StringRepository): RestringContextWrapper {
+            return RestringContextWrapper(context, stringRepository)
         }
     }
 }

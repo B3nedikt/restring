@@ -2,7 +2,16 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.view.View
+import com.b3nedikt.restring.repository.CachedStringRepository
+import com.b3nedikt.restring.repository.MemoryStringRepository
+import com.b3nedikt.restring.repository.SharedPrefStringRepository
+import com.b3nedikt.restring.transformer.BottomNavigationViewViewTransformer
+import com.b3nedikt.restring.transformer.SupportToolbarViewTransformer
+import com.b3nedikt.restring.transformer.TextViewViewTransformer
+import com.b3nedikt.restring.transformer.ToolbarViewTransformer
 import java.util.*
+
 
 /**
  * Entry point for Restring. it will be used for initializing Restring components, setting new strings,
@@ -10,15 +19,22 @@ import java.util.*
  */
 object Restring {
 
+    @JvmStatic
+    var locale: Locale
+        get() = RestringLocale.currentLocale
+        set(value) {
+            RestringLocale.currentLocale = value
+        }
+
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
 
-    private val viewTransformerManager: ViewTransformerManager by lazy {
+    internal val viewTransformerManager: ViewTransformerManager by lazy {
         ViewTransformerManager().apply {
-            registerTransformer(TextViewTransformer())
-            registerTransformer(ToolbarTransformer())
-            registerTransformer(SupportToolbarTransformer())
-            registerTransformer(BottomNavigationViewTransformer())
+            registerTransformer(TextViewViewTransformer)
+            registerTransformer(ToolbarViewTransformer)
+            registerTransformer(SupportToolbarViewTransformer)
+            registerTransformer(BottomNavigationViewViewTransformer)
         }
     }
 
@@ -29,6 +45,7 @@ object Restring {
      * @param config  of the Restring.
      */
     @JvmOverloads
+    @JvmStatic
     fun init(context: Context, config: RestringConfig = RestringConfig.default) {
         if (isInitialized) {
             return
@@ -36,6 +53,8 @@ object Restring {
 
         isInitialized = true
         initStringRepository(context, config)
+
+        config.viewTransformers.forEach { viewTransformerManager.registerTransformer(it) }
     }
 
     /**
@@ -44,8 +63,9 @@ object Restring {
      * @param base context of an activity.
      * @return the Restring wrapped context.
      */
+    @JvmStatic
     fun wrapContext(base: Context): ContextWrapper {
-        return RestringContextWrapper.wrap(base, stringRepository, viewTransformerManager)
+        return RestringContextWrapper.wrap(base, stringRepository)
     }
 
     /**
@@ -54,6 +74,7 @@ object Restring {
      * @param locale the strings are for.
      * @param newStrings the strings of the language.
      */
+    @JvmStatic
     fun setStrings(locale: Locale, newStrings: Map<String, String>) {
         stringRepository.setStrings(locale, newStrings)
     }
@@ -61,29 +82,50 @@ object Restring {
     /**
      * Set a single string for a language.
      *
-     * @param language the string is for.
+     * @param locale the string is for.
      * @param key      the string key.
      * @param value    the string value.
      */
+    @JvmStatic
     fun setString(locale: Locale, key: String, value: String) {
         stringRepository.setString(locale, key, value)
     }
 
+    /**
+     * Will update the text of all views in the view hierarchy below the provided parent view.
+     * Can be used to update the texts of a activity or fragment without restarting it. To do this
+     * just use the root view of the activity or fragment.
+     *
+     * @param parent the parent view of the views you want to update the texts of
+     */
+    @JvmStatic
+    fun reword(parent: View) {
+        viewTransformerManager.transformChildren(parent)
+    }
+
     private fun initStringRepository(context: Context, config: RestringConfig) {
-        stringRepository = if (config.isPersist) {
-            SharedPrefStringRepository(context)
-        } else {
-            MemoryStringRepository()
-        }
+        stringRepository = config.stringRepository ?: defaultRepository(context)
 
         if (config.stringsLoader != null) {
-            StringsLoaderTask(config.stringsLoader, stringRepository).run()
+
+            val loaderTask = StringsLoaderTask(config.stringsLoader, stringRepository)
+            if(config.loadAsync){
+                loaderTask.runAsync()
+            }else{
+                loaderTask.runBlocking()
+            }
         }
     }
 
+    private fun defaultRepository(context: Context) = CachedStringRepository(
+            cacheRepository = MemoryStringRepository(),
+            persistentRepository = SharedPrefStringRepository(context)
+    )
+
     /**
-     * Loader of strings skeleton. Clients can implement this interface if they want to load strings on initialization.
-     * First the list of languages will be asked, then strings of each language.
+     * Loader of strings skeleton. Clients can implement this interface if they want to load
+     * strings on initialization. First the list of languages will be asked, then strings of each
+     * language.
      */
     interface StringsLoader {
 
@@ -98,6 +140,6 @@ object Restring {
          * @param locale of the strings.
          * @return the strings as (key, value).
          */
-        fun getStrings(locale: Locale): Map<String, String>
+        fun getStrings(locale: Locale): Map<String, CharSequence>
     }
 }

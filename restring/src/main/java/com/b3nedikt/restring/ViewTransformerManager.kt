@@ -2,6 +2,7 @@ package com.b3nedikt.restring
 
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 
 /**
  * Manages all view transformers as a central point for layout inflater.
@@ -9,15 +10,17 @@ import android.view.View
  */
 internal class ViewTransformerManager {
 
-    private val transformers = mutableListOf<Transformer>()
+    private val transformers = mutableListOf<ViewTransformer<View>>()
+    private val attributes = mutableMapOf<Int, Map<String, Int>>()
 
     /**
-     * Register a new view transformer to be applied on newly inflating views.
+     * Register a new view viewTransformer to be applied on newly inflating views.
      *
-     * @param transformer to be added to transformers list.
+     * @param viewTransformer to be added to transformers list.
      */
-    fun registerTransformer(transformer: Transformer) {
-        transformers.add(transformer)
+    @Suppress("UNCHECKED_CAST")
+    fun registerTransformer(viewTransformer: ViewTransformer<*>) {
+        transformers.add(viewTransformer as ViewTransformer<View>)
     }
 
     /**
@@ -29,29 +32,38 @@ internal class ViewTransformerManager {
      * @param attrs attributes of the view.
      * @return the transformed view.
      */
-    fun transform(view: View, attrs: AttributeSet) =
+    fun transform(view: View, attrs: AttributeSet): View =
             transformers.find { it.viewType.isInstance(view) }
-                    ?.run { transform(view, attrs) }
+                    ?.run {
+                        val extractedAttributes = extractAttributes(view, attrs)
+                        attributes[view.id] = extractedAttributes
+                        view.transform(extractedAttributes)
+                        view
+                    }
                     ?: view
 
     /**
-     * A view transformer skeleton.
+     * Transforms all children of the provided view.
+     * Tries to find proper transformers for each child view, and if exists, it will apply them on
+     * the view in place. Implemented not recursive, to ensure we only visit each child one
+     * for efficiency.
      */
-    internal interface Transformer {
-        /**
-         * The type of view this transformer is for.
-         *
-         * @return the type of view.
-         */
-        val viewType: Class<out View>
+    fun transformChildren(parentView: View) {
+        val visited = mutableListOf<View>()
+        val unvisited = mutableListOf(parentView)
 
-        /**
-         * Apply transformation to a view.
-         *
-         * @param view  to be transformed.
-         * @param attrs attributes of the view.
-         * @return the transformed view.
-         */
-        fun transform(view: View, attrs: AttributeSet): View
+        while (unvisited.isNotEmpty()) {
+            val child = unvisited.removeAt(0)
+
+            attributes[child.id]?.let { attrs ->
+                transformers.find { it.viewType.isInstance(child) }
+                        ?.run { child.transform(attrs) }
+            }
+
+            visited.add(child)
+            if (child !is ViewGroup) continue
+            val childCount = child.childCount
+            for (i in 0 until childCount) unvisited.add(child.getChildAt(i))
+        }
     }
 }

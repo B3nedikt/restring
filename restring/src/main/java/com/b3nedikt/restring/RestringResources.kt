@@ -2,7 +2,6 @@ package com.b3nedikt.restring
 
 import android.content.res.Resources
 import android.os.Build
-import androidx.core.text.HtmlCompat
 
 
 /**
@@ -10,6 +9,7 @@ import androidx.core.text.HtmlCompat
  * For getting strings and texts, it checks the strings repository first and if there's a new string
  * that will be returned, otherwise it will fallback to the original resource strings.
  */
+@Suppress("DEPRECATION")
 internal class RestringResources(val res: Resources,
                                  private val stringRepository: StringRepository)
     : Resources(res.assets, res.displayMetrics, res.configuration) {
@@ -19,7 +19,7 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getString(id)
+        return value?.toString() ?: super.getString(id)
     }
 
     @Throws(NotFoundException::class)
@@ -27,7 +27,7 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        if (value != null) return String.format(value, *formatArgs)
+        if (value != null) return String.format(value.toString(), *formatArgs)
         return super.getString(id, *formatArgs)
     }
 
@@ -36,17 +36,17 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id)
+        return value ?: super.getText(id)
     }
 
     override fun getText(id: Int, def: CharSequence): CharSequence {
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id, def)
+        return value ?: super.getText(id, def)
     }
 
-    private fun getStringFromRepository(id: Int): String? {
+    private fun getStringFromRepository(id: Int): CharSequence? {
         val currentLocale = RestringLocale.currentLocale
         val supportedLocales = stringRepository.supportedLocales
 
@@ -74,14 +74,9 @@ internal class RestringResources(val res: Resources,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(RestringLocale.currentLocale)
         } else {
-            @Suppress("DEPRECATION")
             conf.locale = RestringLocale.currentLocale
         }
 
-        @Suppress("DEPRECATION")
         res.updateConfiguration(conf, res.displayMetrics)
     }
-
-    private fun fromHtml(source: String) =
-            HtmlCompat.fromHtml(source, HtmlCompat.FROM_HTML_MODE_COMPACT)
 }

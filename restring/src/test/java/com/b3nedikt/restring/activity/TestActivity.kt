@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 
 import com.b3nedikt.restring.R
 import com.b3nedikt.restring.Restring
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 
 class TestActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(Restring.wrapContext(newBase))
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

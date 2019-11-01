@@ -10,7 +10,6 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.Nullable;
 
 import com.b3nedikt.restring.Restring;
-import com.b3nedikt.restring.RestringLocale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +44,9 @@ public class MainActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                RestringLocale.INSTANCE.setCurrentLocale(Locales.APP_LOCALES.get(position));
+                Restring.setLocale(Locales.APP_LOCALES.get(position));
 
+                // The layout containing the views you want to localize
                 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
                 Restring.reword(rootView);
             }

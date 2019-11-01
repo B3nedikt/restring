@@ -42,6 +42,12 @@ internal class ViewTransformerManager {
                     }
                     ?: view
 
+    /**
+     * Transforms all children of the provided view.
+     * Tries to find proper transformers for each child view, and if exists, it will apply them on
+     * the view in place. Implemented not recursive, to ensure we only visit each child one
+     * for efficiency.
+     */
     fun transformChildren(parentView: View) {
         val visited = mutableListOf<View>()
         val unvisited = mutableListOf(parentView)

@@ -19,6 +19,13 @@ import java.util.*
  */
 object Restring {
 
+    @JvmStatic
+    var locale: Locale
+        get() = RestringLocale.currentLocale
+        set(value) {
+            RestringLocale.currentLocale = value
+        }
+
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
 
@@ -84,16 +91,29 @@ object Restring {
         stringRepository.setString(locale, key, value)
     }
 
+    /**
+     * Will update the text of all views in the view hierarchy below the provided parent view.
+     * Can be used to update the texts of a activity or fragment without restarting it. To do this
+     * just use the root view of the activity or fragment.
+     *
+     * @param parent the parent view of the views you want to update the texts of
+     */
     @JvmStatic
-    fun reword(topView: View) {
-        viewTransformerManager.transformChildren(topView)
+    fun reword(parent: View) {
+        viewTransformerManager.transformChildren(parent)
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
         stringRepository = config.stringRepository ?: defaultRepository(context)
 
         if (config.stringsLoader != null) {
-            StringsLoaderTask(config.stringsLoader, stringRepository).run()
+
+            val loaderTask = StringsLoaderTask(config.stringsLoader, stringRepository)
+            if(config.loadAsync){
+                loaderTask.runAsync()
+            }else{
+                loaderTask.runBlocking()
+            }
         }
     }
 

@@ -15,11 +15,23 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
                                  private val stringRepository: StringRepository)
     : AsyncTask<Void, Void, Map<Locale, Map<String, CharSequence>>>() {
 
-    fun run() {
+    fun runAsync() {
         executeOnExecutor(THREAD_POOL_EXECUTOR)
     }
 
+    fun runBlocking() {
+        saveInRepository(execute().get())
+    }
+
     override fun doInBackground(vararg voids: Void): Map<Locale, Map<String, CharSequence>> {
+        return loadStrings()
+    }
+
+    override fun onPostExecute(langStrings: Map<Locale, Map<String, CharSequence>>) {
+        saveInRepository(langStrings)
+    }
+
+    private fun loadStrings(): MutableMap<Locale, Map<String, CharSequence>> {
         val localizedStrings = mutableMapOf<Locale, Map<String, CharSequence>>()
 
         val languages = stringsLoader.locales
@@ -32,11 +44,10 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
                 localizedStrings[lang] = keyValues
             }
         }
-
         return localizedStrings
     }
 
-    override fun onPostExecute(langStrings: Map<Locale, Map<String, CharSequence>>) {
+    private fun saveInRepository(langStrings: Map<Locale, Map<String, CharSequence>>) {
         for ((key, value) in langStrings) {
             stringRepository.setStrings(key, value)
         }

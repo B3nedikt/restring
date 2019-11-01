@@ -2,7 +2,7 @@ package com.b3nedikt.restring
 
 import java.util.*
 
-object RestringLocale {
+internal object RestringLocale {
 
     internal var isInitial = true
 

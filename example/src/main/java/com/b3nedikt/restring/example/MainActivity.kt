@@ -6,7 +6,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.ContentFrameLayout
 import com.b3nedikt.restring.Restring
-import com.b3nedikt.restring.RestringLocale
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -29,7 +28,7 @@ class MainActivity : BaseActivity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                RestringLocale.currentLocale = APP_LOCALES[position]
+                Restring.locale = APP_LOCALES[position]
 
                 val rootView = window.decorView.findViewById<ContentFrameLayout>(android.R.id.content)
                 Restring.reword(rootView)

@@ -82,8 +82,8 @@ Restring.setStrings(locale, newStrings);
 ### 5. Done!
 Now all strings in your app will be overriden by new strings provided to Restring.
 
-## Change Language of the app:
-1. Restring works with the current locale by default, however you can change your apps language like this:
+## Change Language of the app
+Restring works with the current locale by default, however you can change your apps language like this:
 ```java
 Restring.setLocale(Locales.APP_LOCALES.get(position));
 
@@ -93,7 +93,7 @@ Restring.reword(rootView);
 ```
 Restring will start using strings of the new locale.
 
-## Custom Repository:
+## Custom Repository
 By default, Restring will hold strongs in memory for caching and persist them to shared preferences after loading. You can however change the repository for saving the strings, to e.g. only keep it in memory like this:
 ```java
 Restring.init(this,

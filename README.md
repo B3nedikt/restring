@@ -85,7 +85,7 @@ Now all strings in your app will be overriden by new strings provided to Restrin
 ## Change Language of the app
 Restring works with the current locale by default, however you can change your apps language like this:
 ```java
-Restring.setLocale(Locales.APP_LOCALES.get(position));
+Restring.setLocale(Locales.FRENCH);
 
 // The layout containing the views you want to localize
 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
@@ -93,8 +93,17 @@ Restring.reword(rootView);
 ```
 Restring will start using strings of the new locale.
 
+## Apply updated resources without restarting the app
+After providing new strings or changing the app language you can either restart the app,
+or reload the UI like this:
+```java
+// The layout containing the views you want to localize
+final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+Restring.reword(rootView);
+```
+
 ## Custom Repository
-By default, Restring will hold strongs in memory for caching and persist them to shared preferences after loading. You can however change the repository for saving the strings, to e.g. only keep it in memory like this:
+By default, Restring will hold strings in memory for caching and persisting them to shared preferences after loading. You can however change the repository for saving the strings, to e.g. only keep them in memory like this:
 ```java
 Restring.init(this,
         new RestringConfig.Builder()
@@ -104,7 +113,7 @@ Restring.init(this,
 );
 ```
 If needed you can also provide custom repositories if you want to e.g. save the strings in a database
-instead of the SharedPreferences, or if you don´t want to use the loader mechanism.
+instead of the SharedPreferences, or if you don´t want to use the StringsLoader mechanism.
 
 
 ## Notes:

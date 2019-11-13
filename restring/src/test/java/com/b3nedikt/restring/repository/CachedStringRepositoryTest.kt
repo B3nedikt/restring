@@ -1,5 +1,6 @@
 package com.b3nedikt.restring.repository
 
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.b3nedikt.restring.StringRepository
 import org.junit.Assert
@@ -7,9 +8,11 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class CachedStringRepositoryTest {
 
     private lateinit var stringRepository: StringRepository

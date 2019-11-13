@@ -1,5 +1,6 @@
 package com.b3nedikt.restring
 
+import android.os.Build
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -20,7 +21,7 @@ import java.util.*
 import kotlin.collections.LinkedHashMap
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = [MyShadowAsyncTask::class])
+@Config(shadows = [MyShadowAsyncTask::class], sdk = [Build.VERSION_CODES.P])
 class RestringTest {
 
     @Before

@@ -2,19 +2,21 @@ package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class ToolbarViewTransformerTest {
 
     private var transformer = ToolbarViewTransformer
@@ -39,15 +41,13 @@ class ToolbarViewTransformerTest {
             view.transform(transformer.extractAttributes(view, getAttributeSet(false)))
         }
 
-        assertTrue(view is Toolbar)
-        assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
+        assertEquals(view.title, TITLE_ATTR_VALUE)
 
         transformer.apply {
             view.transform(transformer.extractAttributes(view, getAttributeSet(true)))
         }
 
-        assertTrue(view is Toolbar)
-        assertEquals((view as Toolbar).title, TITLE_ATTR_VALUE)
+        assertEquals(view.title, TITLE_ATTR_VALUE)
     }
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {

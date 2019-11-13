@@ -2,6 +2,7 @@ package com.b3nedikt.restring
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
@@ -11,9 +12,11 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class RestringContextWrapperTest {
 
     private lateinit var restringContextWrapper: RestringContextWrapper

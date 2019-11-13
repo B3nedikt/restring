@@ -3,14 +3,14 @@
 set -ex
 
 # Lib constants
-REPO="git@github.com:hamidness/restring.git"
-GROUP_ID="com.ice.restring"
+REPO="git@github.com:b3nedikt/restring.git"
+GROUP_ID="com.b3nedikt.restring"
 ARTIFACT_ID="restring"
-VERSION="1.0.0"
+VERSION="3.0.0"
 
 # Javadoc constants
 FILE_PATH="${GROUP_ID//./%2F}%2F${ARTIFACT_ID}%2F${VERSION}%2F${ARTIFACT_ID}-${VERSION}-javadoc.jar"
-URL="https://bintray.com/hamidfri/maven/download_file?file_path=$FILE_PATH"
+URL="https://bintray.com/b3nedikt/maven/download_file?file_path=$FILE_PATH"
 
 # Script constants
 TEMP_DIR=temp-clone

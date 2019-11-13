@@ -61,8 +61,3 @@ apply from: 'publish.gradle'
 repositories {
     mavenCentral()
 }
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/docs"
-}

@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.b3nedikt.restring.example"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -29,7 +29,6 @@ dependencies {
 
     implementation deps.appCompat
     implementation deps.constraintLayout
-    implementation deps.kotlin
     implementation deps.viewPump
 }
 repositories {

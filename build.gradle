@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath "org.jacoco:org.jacoco.core:$jacoco_version"
@@ -33,9 +33,9 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 28
+    compileSdkVersion = 29
     minSdkVersion = 16
-    targetSdkVersion = 28
+    targetSdkVersion = 29
 
     deps = [
             kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
@@ -48,7 +48,7 @@ ext {
             junit           : "junit:junit:4.12",
             hamcrest        : "org.hamcrest:hamcrest-junit:2.0.0.0",
             mockito         : "org.mockito:mockito-inline:3.0.0",
-            robolectric     : "org.robolectric:robolectric:4.3",
+            robolectric     : "org.robolectric:robolectric:4.3.1",
             mockitoKotlin   : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
             testCore        : "androidx.test:core:1.2.0"
     ]

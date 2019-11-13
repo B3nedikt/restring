@@ -2,6 +2,7 @@ package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
@@ -15,8 +16,10 @@ import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class SupportToolbarViewTransformerTest {
 
     private lateinit var transformer: SupportToolbarViewTransformer

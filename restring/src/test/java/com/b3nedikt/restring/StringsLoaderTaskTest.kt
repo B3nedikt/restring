@@ -1,5 +1,6 @@
 package com.b3nedikt.restring
 
+import android.os.Build
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -11,10 +12,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.*
 import kotlin.collections.HashMap
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class StringsLoaderTaskTest {
 
     @Before

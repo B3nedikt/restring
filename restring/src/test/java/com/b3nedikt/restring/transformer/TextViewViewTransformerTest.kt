@@ -2,6 +2,7 @@ package com.b3nedikt.restring.transformer
 
 import android.content.Context
 import android.content.res.Resources
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.TextView
@@ -17,8 +18,10 @@ import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.spy
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class TextViewViewTransformerTest {
 
     private lateinit var transformer: TextViewViewTransformer

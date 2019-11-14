@@ -1,6 +1,7 @@
 package com.b3nedikt.restring
 
 import android.os.AsyncTask
+import com.b3nedikt.restring.repository.CachedStringRepository
 import java.util.*
 
 /**
@@ -40,8 +41,17 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
 
         for (lang in languages) {
             val keyValues = stringsLoader.getStrings(lang)
+
             if (keyValues.isNotEmpty()) {
                 localizedStrings[lang] = keyValues
+            }else{
+                if(stringRepository is CachedStringRepository)
+                {
+                    val keyValues=stringRepository.persistentRepository.getStrings(lang)
+                    if(keyValues.isNotEmpty())
+                        localizedStrings[lang] = keyValues
+                }
+
             }
         }
         return localizedStrings

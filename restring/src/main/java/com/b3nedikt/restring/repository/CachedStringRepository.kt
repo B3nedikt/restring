@@ -4,7 +4,7 @@ import com.b3nedikt.restring.StringRepository
 import java.util.*
 
 class CachedStringRepository(private val cacheRepository: StringRepository,
-                             private val persistentRepository: StringRepository
+                              val persistentRepository: StringRepository
 ) : StringRepository {
 
     override var supportedLocales: Set<Locale> = setOf()

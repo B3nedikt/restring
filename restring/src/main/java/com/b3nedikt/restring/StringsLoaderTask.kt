@@ -34,11 +34,11 @@ internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoad
     private fun loadStrings(): MutableMap<Locale, Map<String, CharSequence>> {
         val localizedStrings = mutableMapOf<Locale, Map<String, CharSequence>>()
 
-        val languages = stringsLoader.locales
+        val locales = stringsLoader.locales
 
-        stringRepository.supportedLocales = languages.toSet()
+        stringRepository.supportedLocales = locales.toSet()
 
-        for (lang in languages) {
+        for (lang in locales) {
             val keyValues = stringsLoader.getStrings(lang)
             if (keyValues.isNotEmpty()) {
                 localizedStrings[lang] = keyValues

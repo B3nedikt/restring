@@ -28,6 +28,22 @@ class CachedStringRepositoryTest {
     }
 
     @Test
+    fun shouldSetAndGetLocales() {
+        val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
+
+        stringRepository.supportedLocales = locales
+
+        val persistentRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+
+        val newRepository = CachedStringRepository(
+                cacheRepository = MemoryStringRepository(),
+                persistentRepository = persistentRepository
+        )
+
+        Assert.assertEquals(locales, newRepository.supportedLocales)
+    }
+
+    @Test
     fun shouldSetAndGetStringPairs() {
         val locale = Locale.ENGLISH
         val strings = generateStrings(10)

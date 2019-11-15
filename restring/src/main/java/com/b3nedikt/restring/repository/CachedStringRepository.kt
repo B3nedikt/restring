@@ -3,11 +3,15 @@ package com.b3nedikt.restring.repository
 import com.b3nedikt.restring.StringRepository
 import java.util.*
 
-class CachedStringRepository(private val cacheRepository: StringRepository,
-                             private val persistentRepository: StringRepository
+class CachedStringRepository(val cacheRepository: StringRepository,
+                             val persistentRepository: StringRepository
 ) : StringRepository {
 
-    override var supportedLocales: Set<Locale> = setOf()
+    override var supportedLocales: Set<Locale> = persistentRepository.supportedLocales
+        set(value) {
+            field = value
+            persistentRepository.supportedLocales = value
+        }
 
     init {
         supportedLocales.forEach {

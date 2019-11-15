@@ -15,7 +15,8 @@ import java.util.*
  */
 class SharedPrefStringRepository(context: Context,
                                  stringsSharedPrefName: String = STRINGS_SHARED_PREF_NAME,
-                                 textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME
+                                 textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME,
+                                 localesSharedPrefName: String = LOCALES_SHARED_PREF_NAME
 ) : StringRepository {
 
     private val stringsSharedPreferences by lazy {
@@ -26,7 +27,30 @@ class SharedPrefStringRepository(context: Context,
         context.getSharedPreferences(textsSharedPrefName, Context.MODE_PRIVATE)
     }
 
-    override var supportedLocales: Set<Locale> = setOf()
+    private val localesSharedPreferences by lazy {
+        context.getSharedPreferences(localesSharedPrefName, Context.MODE_PRIVATE)
+    }
+
+    override var supportedLocales: Set<Locale>
+        get() = loadLocales()
+        set(value) = saveLocales(value)
+
+    private fun loadLocales() =
+            localesSharedPreferences
+                    .getStringSet(LOCALES_SHARED_PREF_KEY, null)
+                    ?.map { LocaleUtil.fromSimpleLanguageTag(it) }
+                    ?.toSet()
+                    ?: emptySet()
+
+    private fun saveLocales(locales: Set<Locale>) =
+            locales.map { LocaleUtil.toSimpleLanguageTag(it) }
+                    .toSet()
+                    .run {
+                        localesSharedPreferences
+                                .edit()
+                                .putStringSet(LOCALES_SHARED_PREF_KEY, this)
+                                .apply()
+                    }
 
     override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         saveStringsAndTexts(locale, strings)
@@ -154,5 +178,8 @@ class SharedPrefStringRepository(context: Context,
     private companion object {
         private const val STRINGS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Strings"
         private const val TEXTS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Texts"
+        private const val LOCALES_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Locales"
+
+        private const val LOCALES_SHARED_PREF_KEY = "com.b3nedikt.restring.Restring_Locales_Key"
     }
 }

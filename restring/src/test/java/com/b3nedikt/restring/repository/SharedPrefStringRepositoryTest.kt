@@ -3,7 +3,6 @@ package com.b3nedikt.restring.repository
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -14,8 +13,15 @@ import java.util.*
 @Config(sdk = [Build.VERSION_CODES.P])
 class SharedPrefStringRepositoryTest {
 
-    @Before
-    fun setUp() {
+    @Test
+    fun shouldSetAndGetLocales() {
+        val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.supportedLocales = locales
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        assertEquals(locales, newRepository.supportedLocales)
     }
 
     @Test

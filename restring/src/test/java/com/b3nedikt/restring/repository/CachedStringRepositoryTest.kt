@@ -3,7 +3,7 @@ package com.b3nedikt.restring.repository
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.b3nedikt.restring.StringRepository
-import org.junit.Assert
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,7 +40,7 @@ class CachedStringRepositoryTest {
                 persistentRepository = persistentRepository
         )
 
-        Assert.assertEquals(locales, newRepository.supportedLocales)
+        assertEquals(locales, newRepository.supportedLocales)
     }
 
     @Test
@@ -50,7 +50,7 @@ class CachedStringRepositoryTest {
 
         stringRepository.setStrings(locale, strings)
 
-        Assert.assertEquals(strings, stringRepository.getStrings(locale))
+        assertEquals(strings, stringRepository.getStrings(locale))
     }
 
     @Test
@@ -61,7 +61,7 @@ class CachedStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
 
         for (i in 0 until stringCount) {
-            Assert.assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
+            assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
         }
     }
 
@@ -74,7 +74,7 @@ class CachedStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
         stringRepository.setString(locale, "key5", "aNewValue")
 
-        Assert.assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
+        assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
     }
 
     private fun generateStrings(count: Int): Map<String, String> {

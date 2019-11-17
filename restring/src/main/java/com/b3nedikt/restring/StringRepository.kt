@@ -13,12 +13,13 @@ interface StringRepository {
     var supportedLocales: Set<Locale>
 
     /**
-     * Set strings(key, value) for a specific locale.
+     * Get a string for a locale & key.
      *
-     * @param locale the strings belongs to.
-     * @param strings  new strings for the locale.
+     * @param locale the locale of the string.
+     * @param key      the string resource id.
+     * @return the string if exists, otherwise NULL.
      */
-    fun setStrings(locale: Locale, strings: Map<String, CharSequence>)
+    fun getString(locale: Locale, key: String): CharSequence?
 
     /**
      * set a single string(key, value) for a specific locale.
@@ -30,19 +31,36 @@ interface StringRepository {
     fun setString(locale: Locale, key: String, value: CharSequence)
 
     /**
-     * Get a string for a locale & key.
-     *
-     * @param locale the locale of the string.
-     * @param key      the string resource id.
-     * @return the string if exists, otherwise NULL.
-     */
-    fun getString(locale: Locale, key: String): CharSequence?
-
-    /**
      * Get all strings for a specific locale.
      *
      * @param locale the locale of the strings.
      * @return the map of string key & values. return empty map if there's no.
      */
     fun getStrings(locale: Locale): Map<String, CharSequence>
+
+    /**
+     * Set strings(key, value) for a specific locale.
+     *
+     * @param locale the strings belongs to.
+     * @param strings  new strings for the locale.
+     */
+    fun setStrings(locale: Locale, strings: Map<String, CharSequence>)
+
+
+    fun getQuantityString(locale: Locale, key: String): Map<PluralKeyword, CharSequence>?
+
+    fun setQuantityString(locale: Locale, key: String, quantityString: Map<PluralKeyword, CharSequence>)
+
+    fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>>
+
+    fun setQuantityStrings(locale: Locale, quantityStrings: Map<String, Map<PluralKeyword, CharSequence>>)
+
+
+    fun getStringArray(locale: Locale, key: String): Array<CharSequence>?
+
+    fun setStringArray(locale: Locale, key: String, stringArray: Array<CharSequence>)
+
+    fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>>
+
+    fun setStringArrays(locale: Locale, stringArrays: Map<String, Array<CharSequence>>)
 }

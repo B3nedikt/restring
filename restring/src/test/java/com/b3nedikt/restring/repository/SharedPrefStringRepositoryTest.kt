@@ -2,6 +2,7 @@ package com.b3nedikt.restring.repository
 
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.PluralKeyword
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,6 +71,7 @@ class SharedPrefStringRepositoryTest {
         val locale = Locale.ENGLISH
         val stringCount = 10
         val strings = generateStringArrays(stringCount)
+
         val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStringArrays(locale, strings)
 
@@ -94,5 +96,35 @@ class SharedPrefStringRepositoryTest {
         val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         assertEquals(newRepository.getStringArray(locale, "key5")?.contentDeepToString(),
                 stringArray.contentDeepToString())
+    }
+
+    @Test
+    fun shouldGetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+
+        val strings = generateQuantityStrings(stringCount)
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setQuantityStrings(locale, strings)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        for (i in 0 until stringCount) {
+            assertEquals(newRepository.getQuantityString(locale, "key$i"), strings["key$i"])
+        }
+    }
+
+    @Test
+    fun shouldSetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateQuantityStrings(stringCount)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setQuantityStrings(locale, strings)
+        val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
+        stringRepository.setQuantityString(locale, "key5", quantityString)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        assertEquals(newRepository.getQuantityString(locale, "key5"), quantityString)
     }
 }

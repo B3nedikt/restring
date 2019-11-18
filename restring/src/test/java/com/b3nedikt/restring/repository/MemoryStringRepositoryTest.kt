@@ -1,5 +1,6 @@
 package com.b3nedikt.restring.repository
 
+import com.b3nedikt.restring.PluralKeyword
 import com.b3nedikt.restring.StringRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -86,5 +87,30 @@ class MemoryStringRepositoryTest {
 
         assertEquals(stringRepository.getStringArray(locale, "key5")?.contentDeepToString(),
                 stringArray.contentDeepToString())
+    }
+
+    @Test
+    fun shouldGetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateQuantityStrings(stringCount)
+        stringRepository.setQuantityStrings(locale, strings)
+
+        for (i in 0 until stringCount) {
+            assertEquals(stringRepository.getQuantityString(locale, "key$i"), strings["key$i"])
+        }
+    }
+
+    @Test
+    fun shouldSetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateQuantityStrings(stringCount)
+
+        stringRepository.setQuantityStrings(locale, strings)
+        val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
+        stringRepository.setQuantityString(locale, "key5", quantityString)
+
+        assertEquals(stringRepository.getQuantityString(locale, "key5"), quantityString)
     }
 }

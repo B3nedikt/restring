@@ -53,6 +53,6 @@ enum class PluralKeyword(val stringValue: String) {
                     PluralRules.forLocale(locale).select(quantity.toDouble())
                 } else {
                     baseResources.getQuantityString(R.plurals.quantity_strings, quantity)
-                }.run { valueOf(this) }
+                }.run { valueOf(this.toUpperCase(Locale.ROOT)) }
     }
 }

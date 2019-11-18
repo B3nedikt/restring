@@ -65,7 +65,7 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
-                ?.let { String.format(it, formatArgs) }
+                ?.let { String.format(it, *formatArgs) }
         return value ?: super.getQuantityString(id, quantity, *formatArgs)
     }
 

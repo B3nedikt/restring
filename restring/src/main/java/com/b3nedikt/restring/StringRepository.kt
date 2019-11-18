@@ -22,7 +22,7 @@ interface StringRepository {
     fun getString(locale: Locale, key: String): CharSequence?
 
     /**
-     * set a single string(key, value) for a specific locale.
+     * Set a single string(key, value) for a specific locale.
      *
      * @param locale the string belongs to.
      * @param key      the key of the string which is the string resource id.
@@ -56,7 +56,7 @@ interface StringRepository {
     fun getQuantityString(locale: Locale, key: String): Map<PluralKeyword, CharSequence>?
 
     /**
-     * set a single quantity string(key, value) for a specific locale.
+     * Set a single quantity string(key, value) for a specific locale.
      *
      * @param locale the quantity string belongs to.
      * @param key      the key of the quantity string which is the quantity string resource id.
@@ -90,7 +90,7 @@ interface StringRepository {
     fun getStringArray(locale: Locale, key: String): Array<CharSequence>?
 
     /**
-     * set a string array(key, value) for a specific locale.
+     * Set a string array(key, value) for a specific locale.
      *
      * @param locale the string array belongs to.
      * @param key      the key of the string array which is the string array resource id.

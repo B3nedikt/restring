@@ -109,9 +109,9 @@ object Restring {
         if (config.stringsLoader != null) {
 
             val loaderTask = StringsLoaderTask(config.stringsLoader, stringRepository)
-            if(config.loadAsync){
+            if (config.loadAsync) {
                 loaderTask.runAsync()
-            }else{
+            } else {
                 loaderTask.runBlocking()
             }
         }
@@ -140,6 +140,20 @@ object Restring {
          * @param locale of the strings.
          * @return the strings as (key, value).
          */
-        fun getStrings(locale: Locale): Map<String, CharSequence>
+        fun getStrings(locale: Locale): Map<String, CharSequence> = emptyMap()
+
+        /** Get quantity strings of a language as keys &amp; values.
+         *
+         * @param locale of the quantity strings.
+         * @return the quantity strings as (key, value).
+         */
+        fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> = emptyMap()
+
+        /** Get string arrays of a language as keys &amp; values.
+         *
+         * @param locale of the quantity strings.
+         * @return the string arrays as (key, value).
+         */
+        fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> = emptyMap()
     }
 }

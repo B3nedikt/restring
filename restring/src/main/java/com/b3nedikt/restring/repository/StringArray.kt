@@ -1,6 +1,7 @@
 package com.b3nedikt.restring.repository
 
 import androidx.core.text.HtmlCompat
+import org.json.JSONArray
 import org.json.JSONObject
 
 internal data class StringArray(
@@ -9,7 +10,8 @@ internal data class StringArray(
 ) {
 
     fun toJson() = JSONObject().run {
-        value.forEach { accumulate("value", it) }
+        put("value", JSONArray(value))
+
         put("isText", isText)
 
         toString()

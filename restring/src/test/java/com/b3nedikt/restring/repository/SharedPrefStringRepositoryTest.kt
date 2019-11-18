@@ -69,7 +69,7 @@ class SharedPrefStringRepositoryTest {
     fun shouldGetSingleStringArray() {
         val locale = Locale.ENGLISH
         val stringCount = 10
-        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
+        val strings = generateStringArrays(stringCount)
         val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStringArrays(locale, strings)
 
@@ -78,5 +78,21 @@ class SharedPrefStringRepositoryTest {
             assertEquals(newRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
                     strings["key$i"]?.contentDeepToString())
         }
+    }
+
+    @Test
+    fun shouldSetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateStringArrays(stringCount)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setStringArrays(locale, strings)
+        val stringArray: Array<CharSequence> = arrayOf("aNewValue")
+        stringRepository.setStringArray(locale, "key5", stringArray)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        assertEquals(newRepository.getStringArray(locale, "key5")?.contentDeepToString(),
+                stringArray.contentDeepToString())
     }
 }

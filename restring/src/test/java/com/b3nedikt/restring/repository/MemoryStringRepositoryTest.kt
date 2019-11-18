@@ -73,4 +73,18 @@ class MemoryStringRepositoryTest {
                     strings["key$i"]?.contentDeepToString())
         }
     }
+
+    @Test
+    fun shouldSetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateStringArrays(stringCount)
+
+        stringRepository.setStringArrays(locale, strings)
+        val stringArray: Array<CharSequence> = arrayOf("aNewValue")
+        stringRepository.setStringArray(locale, "key5", stringArray)
+
+        assertEquals(stringRepository.getStringArray(locale, "key5")?.contentDeepToString(),
+                stringArray.contentDeepToString())
+    }
 }

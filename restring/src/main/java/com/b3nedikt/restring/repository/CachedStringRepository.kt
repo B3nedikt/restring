@@ -12,9 +12,12 @@ class CachedStringRepository(val cacheRepository: StringRepository,
         set(value) {
             field = value
             persistentRepository.supportedLocales = value
+            cacheRepository.supportedLocales = value
         }
 
     init {
+        cacheRepository.supportedLocales = persistentRepository.supportedLocales
+
         supportedLocales.forEach {
             cacheRepository.setStrings(it, persistentRepository.getStrings(it))
         }
@@ -61,7 +64,7 @@ class CachedStringRepository(val cacheRepository: StringRepository,
     }
 
     override fun getStringArray(locale: Locale, key: String): Array<CharSequence>? =
-            getStringArray(locale, key)
+            cacheRepository.getStringArray(locale, key)
 
     override fun setStringArray(locale: Locale, key: String, stringArray: Array<CharSequence>) {
         cacheRepository.setStringArray(locale, key, stringArray)

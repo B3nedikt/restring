@@ -18,7 +18,8 @@ class SharedPrefStringRepository(context: Context,
                                  stringsSharedPrefName: String = STRINGS_SHARED_PREF_NAME,
                                  textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME,
                                  localesSharedPrefName: String = LOCALES_SHARED_PREF_NAME,
-                                 quantityStringsSharedPrefName: String = QUANTITY_STRING_SHARED_PREF_NAME
+                                 quantityStringsSharedPrefName: String = QUANTITY_STRINGS_SHARED_PREF_NAME,
+                                 stringArraysSharedPrefName: String = STRING_ARRAYS_SHARED_PREF_NAME
 ) : StringRepository {
 
     private val stringsSharedPreferences by lazy {
@@ -31,6 +32,10 @@ class SharedPrefStringRepository(context: Context,
 
     private val quantityStringsSharedPreferences by lazy {
         context.getSharedPreferences(quantityStringsSharedPrefName, Context.MODE_PRIVATE)
+    }
+
+    private val stringArraysSharedPreferences by lazy {
+        context.getSharedPreferences(stringArraysSharedPrefName, Context.MODE_PRIVATE)
     }
 
     private val localesSharedPreferences by lazy {
@@ -63,12 +68,29 @@ class SharedPrefStringRepository(context: Context,
     }
 
     override fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val jsonString = quantityStringsSharedPreferences
+                .getString(LocaleUtil.toSimpleLanguageTag(locale), null)
+                ?: return emptyMap()
+
+        return JSONObject(jsonString).run {
+            keys().asSequence()
+                    .map { key -> key to QuantityString.fromJson(getString(key)).value }
+                    .toMap()
+        }
     }
 
     override fun setQuantityStrings(locale: Locale, quantityStrings: Map<String, Map<PluralKeyword, CharSequence>>) {
-        getQuantityStrings(locale).plus(quantityStrings)
-                .map { QuantityString(it.key, it.value) }
+        val combinedQuantityStrings = getQuantityStrings(locale).plus(quantityStrings)
+
+        val jsonString = JSONObject(
+            combinedQuantityStrings
+                    .map { it.key to QuantityString(it.value, it.value.entries.first().value !is String).toJson() }
+                    .toMap()
+        ).toString()
+
+        quantityStringsSharedPreferences.edit()
+                .putString(LocaleUtil.toSimpleLanguageTag(locale), jsonString)
+                .apply()
     }
 
     override fun getStringArray(locale: Locale, key: String) = getStringArrays(locale)[key]
@@ -78,11 +100,29 @@ class SharedPrefStringRepository(context: Context,
     }
 
     override fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val jsonString = stringArraysSharedPreferences
+                .getString(LocaleUtil.toSimpleLanguageTag(locale), null)
+                ?: return emptyMap()
+
+        return JSONObject(jsonString).run {
+            keys().asSequence()
+                    .map { key -> key to StringArray.fromJson(getString(key)).value.toTypedArray() }
+                    .toMap()
+        }
     }
 
     override fun setStringArrays(locale: Locale, stringArrays: Map<String, Array<CharSequence>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val combinedStringArrays = getStringArrays(locale).plus(stringArrays)
+
+        val jsonString = JSONObject(
+                combinedStringArrays
+                        .map { it.key to StringArray(it.value.asList(), it.value.first() !is String).toJson() }
+                        .toMap()
+        ).toString()
+
+        stringArraysSharedPreferences.edit()
+                .putString(LocaleUtil.toSimpleLanguageTag(locale), jsonString)
+                .apply()
     }
 
     private fun loadLocales() =
@@ -204,7 +244,8 @@ class SharedPrefStringRepository(context: Context,
         private const val STRINGS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Strings"
         private const val TEXTS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Texts"
         private const val LOCALES_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Locales"
-        private const val QUANTITY_STRING_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Quantity_Strings"
+        private const val QUANTITY_STRINGS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_Quantity_Strings"
+        private const val STRING_ARRAYS_SHARED_PREF_NAME = "com.b3nedikt.restring.Restring_String_Arrays"
 
         private const val LOCALES_SHARED_PREF_KEY = "com.b3nedikt.restring.Restring_Locales_Key"
     }

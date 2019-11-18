@@ -16,7 +16,7 @@ class MemoryStringRepository : StringRepository {
     private val quantityStrings = mutableMapOf<Locale, MutableMap<String, Map<PluralKeyword, CharSequence>>>()
     private val stringArrays = mutableMapOf<Locale, MutableMap<String, Array<CharSequence>>>()
 
-    override var supportedLocales: Set<Locale> = strings.keys
+    override var supportedLocales: Set<Locale> = emptySet()
 
     override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         if (!this.strings.containsKey(locale)) {

@@ -65,11 +65,18 @@ class SharedPrefStringRepositoryTest {
         assertEquals(newRepository.getString(locale, "key5"), "aNewValue")
     }
 
-    private fun generateStrings(count: Int): Map<String, String> {
-        val strings = LinkedHashMap<String, String>()
-        for (i in 0 until count) {
-            strings["key$i"] = "value$i"
+    @Test
+    fun shouldGetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setStringArrays(locale, strings)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        for (i in 0 until stringCount) {
+            assertEquals(newRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
+                    strings["key$i"]?.contentDeepToString())
         }
-        return strings
     }
 }

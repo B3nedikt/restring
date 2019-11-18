@@ -29,6 +29,15 @@ class MemoryStringRepositoryTest {
     }
 
     @Test
+    fun shouldSetAndGetLocales() {
+        val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
+
+        stringRepository.supportedLocales = locales
+
+        assertEquals(locales, stringRepository.supportedLocales)
+    }
+
+    @Test
     fun shouldGetSingleString() {
         val locale = Locale.ENGLISH
         val stringCount = 10
@@ -52,11 +61,16 @@ class MemoryStringRepositoryTest {
         assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
     }
 
-    private fun generateStrings(count: Int): Map<String, String> {
-        val strings = LinkedHashMap<String, String>()
-        for (i in 0 until count) {
-            strings["key$i"] = "value$i"
+    @Test
+    fun shouldGetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
+        stringRepository.setStringArrays(locale, strings)
+
+        for (i in 0 until stringCount) {
+            assertEquals(stringRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
+                    strings["key$i"]?.contentDeepToString())
         }
-        return strings
     }
 }

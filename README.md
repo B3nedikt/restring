@@ -115,13 +115,33 @@ Restring.init(this,
 If needed you can also provide custom repositories if you want to e.g. save the strings in a database
 instead of the SharedPreferences, or if you don´t want to use the StringsLoader mechanism.
 
+## Plurals & String arrays
+Restring also supports quantity strings (plurals) and string arrays.
+Just provide them in the strings loader like this or return an empty map if you don´t need plurals or string arrays.
+In kotlin these two methods already have a default implementation returning an empty map.
+```java
+public class SampleStringsLoader implements Restring.StringsLoader {
 
-## Notes:
+    ...
+
+    @NotNull
+    @Override
+    public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NotNull Locale locale) {
+        // Load quantity strings (plurals) here
+        return map;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, CharSequence[]> getStringArrays(@NotNull Locale locale) {
+        // Load string arrays here
+        return map;
+    }
+}
+```
+
+## Notes
 For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback. In the other words, Only the new provided strings will be overriden and for the rest the bundled version will be used.
-
-## Limitations
-1. Plurals are not supported yet.
-2. String arrays are not supported yet.
 
 ## License
 This is a fork of a library originally developed by Hamid Gharehdaghi.

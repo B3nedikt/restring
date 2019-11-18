@@ -2,7 +2,9 @@ package com.b3nedikt.restring.repository
 
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.PluralKeyword
 import com.b3nedikt.restring.StringRepository
+import junit.framework.TestCase.assertEquals
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -40,7 +42,7 @@ class CachedStringRepositoryTest {
                 persistentRepository = persistentRepository
         )
 
-        Assert.assertEquals(locales, newRepository.supportedLocales)
+        assertEquals(locales, newRepository.supportedLocales)
     }
 
     @Test
@@ -50,7 +52,7 @@ class CachedStringRepositoryTest {
 
         stringRepository.setStrings(locale, strings)
 
-        Assert.assertEquals(strings, stringRepository.getStrings(locale))
+        assertEquals(strings, stringRepository.getStrings(locale))
     }
 
     @Test
@@ -61,7 +63,7 @@ class CachedStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
 
         for (i in 0 until stringCount) {
-            Assert.assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
+            assertEquals(stringRepository.getString(locale, "key$i"), "value$i")
         }
     }
 
@@ -74,14 +76,59 @@ class CachedStringRepositoryTest {
         stringRepository.setStrings(locale, strings)
         stringRepository.setString(locale, "key5", "aNewValue")
 
-        Assert.assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
+        assertEquals(stringRepository.getString(locale, "key5"), "aNewValue")
     }
 
-    private fun generateStrings(count: Int): Map<String, String> {
-        val strings = LinkedHashMap<String, String>()
-        for (i in 0 until count) {
-            strings["key$i"] = "value$i"
+    @Test
+    fun shouldGetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
+        stringRepository.setStringArrays(locale, strings)
+
+        for (i in 0 until stringCount) {
+            assertEquals(stringRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
+                    strings["key$i"]?.contentDeepToString())
         }
-        return strings
+    }
+
+    @Test
+    fun shouldSetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateStringArrays(stringCount)
+
+        stringRepository.setStringArrays(locale, strings)
+        val stringArray: Array<CharSequence> = arrayOf("aNewValue")
+        stringRepository.setStringArray(locale, "key5", stringArray)
+
+        Assert.assertEquals(stringRepository.getStringArray(locale, "key5")?.contentDeepToString(),
+                stringArray.contentDeepToString())
+    }
+
+    @Test
+    fun shouldGetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+
+        val strings = generateQuantityStrings(stringCount)
+        stringRepository.setQuantityStrings(locale, strings)
+
+        for (i in 0 until stringCount) {
+            Assert.assertEquals(stringRepository.getQuantityString(locale, "key$i"), strings["key$i"])
+        }
+    }
+
+    @Test
+    fun shouldSetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateQuantityStrings(stringCount)
+
+        stringRepository.setQuantityStrings(locale, strings)
+        val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
+        stringRepository.setQuantityString(locale, "key5", quantityString)
+
+        Assert.assertEquals(stringRepository.getQuantityString(locale, "key5"), quantityString)
     }
 }

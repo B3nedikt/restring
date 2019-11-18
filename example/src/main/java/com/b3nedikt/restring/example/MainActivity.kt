@@ -32,6 +32,13 @@ class MainActivity : BaseActivity() {
 
                 val rootView = window.decorView.findViewById<ContentFrameLayout>(android.R.id.content)
                 Restring.reword(rootView)
+
+                stringArrayTextView.text = resources.getStringArray(R.array.string_array)
+                        .joinToString("\n")
+
+                quantityStringTextView.text = (0 until 3)
+                        .joinToString("\n")
+                        { resources.getQuantityString(R.plurals.quantity_string, it, it) }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit

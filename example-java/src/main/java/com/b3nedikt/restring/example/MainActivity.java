@@ -1,11 +1,13 @@
 package com.b3nedikt.restring.example;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +20,8 @@ import java.util.Locale;
 public class MainActivity extends BaseActivity {
 
     private Spinner spinner;
+    private TextView stringArrayTextView;
+    private TextView quantityStringTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,6 +29,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         spinner = findViewById(R.id.spinner);
+        stringArrayTextView = findViewById(R.id.stringArrayTextView);
+        quantityStringTextView = findViewById(R.id.quantityStringTextView);
 
         final List<String> localeStrings = new ArrayList<>();
         for (Locale locale : Locales.APP_LOCALES) {
@@ -49,11 +55,30 @@ public class MainActivity extends BaseActivity {
                 // The layout containing the views you want to localize
                 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
                 Restring.reword(rootView);
+
+                displayStringArray();
+
+                displayQuantityString();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void displayStringArray() {
+        final String[] stringArray = getResources().getStringArray(R.array.string_array);
+        final String stringArrayString = TextUtils.join("\n", stringArray);
+        stringArrayTextView.setText(stringArrayString);
+    }
+
+    private void displayQuantityString() {
+        final String[] quantityStrings = new String[3];
+        for (int i = 0; i < 3; i++) {
+            quantityStrings[i] = getResources().getQuantityString(R.plurals.quantity_string, i, i);
+        }
+        final String combinedQuantityStrings = TextUtils.join("\n", quantityStrings);
+        quantityStringTextView.setText(combinedQuantityStrings);
     }
 }

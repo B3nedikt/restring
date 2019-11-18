@@ -2,6 +2,7 @@ package com.b3nedikt.restring.repository
 
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
+import com.b3nedikt.restring.PluralKeyword
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -65,11 +66,65 @@ class SharedPrefStringRepositoryTest {
         assertEquals(newRepository.getString(locale, "key5"), "aNewValue")
     }
 
-    private fun generateStrings(count: Int): Map<String, String> {
-        val strings = LinkedHashMap<String, String>()
-        for (i in 0 until count) {
-            strings["key$i"] = "value$i"
+    @Test
+    fun shouldGetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateStringArrays(stringCount)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setStringArrays(locale, strings)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        for (i in 0 until stringCount) {
+            assertEquals(newRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
+                    strings["key$i"]?.contentDeepToString())
         }
-        return strings
+    }
+
+    @Test
+    fun shouldSetSingleStringArray() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateStringArrays(stringCount)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setStringArrays(locale, strings)
+        val stringArray: Array<CharSequence> = arrayOf("aNewValue")
+        stringRepository.setStringArray(locale, "key5", stringArray)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        assertEquals(newRepository.getStringArray(locale, "key5")?.contentDeepToString(),
+                stringArray.contentDeepToString())
+    }
+
+    @Test
+    fun shouldGetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+
+        val strings = generateQuantityStrings(stringCount)
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setQuantityStrings(locale, strings)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        for (i in 0 until stringCount) {
+            assertEquals(newRepository.getQuantityString(locale, "key$i"), strings["key$i"])
+        }
+    }
+
+    @Test
+    fun shouldSetSingleQuantityString() {
+        val locale = Locale.ENGLISH
+        val stringCount = 10
+        val strings = generateQuantityStrings(stringCount)
+
+        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        stringRepository.setQuantityStrings(locale, strings)
+        val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
+        stringRepository.setQuantityString(locale, "key5", quantityString)
+
+        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+        assertEquals(newRepository.getQuantityString(locale, "key5"), quantityString)
     }
 }

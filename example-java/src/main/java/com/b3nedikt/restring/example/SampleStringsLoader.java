@@ -1,5 +1,6 @@
 package com.b3nedikt.restring.example;
 
+import com.b3nedikt.restring.PluralKeyword;
 import com.b3nedikt.restring.Restring;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,32 @@ public class SampleStringsLoader implements Restring.StringsLoader {
             map.put("title", "Titel (aus restring).");
             map.put("subtitle", "Untertitel (aus restring).");
         }
+        return map;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NotNull Locale locale) {
+        final Map<String, Map<PluralKeyword, CharSequence>> map = new HashMap<>();
+
+        final Map<PluralKeyword, CharSequence> quantityStrings = new HashMap<>();
+        quantityStrings.put(PluralKeyword.ONE, "%d quantity string " + locale + " (from restring)");
+        quantityStrings.put(PluralKeyword.OTHER, "%d quantity strings " + locale + " (from restring)");
+
+        map.put("quantity_string", quantityStrings);
+        return map;
+    }
+
+    @NotNull
+    @Override
+    public Map<String, CharSequence[]> getStringArrays(@NotNull Locale locale) {
+        final Map<String, CharSequence[]> map = new HashMap<>();
+
+        final CharSequence[] stringArray = new CharSequence[2];
+        stringArray[0] = "String Array 1 " + locale + " (from restring)";
+        stringArray[1] = "String Array 2 " + locale + " (from restring)";
+
+        map.put("string_array", stringArray);
         return map;
     }
 }

@@ -4,4 +4,15 @@
     <string name="text_view_text">TextView Text English</string>
     <string name="subtitle">Subtitle.</string>
     <string name="untranslated"><b>Untranslated</b></string>
+
+    <string-array name="string_array">
+        <item>String Array 1 EN</item>
+        <item>String Array 2 EN</item>
+    </string-array>
+
+    <plurals name="quantity_string">
+        <item quantity="one">%d quantity string EN</item>
+        <item quantity="other">%d quantity strings EN</item>
+    </plurals>
+
 </resources>

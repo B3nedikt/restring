@@ -10,17 +10,21 @@ internal data class StringArray(
 ) {
 
     fun toJson() = JSONObject().run {
-        put("value", JSONArray(value))
+        put(VALUE_KEY, JSONArray(value))
 
-        put("isText", isText)
+        put(IS_TEXT_KEY, isText)
 
         toString()
     }
 
     companion object {
+
+        const val VALUE_KEY = "value"
+        const val IS_TEXT_KEY = "isText"
+
         fun fromJson(jsonString: String) = JSONObject(jsonString).run {
-            val valueJsonArray = getJSONArray("value")
-            val isText = getBoolean("isText")
+            val valueJsonArray = getJSONArray(VALUE_KEY)
+            val isText = getBoolean(IS_TEXT_KEY)
 
             val value = mutableListOf<CharSequence>()
 

@@ -11,18 +11,23 @@ internal data class QuantityString(
 ) {
 
     fun toJson() = JSONObject().run {
-        put("value", JSONObject().apply {
+
+        put(VALUE_KEY, JSONObject().apply {
             value.forEach { put(it.key.stringValue, it.value) }
         })
-        put("isText", isText)
+        put(IS_TEXT_KEY, isText)
 
         toString()
     }
 
     companion object {
+
+        const val VALUE_KEY = "value"
+        const val IS_TEXT_KEY = "isText"
+
         fun fromJson(jsonString: String) = JSONObject(jsonString).run {
-            val valueJsonObject = getJSONObject("value")
-            val isText = getBoolean("isText")
+            val valueJsonObject = getJSONObject(VALUE_KEY)
+            val isText = getBoolean(IS_TEXT_KEY)
 
             val value = mutableMapOf<PluralKeyword, CharSequence>()
             val names = valueJsonObject.names()

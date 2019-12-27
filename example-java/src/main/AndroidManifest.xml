@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.b3nedikt.restring.example">
+    package="dev.b3nedikt.restring.example">
 
     <application
-        android:name="com.b3nedikt.restring.example.SampleApplication"
+        android:name="dev.b3nedikt.restring.example.dev.b3nedikt.restring.example.SampleApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name="com.b3nedikt.restring.example.MainActivity"
+        <activity android:name="dev.b3nedikt.restring.example.dev.b3nedikt.restring.example.MainActivity"
             android:configChanges="locale" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

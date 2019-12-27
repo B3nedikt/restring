@@ -2,7 +2,7 @@ ext {
     bintrayRepo = 'restring'
     bintrayName = 'restring'
 
-    publishedGroupId = 'com.b3nedikt.restring'
+    publishedGroupId = 'dev.b3nedikt.restring'
     artifact = 'restring'
     libraryVersion = '3.1.0'
 

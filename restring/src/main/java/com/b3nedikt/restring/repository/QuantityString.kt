@@ -3,7 +3,6 @@ package com.b3nedikt.restring.repository
 import androidx.core.text.HtmlCompat
 import com.b3nedikt.restring.PluralKeyword
 import org.json.JSONObject
-import java.util.*
 
 internal data class QuantityString(
         val value: Map<PluralKeyword, CharSequence>,
@@ -13,7 +12,7 @@ internal data class QuantityString(
     fun toJson() = JSONObject().run {
 
         put(VALUE_KEY, JSONObject().apply {
-            value.forEach { put(it.key.stringValue, it.value) }
+            value.forEach { put(it.key.name, it.value) }
         })
         put(IS_TEXT_KEY, isText)
 
@@ -42,7 +41,7 @@ internal data class QuantityString(
                     } else {
                         string
                     }
-                    value[PluralKeyword.valueOf(name.toUpperCase(Locale.ROOT))] = text
+                    value[PluralKeyword.valueOf(name)] = text
                 }
             }
 

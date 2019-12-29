@@ -27,6 +27,8 @@ install {
                     id developerId
                     name developerName
                     email developerEmail
+                    organization organization
+                    organizationUrl siteUrl
                 }
             }
             scm {

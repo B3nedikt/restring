@@ -16,8 +16,8 @@ ext {
 
     developerId = 'b3nedikt'
     developerName = 'Benedikt Löbbecke'
-    developerEmail = 'benedikt.loebbecke@gmail.com'
-    organization = ''
+    developerEmail = 'mail@b3nedikt.dev'
+    organization = 'b3nedikt.dev'
 }
 
 apply from: 'install.gradle'

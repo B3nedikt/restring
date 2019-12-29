@@ -37,9 +37,7 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-/*--------------------------------*/
 
-// Bintray
 String localProperty(propertyName) {
     Properties properties = new Properties()
     File file = project.rootProject.file('local.properties')
@@ -59,7 +57,7 @@ bintray {
         repo = bintrayRepo
         name = bintrayName
         desc = libraryDescription
-        userOrg = organization
+
         // If the repository is hosted by an organization instead of personal account.
         websiteUrl = siteUrl
         vcsUrl = gitUrl
@@ -69,6 +67,17 @@ bintray {
         publicDownloadNumbers = true
         version {
             desc = libraryDescription
+
+            gpg {
+                sign = true
+                passphrase = localProperty('gpgPassphrase')
+            }
+
+            mavenCentralSync {
+                sync = true
+                user = localProperty('userToken') //OSS user token
+                password = localProperty('paasword') //OSS user password
+            }
         }
     }
 }

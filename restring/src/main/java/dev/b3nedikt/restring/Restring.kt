@@ -2,14 +2,9 @@ package dev.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.view.View
 import dev.b3nedikt.restring.repository.CachedStringRepository
 import dev.b3nedikt.restring.repository.MemoryStringRepository
 import dev.b3nedikt.restring.repository.SharedPrefStringRepository
-import dev.b3nedikt.restring.transformer.BottomNavigationViewViewTransformer
-import dev.b3nedikt.restring.transformer.SupportToolbarViewTransformer
-import dev.b3nedikt.restring.transformer.TextViewViewTransformer
-import dev.b3nedikt.restring.transformer.ToolbarViewTransformer
 import java.util.*
 
 
@@ -29,15 +24,6 @@ object Restring {
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
 
-    internal val viewTransformerManager: ViewTransformerManager by lazy {
-        ViewTransformerManager().apply {
-            registerTransformer(TextViewViewTransformer)
-            registerTransformer(ToolbarViewTransformer)
-            registerTransformer(SupportToolbarViewTransformer)
-            registerTransformer(BottomNavigationViewViewTransformer)
-        }
-    }
-
     /**
      * Initialize Restring with the specified configuration.
      *
@@ -53,8 +39,6 @@ object Restring {
 
         isInitialized = true
         initStringRepository(context, config)
-
-        config.viewTransformers.forEach { viewTransformerManager.registerTransformer(it) }
     }
 
     /**
@@ -89,18 +73,6 @@ object Restring {
     @JvmStatic
     fun setString(locale: Locale, key: String, value: String) {
         stringRepository.setString(locale, key, value)
-    }
-
-    /**
-     * Will update the text of all views in the view hierarchy below the provided parent view.
-     * Can be used to update the texts of a activity or fragment without restarting it. To do this
-     * just use the root view of the activity or fragment.
-     *
-     * @param parent the parent view of the views you want to update the texts of
-     */
-    @JvmStatic
-    fun reword(parent: View) {
-        viewTransformerManager.transformChildren(parent)
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {

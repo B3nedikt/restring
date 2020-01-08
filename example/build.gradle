@@ -29,6 +29,7 @@ dependencies {
     implementation deps.constraintLayout
     implementation deps.kotlin
     implementation deps.viewPump
+    implementation deps.reword
 }
 repositories {
     mavenCentral()

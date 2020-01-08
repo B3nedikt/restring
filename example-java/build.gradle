@@ -30,6 +30,7 @@ dependencies {
     implementation deps.appCompat
     implementation deps.constraintLayout
     implementation deps.viewPump
+    implementation deps.reword
 }
 repositories {
     mavenCentral()

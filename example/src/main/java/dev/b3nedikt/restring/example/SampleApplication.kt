@@ -3,7 +3,7 @@ package dev.b3nedikt.restring.example
 import android.app.Application
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.RestringConfig
-import dev.b3nedikt.restring.RestringInterceptor
+import dev.b3nedikt.reword.RewordInterceptor
 import io.github.inflationx.viewpump.ViewPump
 
 
@@ -19,7 +19,7 @@ class SampleApplication : Application() {
         )
 
         ViewPump.init(ViewPump.builder()
-                .addInterceptor(RestringInterceptor)
+                .addInterceptor(RewordInterceptor)
                 .build()
         )
     }

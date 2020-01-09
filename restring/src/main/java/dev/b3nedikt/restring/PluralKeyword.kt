@@ -3,7 +3,6 @@ package dev.b3nedikt.restring
 import android.content.res.Resources
 import android.icu.text.PluralRules
 import android.os.Build
-import dev.b3nedikt.restring.R
 import java.util.*
 
 /**
@@ -54,6 +53,6 @@ enum class PluralKeyword {
                     PluralRules.forLocale(locale).select(quantity.toDouble())
                 } else {
                     baseResources.getQuantityString(R.plurals.quantity_strings, quantity)
-                }.run { valueOf(this.toUpperCase(Locale.ROOT)) }
+                }.run { valueOf(toUpperCase(Locale.ROOT)) }
     }
 }

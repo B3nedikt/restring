@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.ContentFrameLayout
 import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.reword.Reword
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -31,7 +32,7 @@ class MainActivity : BaseActivity() {
                 Restring.locale = APP_LOCALES[position]
 
                 val rootView = window.decorView.findViewById<ContentFrameLayout>(android.R.id.content)
-                Restring.reword(rootView)
+                Reword.reword(rootView)
 
                 stringArrayTextView.text = resources.getStringArray(R.array.string_array)
                         .joinToString("\n")

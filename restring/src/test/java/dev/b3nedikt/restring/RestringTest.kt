@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
-import dev.b3nedikt.restring.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.b3nedikt.restring.activity.TestActivity
 import dev.b3nedikt.restring.shadow.MyShadowAsyncTask
+import dev.b3nedikt.reword.RewordInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import org.hamcrest.core.StringStartsWith.startsWith
 import org.junit.Assert.assertThat
@@ -33,7 +33,7 @@ class RestringTest {
                         .stringsLoader(MyStringLoader())
                         .build()
         )
-        ViewPump.init(ViewPump.builder().addInterceptor(RestringInterceptor).build())
+        ViewPump.init(ViewPump.builder().addInterceptor(RewordInterceptor).build())
 
         Robolectric.flushBackgroundThreadScheduler()
     }

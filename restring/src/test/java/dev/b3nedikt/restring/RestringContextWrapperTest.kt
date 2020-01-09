@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
-import dev.b3nedikt.restring.R
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
@@ -26,8 +24,6 @@ class RestringContextWrapperTest {
 
     private lateinit var stringRepository: StringRepository
 
-    private lateinit var transformerManager: ViewTransformerManager
-
     private val locale: Locale
         get() = Locale.getDefault()
 
@@ -35,13 +31,11 @@ class RestringContextWrapperTest {
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         stringRepository = mock()
-        transformerManager = mock()
 
         whenever(stringRepository.supportedLocales).thenReturn(setOf(locale))
 
         originalResources = context.resources
 
-        whenever(transformerManager.transform(any(), any())).thenAnswer { i -> i.getArgument(0) }
         restringContextWrapper = RestringContextWrapper.wrap(
                 context,
                 stringRepository

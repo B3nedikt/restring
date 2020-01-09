@@ -55,6 +55,8 @@ dependencies {
     testImplementation deps.robolectric
     testImplementation deps.mockitoKotlin
     testImplementation deps.testCore
+
+    testImplementation deps.reword
 }
 
 apply from: 'publish.gradle'

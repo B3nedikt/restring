@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.Assert.assertEquals
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,8 +24,7 @@ class RestringContextWrapperTest {
 
     private lateinit var stringRepository: StringRepository
 
-    private val locale: Locale
-        get() = Locale.getDefault()
+    private val locale = Locale.getDefault()
 
     @Before
     fun setUp() {
@@ -48,7 +47,7 @@ class RestringContextWrapperTest {
 
         val real = restringContextWrapper.resources.getString(STR_RES_ID)
 
-        assertEquals(STR_VALUE, real)
+        STR_VALUE shouldBeEqualTo real
     }
 
     private companion object {

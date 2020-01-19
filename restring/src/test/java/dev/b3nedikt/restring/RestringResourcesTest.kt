@@ -1,19 +1,17 @@
 package dev.b3nedikt.restring
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Build
 import android.text.Html
 import android.text.TextUtils
 import androidx.core.text.HtmlCompat
 import androidx.test.core.app.ApplicationProvider
-import dev.b3nedikt.restring.R
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -24,24 +22,15 @@ import java.util.*
 @Config(sdk = [Build.VERSION_CODES.P])
 class RestringResourcesTest {
 
-    private lateinit var repository: StringRepository
+    private val locale = Locale.getDefault()
 
-    private lateinit var resources: Resources
-
-    private lateinit var restringResources: RestringResources
-
-    private val locale: Locale
-        get() = Locale.getDefault()
-
-    @Before
-    fun setUp() {
-        repository = mock()
-        resources =  (ApplicationProvider.getApplicationContext() as Context).resources
-
-        whenever(repository.supportedLocales).thenReturn(setOf(locale))
-
-        restringResources = spy(RestringResources(resources, repository))
+    private val repository = mock<StringRepository> {
+        on { supportedLocales } doReturn setOf(locale)
     }
+
+    private val resources = (ApplicationProvider.getApplicationContext() as Context).resources
+
+    private val restringResources = spy(RestringResources(resources, repository))
 
     @Test
     fun shouldGetStringFromRepositoryIfExists() {
@@ -90,7 +79,8 @@ class RestringResourcesTest {
         val realValue = restringResources.getText(STR_RES_ID)
 
         val expected = Html.fromHtml(STR_VALUE_HTML.toString(), Html.FROM_HTML_MODE_COMPACT)
-        assertTrue(TextUtils.equals(expected, realValue))
+
+        realValue shouldBeEqualTo expected
     }
 
     @Test
@@ -100,7 +90,8 @@ class RestringResourcesTest {
         val realValue = restringResources.getText(STR_RES_ID)
 
         val expected = resources.getText(STR_RES_ID)
-        assertTrue(TextUtils.equals(expected, realValue))
+
+        realValue shouldBeEqualTo expected
     }
 
     @Test
@@ -110,7 +101,12 @@ class RestringResourcesTest {
 
         val realValue = restringResources.getText(0, def)
 
-        assertTrue(TextUtils.equals(def, realValue))
+        realValue shouldBeEqualTo def
+    }
+
+    private infix fun CharSequence.shouldBeEqualTo(expected: CharSequence) = this.apply {
+        assertTrue("Expected '$this' to have the same text as $expected",
+                TextUtils.equals(this, expected))
     }
 
     private companion object {

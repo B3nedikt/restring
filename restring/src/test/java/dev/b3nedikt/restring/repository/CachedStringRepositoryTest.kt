@@ -1,12 +1,12 @@
 package dev.b3nedikt.restring.repository
 
+import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.StringRepository
 import junit.framework.TestCase.assertEquals
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -17,17 +17,14 @@ import java.util.*
 @Config(sdk = [Build.VERSION_CODES.P])
 class CachedStringRepositoryTest {
 
-    private lateinit var stringRepository: StringRepository
+    private val context: Context = ApplicationProvider.getApplicationContext()
 
-    @Before
-    fun setUp() {
-        val persistentRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
+    private val persistentRepository = SharedPrefStringRepository(context)
 
-        stringRepository = CachedStringRepository(
-                cacheRepository = MemoryStringRepository(),
-                persistentRepository = persistentRepository
-        )
-    }
+    private val stringRepository = CachedStringRepository(
+            cacheRepository = MemoryStringRepository(),
+            persistentRepository = persistentRepository
+    )
 
     @Test
     fun shouldSetAndGetLocales() {
@@ -35,14 +32,12 @@ class CachedStringRepositoryTest {
 
         stringRepository.supportedLocales = locales
 
-        val persistentRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-
         val newRepository = CachedStringRepository(
                 cacheRepository = MemoryStringRepository(),
                 persistentRepository = persistentRepository
         )
 
-        assertEquals(locales, newRepository.supportedLocales)
+        locales shouldBeEqualTo newRepository.supportedLocales
     }
 
     @Test
@@ -52,7 +47,7 @@ class CachedStringRepositoryTest {
 
         stringRepository.setStrings(locale, strings)
 
-        assertEquals(strings, stringRepository.getStrings(locale))
+        strings shouldBeEqualTo stringRepository.getStrings(locale)
     }
 
     @Test

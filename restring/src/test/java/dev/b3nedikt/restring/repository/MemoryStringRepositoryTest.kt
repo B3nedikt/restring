@@ -1,9 +1,7 @@
 package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.StringRepository
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -12,12 +10,7 @@ import java.util.*
 @RunWith(JUnit4::class)
 class MemoryStringRepositoryTest {
 
-    private lateinit var stringRepository: StringRepository
-
-    @Before
-    fun setUp() {
-        stringRepository = MemoryStringRepository()
-    }
+    private var stringRepository = MemoryStringRepository()
 
     @Test
     fun shouldSetAndGetStringPairs() {

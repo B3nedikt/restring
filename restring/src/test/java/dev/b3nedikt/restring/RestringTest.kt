@@ -10,8 +10,7 @@ import dev.b3nedikt.restring.activity.TestActivity
 import dev.b3nedikt.restring.shadow.MyShadowAsyncTask
 import dev.b3nedikt.reword.RewordInterceptor
 import io.github.inflationx.viewpump.ViewPump
-import org.hamcrest.core.StringStartsWith.startsWith
-import org.junit.Assert.assertThat
+import org.amshove.kluent.shouldStartWith
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +18,6 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 @RunWith(RobolectricTestRunner::class)
 @Config(shadows = [MyShadowAsyncTask::class], sdk = [Build.VERSION_CODES.P])
@@ -41,19 +39,21 @@ class RestringTest {
     @Test
     fun shouldInflateAndTransformViewsOnActivityCreation() {
         RestringLocale.isInitial = true
-        val locales = listOf("en", "fa", "de")
-        for (lang in locales) {
-            Locale.setDefault(Locale(lang))
-            shouldInflateAndTransformViewsOnActivityCreation(lang)
+        val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
+
+        for (locale in locales) {
+            Locale.setDefault(locale)
+            shouldInflateAndTransformViewsOnActivityCreation(locale.language)
         }
     }
 
     @Test
     fun shouldInflateAndTransformViewsOnActivityCreationFromRestringLocale() {
-        val locales = listOf("en", "fa", "de")
-        for (lang in locales) {
-            RestringLocale.currentLocale = Locale(lang)
-            shouldInflateAndTransformViewsOnActivityCreation(lang)
+        val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
+
+        for (locale in locales) {
+            RestringLocale.currentLocale = locale
+            shouldInflateAndTransformViewsOnActivityCreation(locale.language)
         }
     }
 
@@ -66,17 +66,15 @@ class RestringTest {
         for (i in 0 until childCount) {
             when (val view = viewGroup.getChildAt(i)) {
                 is TextView -> {
-                    assertThat("TextView[text]", view.text.toString(), startsWith(lang))
-                    assertThat("TextView[hint]", view.hint.toString(), startsWith(lang))
+                    view.text shouldStartWith lang
+                    view.hint shouldStartWith lang
                 }
-                is Toolbar -> assertThat("Toolbar[title]", view.title.toString(), startsWith(lang))
+                is Toolbar -> view.title shouldStartWith lang
                 is BottomNavigationView -> {
                     val itemCount = view.menu.size()
                     for (item in 0 until itemCount) {
-                        assertThat("BottomNavigationView#$item[title]",
-                                view.menu.getItem(item).title.toString(), startsWith(lang))
-                        assertThat("BottomNavigationView#$item[titleCondensed]",
-                                view.menu.getItem(item).titleCondensed.toString(), startsWith(lang))
+                        view.menu.getItem(item).title shouldStartWith lang
+                        view.menu.getItem(item).titleCondensed shouldStartWith lang
                     }
                 }
             }
@@ -87,20 +85,17 @@ class RestringTest {
 
     private inner class MyStringLoader : Restring.StringsLoader {
 
-        override val locales: List<Locale>
-            get() = listOf(Locale.ENGLISH, Locale("fa"), Locale.GERMAN)
+        override val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
 
-        override fun getStrings(locale: Locale): Map<String, String> {
-            val strings = LinkedHashMap<String, String>()
-            strings["header"] = locale.language + "_" + "header"
-            strings["header_hint"] = locale.language + "_" + "hint"
-            strings["menu1title"] = locale.language + "_" + "Menu 1"
-            strings["menu1titleCondensed"] = locale.language + "_" + "Menu1"
-            strings["menu2title"] = locale.language + "_" + "Menu 2"
-            strings["menu2titleCondensed"] = locale.language + "_" + "Menu2"
-            strings["menu3title"] = locale.language + "_" + "Menu 3"
-            strings["menu3titleCondensed"] = locale.language + "_" + "Menu3"
-            return strings
-        }
+        override fun getStrings(locale: Locale) = mapOf(
+                "header" to locale.language + "_" + "header",
+                "header_hint" to locale.language + "_" + "hint",
+                "menu1title" to locale.language + "_" + "Menu 1",
+                "menu1titleCondensed" to locale.language + "_" + "Menu1",
+                "menu2title" to locale.language + "_" + "Menu 2",
+                "menu2titleCondensed" to locale.language + "_" + "Menu2",
+                "menu3title" to locale.language + "_" + "Menu 3",
+                "menu3titleCondensed" to locale.language + "_" + "Menu3"
+        )
     }
 }

@@ -83,7 +83,6 @@ internal class RestringResources(val res: Resources,
         return value ?: super.getTextArray(id)
     }
 
-
     private fun getQuantityStringFromRepository(id: Int, quantity: Int): CharSequence? {
 
         val resultLocale = getLocale() ?: return null

@@ -50,7 +50,7 @@ dependencies {
 
     // Test libraries
     testImplementation deps.junit
-    testImplementation deps.hamcrest
+    testImplementation deps.kluent
     testImplementation deps.mockito
     testImplementation deps.robolectric
     testImplementation deps.mockitoKotlin

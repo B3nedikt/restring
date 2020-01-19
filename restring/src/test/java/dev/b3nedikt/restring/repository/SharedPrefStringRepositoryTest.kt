@@ -1,5 +1,6 @@
 package dev.b3nedikt.restring.repository
 
+import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
@@ -14,15 +15,19 @@ import java.util.*
 @Config(sdk = [Build.VERSION_CODES.P])
 class SharedPrefStringRepositoryTest {
 
+    private val context: Context = ApplicationProvider.getApplicationContext()
+
+    private val stringRepository = SharedPrefStringRepository(context)
+
+    private val newStringRepository = SharedPrefStringRepository(context)
+
     @Test
     fun shouldSetAndGetLocales() {
         val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.supportedLocales = locales
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        assertEquals(locales, newRepository.supportedLocales)
+        assertEquals(locales, newStringRepository.supportedLocales)
     }
 
     @Test
@@ -30,11 +35,9 @@ class SharedPrefStringRepositoryTest {
         val locale = Locale.ENGLISH
         val strings = generateStrings(10)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStrings(locale, strings)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        assertEquals(strings, newRepository.getStrings(locale))
+        assertEquals(strings, newStringRepository.getStrings(locale))
     }
 
     @Test
@@ -43,12 +46,10 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
         val strings = generateStrings(stringCount)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStrings(locale, strings)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         for (i in 0 until stringCount) {
-            assertEquals(newRepository.getString(locale, "key$i"), "value$i")
+            assertEquals(newStringRepository.getString(locale, "key$i"), "value$i")
         }
     }
 
@@ -58,12 +59,10 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
         val strings = generateStrings(stringCount)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStrings(locale, strings)
         stringRepository.setString(locale, "key5", "aNewValue")
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        assertEquals(newRepository.getString(locale, "key5"), "aNewValue")
+        assertEquals(newStringRepository.getString(locale, "key5"), "aNewValue")
     }
 
     @Test
@@ -72,12 +71,10 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
         val strings = generateStringArrays(stringCount)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStringArrays(locale, strings)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         for (i in 0 until stringCount) {
-            assertEquals(newRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
+            assertEquals(newStringRepository.getStringArray(locale, "key$i")?.contentDeepToString(),
                     strings["key$i"]?.contentDeepToString())
         }
     }
@@ -88,13 +85,11 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
         val strings = generateStringArrays(stringCount)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setStringArrays(locale, strings)
         val stringArray: Array<CharSequence> = arrayOf("aNewValue")
         stringRepository.setStringArray(locale, "key5", stringArray)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        assertEquals(newRepository.getStringArray(locale, "key5")?.contentDeepToString(),
+        assertEquals(newStringRepository.getStringArray(locale, "key5")?.contentDeepToString(),
                 stringArray.contentDeepToString())
     }
 
@@ -104,12 +99,10 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
 
         val strings = generateQuantityStrings(stringCount)
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setQuantityStrings(locale, strings)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         for (i in 0 until stringCount) {
-            assertEquals(newRepository.getQuantityString(locale, "key$i"), strings["key$i"])
+            assertEquals(newStringRepository.getQuantityString(locale, "key$i"), strings["key$i"])
         }
     }
 
@@ -119,12 +112,10 @@ class SharedPrefStringRepositoryTest {
         val stringCount = 10
         val strings = generateQuantityStrings(stringCount)
 
-        val stringRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
         stringRepository.setQuantityStrings(locale, strings)
         val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
         stringRepository.setQuantityString(locale, "key5", quantityString)
 
-        val newRepository = SharedPrefStringRepository(ApplicationProvider.getApplicationContext())
-        assertEquals(newRepository.getQuantityString(locale, "key5"), quantityString)
+        assertEquals(newStringRepository.getQuantityString(locale, "key5"), quantityString)
     }
 }

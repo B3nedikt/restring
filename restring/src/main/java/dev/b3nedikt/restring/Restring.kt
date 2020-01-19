@@ -9,8 +9,7 @@ import java.util.*
 
 
 /**
- * Entry point for Restring. it will be used for initializing Restring components, setting new strings,
- * wrapping activity context.
+ * A Android library to replace string resources dynamically
  */
 object Restring {
 

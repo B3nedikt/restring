@@ -7,7 +7,7 @@ ext {
     libraryVersion = '3.1.0'
 
     libraryName = 'Restring'
-    libraryDescription = 'Replace Strings dynamically, or provide new translations, for Android'
+    libraryDescription = 'A Android library to replace string resources dynamically'
     siteUrl = 'https://github.com/B3nedikt/restring'
     gitUrl = 'https://github.com/B3nedikt/restring.git'
     licenseName = 'The Apache Software License, Version 2.0'

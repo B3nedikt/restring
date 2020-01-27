@@ -38,7 +38,7 @@ class RestringResourcesTest {
 
         val stringValue = restringResources.getString(STR_RES_ID)
 
-        assertEquals(STR_VALUE, stringValue)
+        STR_VALUE shouldBeEqualTo stringValue
     }
 
     @Test

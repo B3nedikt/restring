@@ -2,11 +2,14 @@ package dev.b3nedikt.restring
 
 import java.util.*
 
-internal object RestringLocale {
+/**
+ * Default implementation of [LocaleProvider]
+ */
+object DefaultLocaleProvider : LocaleProvider {
 
-    internal var isInitial = true
+    override var isInitial = true
 
-    var currentLocale: Locale = Locale.getDefault()
+    override var currentLocale: Locale = Locale.getDefault()
         get() {
             if (isInitial) {
                 return Locale.getDefault()

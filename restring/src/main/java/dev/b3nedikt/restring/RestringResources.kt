@@ -120,7 +120,7 @@ internal class RestringResources(val res: Resources,
     }
 
     private fun getLocale(): Locale? {
-        val currentLocale = RestringLocale.currentLocale
+        val currentLocale = Restring.locale
         val supportedLocales = stringRepository.supportedLocales
 
         return if (supportedLocales.contains(currentLocale)) {
@@ -131,14 +131,14 @@ internal class RestringResources(val res: Resources,
     }
 
     private fun setLocale() {
-        if (RestringLocale.isInitial) return
+        if (Restring.localeProvider.isInitial) return
 
         val conf = res.configuration
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(RestringLocale.currentLocale)
+            conf.setLocale(Restring.locale)
         } else {
-            conf.locale = RestringLocale.currentLocale
+            conf.locale = Restring.locale
         }
 
         res.updateConfiguration(conf, res.displayMetrics)

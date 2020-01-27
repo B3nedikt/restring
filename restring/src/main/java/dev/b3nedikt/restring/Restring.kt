@@ -13,15 +13,26 @@ import java.util.*
  */
 object Restring {
 
-    @JvmStatic
-    var locale: Locale
-        get() = RestringLocale.currentLocale
-        set(value) {
-            RestringLocale.currentLocale = value
-        }
-
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
+
+    /**
+     * The [Locale] currently used by restring, this defaults to [Locale.getDefault].
+     * If needed the [Locale] used by restring can be changed anytime.
+     */
+    @JvmStatic
+    var locale: Locale
+        get() = localeProvider.currentLocale
+        set(value) {
+            localeProvider.currentLocale = value
+        }
+
+    /**
+     * The [LocaleProvider] defines the way restring determines its [locale], this
+     * defaults to the [DefaultLocaleProvider].
+     */
+    @JvmStatic
+    var localeProvider: LocaleProvider = DefaultLocaleProvider
 
     /**
      * Initialize Restring with the specified configuration.
@@ -77,13 +88,9 @@ object Restring {
     private fun initStringRepository(context: Context, config: RestringConfig) {
         stringRepository = config.stringRepository ?: defaultRepository(context)
 
-        if (config.stringsLoader != null) {
-
-            val loaderTask = StringsLoaderTask(config.stringsLoader, stringRepository)
-            if (config.loadAsync) {
-                loaderTask.runAsync()
-            } else {
-                loaderTask.runBlocking()
+        config.stringsLoader?.let {
+            StringsLoaderTask(it, stringRepository).run {
+                if (config.loadAsync) runAsync() else runBlocking()
             }
         }
     }

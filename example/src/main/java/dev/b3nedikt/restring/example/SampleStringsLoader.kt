@@ -13,7 +13,7 @@ import java.util.*
  *
  * All overridden methods will be called on background thread.
  */
-class SampleStringsLoader : Restring.StringsLoader {
+object SampleStringsLoader : Restring.StringsLoader {
 
     override val locales = AppLocale.supportedLocales
 

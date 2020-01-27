@@ -2,7 +2,6 @@ package dev.b3nedikt.restring.example
 
 import android.app.Application
 import dev.b3nedikt.app_locale.AppLocale
-import dev.b3nedikt.restring.LocaleProvider
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.RestringConfig
 import dev.b3nedikt.restring.example.Locales.LOCALE_AUSTRIAN_GERMAN
@@ -20,15 +19,8 @@ class SampleApplication : Application() {
 
         Restring.init(this,
                 RestringConfig.Builder()
-                        .stringsLoader(SampleStringsLoader())
-                        .localeProvider(object : LocaleProvider {
-                            override var isInitial = AppLocale.isInitial
-                            override var currentLocale
-                                get() = AppLocale.desiredLocale
-                                set(value) {
-                                    AppLocale.desiredLocale = value
-                                }
-                        })
+                        .stringsLoader(SampleStringsLoader)
+                        .localeProvider(AppLocaleLocaleProvider)
                         .build()
         )
 

@@ -7,11 +7,8 @@ import dev.b3nedikt.restring.example.Locales.LOCALE_AUSTRIAN_GERMAN
 import java.util.*
 
 /**
- * This is just a really simple sample of strings loader.
- * in real applications, you might call an API to get your strings.
- *
- *
- * All overridden methods will be called on background thread.
+ * A example of a [Restring.StringsLoader].
+ * In real applications, you might call an API to get your strings.
  */
 object SampleStringsLoader : Restring.StringsLoader {
 

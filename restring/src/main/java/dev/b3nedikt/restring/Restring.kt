@@ -46,8 +46,10 @@ object Restring {
         if (isInitialized) {
             return
         }
-
         isInitialized = true
+
+        config.localeProvider?.let { localeProvider = it }
+
         initStringRepository(context, config)
     }
 

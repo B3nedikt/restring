@@ -10,7 +10,7 @@ interface LocaleProvider {
     /**
      * If the [Locale] returned by [currentLocale] is different from [Locale.getDefault].
      */
-    var isInitial: Boolean
+    val isInitial: Boolean
 
     /**
      * The [Locale] restring should currently display string resources in.

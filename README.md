@@ -7,8 +7,14 @@ An easy way to replace bundled Strings dynamically, or provide new translations 
 
 ### 1. Add dependency
 ```groovy
+// Replace bundled strings dynamically
 implementation 'dev.b3nedikt.restring:restring:3.1.0'
+
+// Intercept view inflation
 implementation 'io.github.inflationx:viewpump:2.0.3'
+
+// Allows to update the text of views at runtime without recreating the activity
+implementation 'dev.b3nedikt.reword:reword:1.0.0'
 ```
 
 ### 2. Initialize
@@ -22,7 +28,7 @@ Restring.init(this,
         );
 
 ViewPump.init(ViewPump.builder()
-        .addInterceptor(RestringInterceptor.INSTANCE)
+        .addInterceptor(RewordInterceptor.INSTANCE)
         .build()
         );
 ```
@@ -85,7 +91,7 @@ Now all strings in your app will be overriden by new strings provided to Restrin
 ## Change Language of the app
 Restring works with the current locale by default, however you can change your apps language like this:
 ```java
-Restring.setLocale(Locales.FRENCH);
+Restring.setLocale(Locale.FRENCH);
 
 // The layout containing the views you want to localize
 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
@@ -99,11 +105,12 @@ or reload the UI like this:
 ```java
 // The layout containing the views you want to localize
 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-Restring.reword(rootView);
+Reword.reword(rootView);
 ```
 
 ## Custom Repository
-By default, Restring will hold strings in memory for caching and persisting them to shared preferences after loading. You can however change the repository for saving the strings, to e.g. only keep them in memory like this:
+By default, Restring will hold strings in memory for caching and persist them to shared preferences after loading.
+You can however change the repository for saving the strings, to e.g. only keep them in memory like this:
 ```java
 Restring.init(this,
         new RestringConfig.Builder()
@@ -141,7 +148,8 @@ public class SampleStringsLoader implements Restring.StringsLoader {
 ```
 
 ## Notes
-For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback. In the other words, Only the new provided strings will be overriden and for the rest the bundled version will be used.
+For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback.
+In other words, only the new provided strings will be overriden and for the rest the bundled version will be used.
 
 ## License
 This is a fork of a library originally developed by Hamid Gharehdaghi.

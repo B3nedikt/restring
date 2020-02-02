@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dev.b3nedikt.app_locale.AppLocale;
 import dev.b3nedikt.restring.Restring;
 import dev.b3nedikt.reword.Reword;
 
@@ -34,7 +35,7 @@ public class MainActivity extends BaseActivity {
         quantityStringTextView = findViewById(R.id.quantityStringTextView);
 
         final List<String> localeStrings = new ArrayList<>();
-        for (Locale locale : Locales.APP_LOCALES) {
+        for (Locale locale : AppLocale.getSupportedLocales()) {
             localeStrings.add(locale.getLanguage() + " " + locale.getCountry());
         }
 
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Restring.setLocale(Locales.APP_LOCALES.get(position));
+                Restring.setLocale(AppLocale.getSupportedLocales().get(position));
 
                 // The layout containing the views you want to localize
                 final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);

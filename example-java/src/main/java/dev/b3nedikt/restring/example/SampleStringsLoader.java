@@ -1,13 +1,15 @@
 package dev.b3nedikt.restring.example;
 
-import dev.b3nedikt.restring.PluralKeyword;
-import dev.b3nedikt.restring.Restring;
-
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+import dev.b3nedikt.app_locale.AppLocale;
 import dev.b3nedikt.restring.PluralKeyword;
+import dev.b3nedikt.restring.Restring;
 
 /**
  * This is just a really simple sample of strings loader.
@@ -21,7 +23,7 @@ public class SampleStringsLoader implements Restring.StringsLoader {
     @NotNull
     @Override
     public List<Locale> getLocales() {
-        return Locales.APP_LOCALES;
+        return AppLocale.getSupportedLocales();
     }
 
     @NotNull

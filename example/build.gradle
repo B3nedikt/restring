@@ -30,6 +30,7 @@ dependencies {
     implementation deps.kotlin
     implementation deps.viewPump
     implementation deps.reword
+    implementation deps.appLocale
 }
 repositories {
     mavenCentral()

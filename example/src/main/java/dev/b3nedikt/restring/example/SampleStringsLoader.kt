@@ -1,19 +1,18 @@
 package dev.b3nedikt.restring.example
 
+import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.PluralKeyword
 import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.restring.example.Locales.LOCALE_AUSTRIAN_GERMAN
 import java.util.*
 
 /**
- * This is just a really simple sample of strings loader.
- * in real applications, you might call an API to get your strings.
- *
- *
- * All overridden methods will be called on background thread.
+ * A example of a [Restring.StringsLoader].
+ * In real applications, you might call an API to get your strings.
  */
-class SampleStringsLoader : Restring.StringsLoader {
+object SampleStringsLoader : Restring.StringsLoader {
 
-    override val locales = APP_LOCALES
+    override val locales = AppLocale.supportedLocales
 
     override fun getStrings(locale: Locale): Map<String, CharSequence> {
         val map = mutableMapOf<String, CharSequence>()
@@ -26,7 +25,7 @@ class SampleStringsLoader : Restring.StringsLoader {
                 map["title"] = "Title US (from restring)."
                 map["subtitle"] = "Subtitle US (from restring)."
             }
-            Locales.LOCALE_AUSTRIAN_GERMAN -> {
+            LOCALE_AUSTRIAN_GERMAN -> {
                 map["title"] = "Titel (aus restring)."
                 map["subtitle"] = "Untertitel (aus restring)."
             }

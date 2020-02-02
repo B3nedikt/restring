@@ -5,7 +5,7 @@
 ## Restring 4.0.0
 An easy way to replace bundled Strings dynamically, or provide new translations for Android.
 
-### 1. Add dependency
+### 1. Add dependencies
 ```groovy
 // Replace bundled strings dynamically
 implementation 'dev.b3nedikt.restring:restring:3.1.0'

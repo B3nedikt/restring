@@ -38,7 +38,9 @@ class RestringTest {
 
     @Test
     fun shouldInflateAndTransformViewsOnActivityCreation() {
-        Restring.localeProvider.isInitial = true
+        Restring.localeProvider = DefaultLocaleProvider
+        DefaultLocaleProvider.isInitial = true
+
         val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
 
         for (locale in locales) {

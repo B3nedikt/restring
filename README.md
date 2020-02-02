@@ -1,8 +1,8 @@
-[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=3.1.0) ](https://bintray.com/b3nedikt/restring/restring/3.1.0/link)
+[ ![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=4.0.0) ](https://bintray.com/b3nedikt/restring/restring/4.0.0/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 
-## Restring 3.1.0
+## Restring 4.0.0
 An easy way to replace bundled Strings dynamically, or provide new translations for Android.
 
 ### 1. Add dependency

@@ -69,7 +69,7 @@ class SharedPrefStringRepository(context: Context,
 
     override fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> {
         val jsonString = quantityStringsSharedPreferences
-                .getString(LocaleUtil.toSimpleLanguageTag(locale), null)
+                .getString(LocaleUtil.toLanguageTag(locale), null)
                 ?: return emptyMap()
 
         return JSONObject(jsonString).run {
@@ -89,7 +89,7 @@ class SharedPrefStringRepository(context: Context,
         ).toString()
 
         quantityStringsSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), jsonString)
+                .putString(LocaleUtil.toLanguageTag(locale), jsonString)
                 .apply()
     }
 
@@ -101,7 +101,7 @@ class SharedPrefStringRepository(context: Context,
 
     override fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> {
         val jsonString = stringArraysSharedPreferences
-                .getString(LocaleUtil.toSimpleLanguageTag(locale), null)
+                .getString(LocaleUtil.toLanguageTag(locale), null)
                 ?: return emptyMap()
 
         return JSONObject(jsonString).run {
@@ -121,19 +121,19 @@ class SharedPrefStringRepository(context: Context,
         ).toString()
 
         stringArraysSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), jsonString)
+                .putString(LocaleUtil.toLanguageTag(locale), jsonString)
                 .apply()
     }
 
     private fun loadLocales() =
             localesSharedPreferences
                     .getStringSet(LOCALES_SHARED_PREF_KEY, null)
-                    ?.map { LocaleUtil.fromSimpleLanguageTag(it) }
+                    ?.map { LocaleUtil.fromLanguageTag(it) }
                     ?.toSet()
                     ?: emptySet()
 
     private fun saveLocales(locales: Set<Locale>) =
-            locales.map { LocaleUtil.toSimpleLanguageTag(it) }
+            locales.map { LocaleUtil.toLanguageTag(it) }
                     .toSet()
                     .run {
                         localesSharedPreferences
@@ -153,14 +153,14 @@ class SharedPrefStringRepository(context: Context,
     private fun saveStrings(locale: Locale, strings: Map<String, CharSequence>) {
         val content = serializeKeyValues(strings)
         stringsSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
+                .putString(LocaleUtil.toLanguageTag(locale), content)
                 .apply()
     }
 
     private fun saveTexts(locale: Locale, texts: Map<String, CharSequence>) {
         val content = serializeKeyValues(texts)
         textsSharedPreferences.edit()
-                .putString(LocaleUtil.toSimpleLanguageTag(locale), content)
+                .putString(LocaleUtil.toLanguageTag(locale), content)
                 .apply()
     }
 
@@ -194,7 +194,7 @@ class SharedPrefStringRepository(context: Context,
             }
 
             val keyValues = deserializeStringsKeyValues(value)
-            result[LocaleUtil.fromSimpleLanguageTag(locale)] = keyValues
+            result[LocaleUtil.fromLanguageTag(locale)] = keyValues
         }
         return result
     }
@@ -209,7 +209,7 @@ class SharedPrefStringRepository(context: Context,
             }
 
             val keyValues = deserializeTextsKeyValues(value)
-            result[LocaleUtil.fromSimpleLanguageTag(locale)] = keyValues
+            result[LocaleUtil.fromLanguageTag(locale)] = keyValues
         }
         return result
     }

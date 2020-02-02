@@ -1,10 +1,16 @@
 package dev.b3nedikt.restring
 
+import android.os.Build
 import java.util.*
 
 internal object LocaleUtil {
 
-    fun toSimpleLanguageTag(locale: Locale): String {
+    fun toLanguageTag(locale: Locale): String {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return locale.toLanguageTag()
+        }
+
         val language = locale.language
         val country = locale.country
 
@@ -14,7 +20,11 @@ internal object LocaleUtil {
         return language
     }
 
-    fun fromSimpleLanguageTag(locale: String): Locale {
+    fun fromLanguageTag(locale: String): Locale {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return Locale.forLanguageTag(locale)
+        }
 
         if (locale.contains("-")) {
             val language = locale.split("-")[0]

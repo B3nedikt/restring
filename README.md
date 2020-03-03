@@ -8,7 +8,7 @@ An easy way to replace bundled Strings dynamically, or provide new translations 
 ### 1. Add dependencies
 ```groovy
 // Replace bundled strings dynamically
-implementation 'dev.b3nedikt.restring:restring:3.1.0'
+implementation 'dev.b3nedikt.restring:restring:4.0.0'
 
 // Intercept view inflation
 implementation 'io.github.inflationx:viewpump:2.0.3'

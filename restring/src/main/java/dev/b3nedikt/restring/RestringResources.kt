@@ -23,7 +23,7 @@ internal class RestringResources(
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.toString() ?: super.getString(id)
+        return value?.toString() ?: res.getString(id)
     }
 
     @Throws(NotFoundException::class)
@@ -32,7 +32,7 @@ internal class RestringResources(
 
         val value = getStringFromRepository(id)
         if (value != null) return String.format(value.toString(), *formatArgs)
-        return super.getString(id, *formatArgs)
+        return res.getString(id, *formatArgs)
     }
 
     @Throws(NotFoundException::class)
@@ -40,28 +40,28 @@ internal class RestringResources(
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getText(id)
+        return value ?: res.getText(id)
     }
 
     override fun getText(id: Int, def: CharSequence): CharSequence {
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getText(id, def)
+        return value ?: res.getText(id, def)
     }
 
     override fun getQuantityText(id: Int, quantity: Int): CharSequence {
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)
-        return value ?: super.getQuantityText(id, quantity)
+        return value ?: res.getQuantityText(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int): String {
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
-        return value ?: super.getQuantityString(id, quantity)
+        return value ?: res.getQuantityString(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
@@ -69,21 +69,21 @@ internal class RestringResources(
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
                 ?.let { String.format(it, *formatArgs) }
-        return value ?: super.getQuantityString(id, quantity, *formatArgs)
+        return value ?: res.getQuantityString(id, quantity, *formatArgs)
     }
 
     override fun getStringArray(id: Int): Array<String> {
         setLocale()
 
         val value = getStringArrayFromRepository(id)
-        return value?.map { it.toString() }?.toTypedArray() ?: super.getStringArray(id)
+        return value?.map { it.toString() }?.toTypedArray() ?: res.getStringArray(id)
     }
 
     override fun getTextArray(id: Int): Array<CharSequence> {
         setLocale()
 
         val value = getStringArrayFromRepository(id)
-        return value ?: super.getTextArray(id)
+        return value ?: res.getTextArray(id)
     }
 
     private fun getQuantityStringFromRepository(id: Int, quantity: Int): CharSequence? {

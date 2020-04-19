@@ -1,5 +1,6 @@
 package dev.b3nedikt.restring
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import java.util.*
@@ -11,9 +12,11 @@ import java.util.*
  * that will be returned, otherwise it will fallback to the original resource strings.
  */
 @Suppress("DEPRECATION")
-internal class RestringResources(val res: Resources,
-                                 private val stringRepository: StringRepository)
-    : Resources(res.assets, res.displayMetrics, res.configuration) {
+internal class RestringResources(
+        private var res: Resources,
+        private val stringRepository: StringRepository,
+        private val context: Context
+) : Resources(res.assets, res.displayMetrics, res.configuration) {
 
     @Throws(NotFoundException::class)
     override fun getString(id: Int): String {
@@ -137,11 +140,11 @@ internal class RestringResources(val res: Resources,
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(Restring.locale)
+            res = context.createConfigurationContext(conf).resources
         } else {
             conf.locale = Restring.locale
+            res.updateConfiguration(conf, res.displayMetrics)
         }
-
-        res.updateConfiguration(conf, res.displayMetrics)
     }
 
     private fun Int.toPluralKeyword(locale: Locale): PluralKeyword =

@@ -4,33 +4,22 @@ version = libraryVersion
 
 dokka {
     outputFormat = 'javadoc'
-    outputDirectory = "./docs"
+    outputDirectory = "../docs"
 }
 
-if (project.hasProperty("kotlin")) { //Kotlin libraries
-    task sourcesJar(type: Jar) {
-        getArchiveClassifier().set('sources')
-        from android.sourceSets.main.java.srcDirs
-    }
+task sourcesJar(type: Jar) {
+    getArchiveClassifier().set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
 
-    task javadoc(type: Javadoc, dependsOn: dokka) {
-
-    }
-} else if (project.hasProperty("android")) { // Android libraries
-    task sourcesJar(type: Jar) {
-        getArchiveClassifier().set('sources')
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    task javadoc(type: Javadoc, dependsOn: dokka) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
+task javadoc(type: Javadoc, dependsOn: dokka) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     getArchiveClassifier().set('javadoc')
-    from javadoc.destinationDir
+    from "../docs"
 }
 
 artifacts {
@@ -75,8 +64,8 @@ bintray {
 
             mavenCentralSync {
                 sync = true
-                user = localProperty('userToken') //OSS user token
-                password = localProperty('paasword') //OSS user password
+                user = localProperty('userToken') // OSS user token
+                password = localProperty('paasword') // OSS user password
             }
         }
     }

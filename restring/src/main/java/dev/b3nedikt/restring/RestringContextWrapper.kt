@@ -5,8 +5,7 @@ import android.content.res.Resources
 import android.view.ContextThemeWrapper
 
 /**
- * Main Restring context wrapper which wraps the context for providing another layout inflater
- * & resources.
+ * Main Restring context wrapper which wraps the context for providing custom resources.
  */
 internal class RestringContextWrapper private constructor(
         base: Context,
@@ -15,15 +14,14 @@ internal class RestringContextWrapper private constructor(
 
     private val res: Resources by lazy {
         val baseResources = super.getResources()
-        RestringResources(baseResources, stringRepository)
+        RestringResources(baseResources, stringRepository, this)
     }
 
     override fun getResources() = res
 
     companion object {
 
-        fun wrap(context: Context,
-                 stringRepository: StringRepository): RestringContextWrapper {
+        fun wrap(context: Context, stringRepository: StringRepository): RestringContextWrapper {
             return RestringContextWrapper(context, stringRepository)
         }
     }

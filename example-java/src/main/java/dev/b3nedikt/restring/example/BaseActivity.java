@@ -18,6 +18,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public Resources getResources() {
-        return getBaseContext().getResources();
+        return Restring.wrapContext(getBaseContext()).getResources();
     }
 }

@@ -11,9 +11,10 @@ import java.util.*
  * FIRST it retrieves all supported languages,
  * THEN it retrieves all strings(key, value) for each language.
  */
-internal class StringsLoaderTask(private val stringsLoader: Restring.StringsLoader,
-                                 private val stringRepository: StringRepository)
-    : AsyncTask<Void, Void, Map<Locale, Map<String, Any>>>() {
+internal class StringsLoaderTask(
+        private val stringsLoader: Restring.StringsLoader,
+        private val stringRepository: StringRepository
+) : AsyncTask<Void, Void, Map<Locale, Map<String, Any>>>() {
 
     fun runAsync() {
         executeOnExecutor(THREAD_POOL_EXECUTOR)

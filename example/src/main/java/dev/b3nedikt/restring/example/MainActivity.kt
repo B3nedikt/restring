@@ -17,7 +17,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         val localeStrings = AppLocale.supportedLocales.map { it.language + " " + it.country }
-        val adapter = ArrayAdapter<String>(this,
+        val adapter = ArrayAdapter(this,
                 android.R.layout.simple_dropdown_item_1line, localeStrings)
 
         spinner.adapter = adapter

@@ -12,9 +12,8 @@ import dev.b3nedikt.restring.PluralKeyword;
 import dev.b3nedikt.restring.Restring;
 
 /**
- * This is just a really simple sample of strings loader.
- * in real applications, you might call an API to get your strings.
- * <p>
+ * A sample of a {@link Restring.StringsLoader}. In a real application,
+ * you might call an API to get your strings.
  * <p>
  * All overridden methods will be called on background thread.
  */

@@ -1,5 +1,6 @@
 package dev.b3nedikt.restring
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import java.util.*
@@ -11,16 +12,18 @@ import java.util.*
  * that will be returned, otherwise it will fallback to the original resource strings.
  */
 @Suppress("DEPRECATION")
-internal class RestringResources(val res: Resources,
-                                 private val stringRepository: StringRepository)
-    : Resources(res.assets, res.displayMetrics, res.configuration) {
+internal class RestringResources(
+        private var res: Resources,
+        private val stringRepository: StringRepository,
+        private val context: Context
+) : Resources(res.assets, res.displayMetrics, res.configuration) {
 
     @Throws(NotFoundException::class)
     override fun getString(id: Int): String {
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value?.toString() ?: super.getString(id)
+        return value?.toString() ?: res.getString(id)
     }
 
     @Throws(NotFoundException::class)
@@ -29,7 +32,7 @@ internal class RestringResources(val res: Resources,
 
         val value = getStringFromRepository(id)
         if (value != null) return String.format(value.toString(), *formatArgs)
-        return super.getString(id, *formatArgs)
+        return res.getString(id, *formatArgs)
     }
 
     @Throws(NotFoundException::class)
@@ -37,28 +40,28 @@ internal class RestringResources(val res: Resources,
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getText(id)
+        return value ?: res.getText(id)
     }
 
     override fun getText(id: Int, def: CharSequence): CharSequence {
         setLocale()
 
         val value = getStringFromRepository(id)
-        return value ?: super.getText(id, def)
+        return value ?: res.getText(id, def)
     }
 
     override fun getQuantityText(id: Int, quantity: Int): CharSequence {
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)
-        return value ?: super.getQuantityText(id, quantity)
+        return value ?: res.getQuantityText(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int): String {
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
-        return value ?: super.getQuantityString(id, quantity)
+        return value ?: res.getQuantityString(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
@@ -66,21 +69,21 @@ internal class RestringResources(val res: Resources,
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
                 ?.let { String.format(it, *formatArgs) }
-        return value ?: super.getQuantityString(id, quantity, *formatArgs)
+        return value ?: res.getQuantityString(id, quantity, *formatArgs)
     }
 
     override fun getStringArray(id: Int): Array<String> {
         setLocale()
 
         val value = getStringArrayFromRepository(id)
-        return value?.map { it.toString() }?.toTypedArray() ?: super.getStringArray(id)
+        return value?.map { it.toString() }?.toTypedArray() ?: res.getStringArray(id)
     }
 
     override fun getTextArray(id: Int): Array<CharSequence> {
         setLocale()
 
         val value = getStringArrayFromRepository(id)
-        return value ?: super.getTextArray(id)
+        return value ?: res.getTextArray(id)
     }
 
     private fun getQuantityStringFromRepository(id: Int, quantity: Int): CharSequence? {
@@ -137,11 +140,11 @@ internal class RestringResources(val res: Resources,
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(Restring.locale)
+            res = context.createConfigurationContext(conf).resources
         } else {
             conf.locale = Restring.locale
+            res.updateConfiguration(conf, res.displayMetrics)
         }
-
-        res.updateConfiguration(conf, res.displayMetrics)
     }
 
     private fun Int.toPluralKeyword(locale: Locale): PluralKeyword =

@@ -14,6 +14,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun getResources(): Resources {
-        return baseContext.resources
+        return Restring.wrapContext(baseContext).resources
     }
 }

@@ -28,9 +28,11 @@ class RestringResourcesTest {
         on { supportedLocales } doReturn setOf(locale)
     }
 
-    private val resources = (ApplicationProvider.getApplicationContext() as Context).resources
+    private val context = ApplicationProvider.getApplicationContext() as Context
 
-    private val restringResources = spy(RestringResources(resources, repository))
+    private val resources = context.resources
+
+    private val restringResources = spy(RestringResources(resources, repository, context))
 
     @Test
     fun shouldGetStringFromRepositoryIfExists() {

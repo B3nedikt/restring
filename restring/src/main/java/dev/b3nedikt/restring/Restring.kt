@@ -55,12 +55,14 @@ object Restring {
 
     /**
      * Wraps context of an activity to provide Restring features.
+     * Will return the context as it was passed in, if it is already wrapped.
      *
      * @param base context of an activity.
-     * @return the Restring wrapped context.
+     * @return the wrapped context.
      */
     @JvmStatic
-    fun wrapContext(base: Context): ContextWrapper {
+    fun wrapContext(base: Context): Context {
+        if (base.resources is RestringResources) return base
         return RestringContextWrapper.wrap(base, stringRepository)
     }
 
@@ -120,6 +122,7 @@ object Restring {
          * @param locale of the strings.
          * @return the strings as (key, value).
          */
+        @JvmDefault
         fun getStrings(locale: Locale): Map<String, CharSequence> = emptyMap()
 
         /** Get quantity strings of a language as keys &amp; values.
@@ -127,6 +130,7 @@ object Restring {
          * @param locale of the quantity strings.
          * @return the quantity strings as (key, value).
          */
+        @JvmDefault
         fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> = emptyMap()
 
         /** Get string arrays of a language as keys &amp; values.
@@ -134,6 +138,7 @@ object Restring {
          * @param locale of the quantity strings.
          * @return the string arrays as (key, value).
          */
+        @JvmDefault
         fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> = emptyMap()
     }
 }

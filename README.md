@@ -17,7 +17,7 @@ implementation 'dev.b3nedikt.restring:restring:4.0.1'
 implementation 'io.github.inflationx:viewpump:2.0.3'
 
 // Allows to update the text of views at runtime without recreating the activity
-implementation 'dev.b3nedikt.reword:reword:1.0.0'
+implementation 'dev.b3nedikt.reword:reword:1.1.0'
 ```
 
 ### 2. Initialize
@@ -50,7 +50,7 @@ if you have a BaseActivity you can add this there, otherwise you have to add it 
 
 @Override
 public Resources getResources() {
-    return getBaseContext().getResources();
+    return Restring.wrapContext(getBaseContext()).getResources();
 }
 ```
 
@@ -145,7 +145,7 @@ instead of the SharedPreferences, or if you don´t want to use the StringsLoader
 
 Restring also supports quantity strings (plurals) and string arrays.
 Just provide them in the strings loader like this or return an empty map if you don´t need plurals or string arrays.
-In kotlin these two methods already have a default implementation returning an empty map.
+These two methods already have a default implementation returning an empty map.
 
 ```java
 public class SampleStringsLoader implements Restring.StringsLoader {

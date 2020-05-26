@@ -14,10 +14,9 @@ class CachedStringRepository(val cacheRepository: StringRepository,
             persistentRepository.supportedLocales = value
             cacheRepository.supportedLocales = value
         }
+        get() = cacheRepository.supportedLocales + persistentRepository.supportedLocales
 
     init {
-        cacheRepository.supportedLocales = persistentRepository.supportedLocales
-
         supportedLocales.forEach {
             cacheRepository.setStrings(it, persistentRepository.getStrings(it))
         }

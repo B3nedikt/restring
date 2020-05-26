@@ -37,7 +37,7 @@ internal class StringsLoaderTask(
 
         val locales = stringsLoader.locales
 
-        stringRepository.supportedLocales = locales.toSet()
+        stringRepository.supportedLocales = stringRepository.supportedLocales.plus(locales.toSet())
 
         locales.forEach {
             val keyValues = stringsLoader.getStrings(it)

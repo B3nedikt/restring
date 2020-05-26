@@ -47,7 +47,7 @@ class SharedPrefStringRepository(context: Context,
         set(value) = saveLocales(value)
 
     override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
-        saveStringsAndTexts(locale, getStrings(locale).plus(strings))
+        saveStringsAndTexts(locale, getStrings(locale) + strings)
     }
 
     override fun setString(locale: Locale, key: String, value: CharSequence) {
@@ -80,7 +80,7 @@ class SharedPrefStringRepository(context: Context,
     }
 
     override fun setQuantityStrings(locale: Locale, quantityStrings: Map<String, Map<PluralKeyword, CharSequence>>) {
-        val combinedQuantityStrings = getQuantityStrings(locale).plus(quantityStrings)
+        val combinedQuantityStrings = getQuantityStrings(locale) + quantityStrings
 
         val jsonString = JSONObject(
             combinedQuantityStrings
@@ -112,7 +112,7 @@ class SharedPrefStringRepository(context: Context,
     }
 
     override fun setStringArrays(locale: Locale, stringArrays: Map<String, Array<CharSequence>>) {
-        val combinedStringArrays = getStringArrays(locale).plus(stringArrays)
+        val combinedStringArrays = getStringArrays(locale) + stringArrays
 
         val jsonString = JSONObject(
                 combinedStringArrays

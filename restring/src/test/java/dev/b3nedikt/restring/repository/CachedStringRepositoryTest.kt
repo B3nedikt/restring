@@ -27,17 +27,14 @@ class CachedStringRepositoryTest {
     )
 
     @Test
-    fun shouldSetAndGetLocales() {
+    fun shouldGetLocalesAfterInsertingStrings() {
         val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
+        val strings = generateStrings(10)
 
-        stringRepository.supportedLocales = locales
+        stringRepository.setStrings(Locale.ENGLISH, strings)
+        stringRepository.setStrings(Locale.FRENCH, strings)
 
-        val newRepository = CachedStringRepository(
-                cacheRepository = MemoryStringRepository(),
-                persistentRepository = persistentRepository
-        )
-
-        locales shouldBeEqualTo newRepository.supportedLocales
+        locales shouldBeEqualTo stringRepository.supportedLocales
     }
 
     @Test

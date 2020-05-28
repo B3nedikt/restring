@@ -1,6 +1,7 @@
 package dev.b3nedikt.restring.repository
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import dev.b3nedikt.restring.LocaleUtil
@@ -38,13 +39,8 @@ class SharedPrefStringRepository(context: Context,
         context.getSharedPreferences(stringArraysSharedPrefName, Context.MODE_PRIVATE)
     }
 
-    private val localesSharedPreferences by lazy {
-        context.getSharedPreferences(localesSharedPrefName, Context.MODE_PRIVATE)
-    }
-
-    override var supportedLocales: Set<Locale>
+    override val supportedLocales: Set<Locale>
         get() = loadLocales()
-        set(value) = saveLocales(value)
 
     override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         saveStringsAndTexts(locale, getStrings(locale) + strings)
@@ -83,9 +79,9 @@ class SharedPrefStringRepository(context: Context,
         val combinedQuantityStrings = getQuantityStrings(locale) + quantityStrings
 
         val jsonString = JSONObject(
-            combinedQuantityStrings
-                    .map { it.key to QuantityString(it.value, it.value.entries.first().value !is String).toJson() }
-                    .toMap()
+                combinedQuantityStrings
+                        .map { it.key to QuantityString(it.value, it.value.entries.first().value !is String).toJson() }
+                        .toMap()
         ).toString()
 
         quantityStringsSharedPreferences.edit()
@@ -126,21 +122,10 @@ class SharedPrefStringRepository(context: Context,
     }
 
     private fun loadLocales() =
-            localesSharedPreferences
-                    .getStringSet(LOCALES_SHARED_PREF_KEY, null)
-                    ?.map { LocaleUtil.fromLanguageTag(it) }
-                    ?.toSet()
-                    ?: emptySet()
-
-    private fun saveLocales(locales: Set<Locale>) =
-            locales.map { LocaleUtil.toLanguageTag(it) }
-                    .toSet()
-                    .run {
-                        localesSharedPreferences
-                                .edit()
-                                .putStringSet(LOCALES_SHARED_PREF_KEY, this)
-                                .apply()
-                    }
+            stringsSharedPreferences.getLocalesSet() +
+                    textsSharedPreferences.getLocalesSet() +
+                    stringsSharedPreferences.getLocalesSet() +
+                    quantityStringsSharedPreferences.getLocalesSet()
 
     private fun saveStringsAndTexts(locale: Locale, strings: Map<String, CharSequence>) {
         strings.filterValues { it is String }
@@ -239,6 +224,13 @@ class SharedPrefStringRepository(context: Context,
         }
         return value.toString()
     }
+
+    private fun SharedPreferences.getLocalesSet() =
+            all
+                    ?.map { LocaleUtil.fromLanguageTag(it.key) }
+                    ?.toSet()
+                    ?: emptySet()
+
 
     private companion object {
         private const val STRINGS_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_Strings"

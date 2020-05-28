@@ -10,7 +10,7 @@ interface StringRepository {
     /**
      * The [Locale]s supported by the repository
      */
-    var supportedLocales: Set<Locale>
+    val supportedLocales: Set<Locale>
 
     /**
      * Get a string for a locale & key.

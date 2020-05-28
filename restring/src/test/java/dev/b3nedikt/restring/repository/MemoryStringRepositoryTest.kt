@@ -1,6 +1,7 @@
 package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.PluralKeyword
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,12 +24,14 @@ class MemoryStringRepositoryTest {
     }
 
     @Test
-    fun shouldSetAndGetLocales() {
+    fun shouldGetLocalesAfterInsertingStrings() {
         val locales = setOf(Locale.ENGLISH, Locale.FRENCH)
+        val strings = generateStrings(10)
 
-        stringRepository.supportedLocales = locales
+        stringRepository.setStrings(Locale.ENGLISH, strings)
+        stringRepository.setStrings(Locale.FRENCH, strings)
 
-        assertEquals(locales, stringRepository.supportedLocales)
+        locales shouldBeEqualTo stringRepository.supportedLocales
     }
 
     @Test

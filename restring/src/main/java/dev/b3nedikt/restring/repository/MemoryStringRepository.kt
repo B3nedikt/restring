@@ -16,11 +16,12 @@ class MemoryStringRepository : StringRepository {
     private val quantityStrings = mutableMapOf<Locale, MutableMap<String, Map<PluralKeyword, CharSequence>>>()
     private val stringArrays = mutableMapOf<Locale, MutableMap<String, Array<CharSequence>>>()
 
-    override var supportedLocales: Set<Locale> = emptySet()
+    override val supportedLocales: Set<Locale> get() = _supportedLocales
+    private val _supportedLocales: MutableSet<Locale> = mutableSetOf()
 
     override fun setStrings(locale: Locale, strings: Map<String, CharSequence>) {
         initStringsAndLocales(locale)
-        this.strings[locale] = strings.toMutableMap()
+        this.strings[locale]?.putAll(strings)
     }
 
     override fun setString(locale: Locale, key: String, value: CharSequence) {
@@ -48,7 +49,7 @@ class MemoryStringRepository : StringRepository {
             locale: Locale,
             quantityStrings: Map<String, Map<PluralKeyword, CharSequence>>) {
         initQuantityStringsAndLocales(locale)
-        this.quantityStrings[locale] = quantityStrings.toMutableMap()
+        this.quantityStrings[locale]?.putAll(quantityStrings)
     }
 
     override fun getStringArray(locale: Locale, key: String) = getStringArrays(locale)[key]
@@ -63,7 +64,7 @@ class MemoryStringRepository : StringRepository {
 
     override fun setStringArrays(locale: Locale, stringArrays: Map<String, Array<CharSequence>>) {
         initStringArraysAndLocales(locale)
-        this.stringArrays[locale] = stringArrays.toMutableMap()
+        this.stringArrays[locale]?.putAll(stringArrays)
     }
 
     private fun initStringsAndLocales(locale: Locale) {
@@ -89,9 +90,7 @@ class MemoryStringRepository : StringRepository {
 
     private fun initLocales(locale: Locale) {
         if (supportedLocales.contains(locale).not()) {
-            supportedLocales = supportedLocales.toMutableSet().apply {
-                add(locale)
-            }
+            _supportedLocales.add(locale)
         }
     }
 }

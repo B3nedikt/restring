@@ -1,5 +1,6 @@
 package dev.b3nedikt.restring.example
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -37,6 +38,8 @@ class MainActivity : BaseActivity() {
                 stringArrayTextView.text = resources.getStringArray(R.array.string_array)
                         .joinToString("\n")
 
+                stringNotInStringsXmlTextView.text = getStringResourceByName("a_string_not_in_strings_xml")
+
                 quantityStringTextView.text = (0 until 3)
                         .joinToString("\n")
                         { resources.getQuantityString(R.plurals.quantity_string, it, it) }
@@ -44,5 +47,14 @@ class MainActivity : BaseActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
         }
+    }
+}
+
+fun Context.getStringResourceByName(id: String): String? {
+    val resId = resources.getIdentifier(id, "string", packageName)
+    return if (resId != 0) {
+        getString(resId)
+    } else {
+        null
     }
 }

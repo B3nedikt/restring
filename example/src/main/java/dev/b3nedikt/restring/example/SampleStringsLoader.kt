@@ -20,14 +20,17 @@ object SampleStringsLoader : Restring.StringsLoader {
             Locale.ENGLISH -> {
                 map["title"] = "Title (from restring)."
                 map["subtitle"] = "Subtitle (from restring)."
+                map["a_string_not_in_strings_xml"] = "A string resource not in strings xml $locale"
             }
             Locale.US -> {
                 map["title"] = "Title US (from restring)."
                 map["subtitle"] = "Subtitle US (from restring)."
+                map["a_string_not_in_strings_xml"] = "A string resource not in strings xml $locale"
             }
             LOCALE_AUSTRIAN_GERMAN -> {
                 map["title"] = "Titel (aus restring)."
                 map["subtitle"] = "Untertitel (aus restring)."
+                map["a_string_not_in_strings_xml"] = "A string resource not in strings xml $locale"
             }
         }
         return map

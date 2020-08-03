@@ -5,7 +5,8 @@ import dev.b3nedikt.restring.LocaleProvider
 
 object AppLocaleLocaleProvider : LocaleProvider {
 
-    override var isInitial = AppLocale.isInitial
+    override val isInitial
+        get() = AppLocale.isInitial
 
     override var currentLocale
         get() = AppLocale.desiredLocale

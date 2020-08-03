@@ -18,6 +18,26 @@ internal class RestringResources(
         private val context: Context
 ) : Resources(res.assets, res.displayMetrics, res.configuration) {
 
+    /**
+     * Map of string ids only managed by restring, meaning their id is not in R.string
+     */
+    private val restringOnlyStringsIdNameMap = mutableMapOf<Int, String>()
+
+    override fun getIdentifier(name: String, defType: String?, defPackage: String?): Int {
+
+        val identifier = super.getIdentifier(name, defType, defPackage)
+
+        if (defType == "string" && identifier == 0) {
+            stringRepository.getString(Restring.locale, name) ?: return 0
+            val stringId = UUID.randomUUID().hashCode()
+
+            restringOnlyStringsIdNameMap[stringId] = name
+            return stringId
+        }
+
+        return identifier
+    }
+
     @Throws(NotFoundException::class)
     override fun getString(id: Int): String {
         setLocale()
@@ -46,7 +66,10 @@ internal class RestringResources(
     override fun getText(id: Int, def: CharSequence): CharSequence {
         setLocale()
 
-        val value = getStringFromRepository(id)
+        val value = runCatching {
+            getStringFromRepository(id)
+        }.getOrNull()
+
         return value ?: res.getText(id, def)
     }
 
@@ -90,35 +113,33 @@ internal class RestringResources(
 
         val resultLocale = getLocale() ?: return null
 
-        return try {
-            val stringKey = getResourceEntryName(id)
-            val quantityString = stringRepository.getQuantityString(resultLocale, stringKey)
-            return quantityString?.get(quantity.toPluralKeyword(resultLocale))
-        } catch (e: NotFoundException) {
-            null
-        }
+        val stringKey = getResourceEntryName(id)
+        val quantityString = stringRepository.getQuantityString(resultLocale, stringKey)
+        return quantityString?.get(quantity.toPluralKeyword(resultLocale))
     }
 
     private fun getStringArrayFromRepository(id: Int): Array<CharSequence>? {
         val resultLocale = getLocale() ?: return null
 
-        return try {
-            val stringKey = getResourceEntryName(id)
-            return stringRepository.getStringArray(resultLocale, stringKey)
-        } catch (e: NotFoundException) {
-            null
-        }
+        val stringKey = getResourceEntryName(id)
+        return stringRepository.getStringArray(resultLocale, stringKey)
     }
 
     private fun getStringFromRepository(id: Int): CharSequence? {
 
         val resultLocale = getLocale() ?: return null
 
-        return try {
+        try {
             val stringKey = getResourceEntryName(id)
             return stringRepository.getString(resultLocale, stringKey)
         } catch (e: NotFoundException) {
-            null
+
+            val stringKey = restringOnlyStringsIdNameMap[id]
+            if (stringKey != null) {
+                return stringRepository.getString(resultLocale, stringKey)
+            }
+
+            throw e
         }
     }
 

@@ -15,12 +15,12 @@ import java.util.*
  *
  * it's not ThreadSafe.
  */
-class SharedPrefStringRepository(context: Context,
-                                 stringsSharedPrefName: String = STRINGS_SHARED_PREF_NAME,
-                                 textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME,
-                                 localesSharedPrefName: String = LOCALES_SHARED_PREF_NAME,
-                                 quantityStringsSharedPrefName: String = QUANTITY_STRINGS_SHARED_PREF_NAME,
-                                 stringArraysSharedPrefName: String = STRING_ARRAYS_SHARED_PREF_NAME
+class SharedPrefStringRepository(
+        private val context: Context,
+        private val stringsSharedPrefName: String = STRINGS_SHARED_PREF_NAME,
+        private val textsSharedPrefName: String = TEXTS_SHARED_PREF_NAME,
+        private val quantityStringsSharedPrefName: String = QUANTITY_STRINGS_SHARED_PREF_NAME,
+        private val stringArraysSharedPrefName: String = STRING_ARRAYS_SHARED_PREF_NAME
 ) : StringRepository {
 
     private val stringsSharedPreferences by lazy {
@@ -235,10 +235,7 @@ class SharedPrefStringRepository(context: Context,
     private companion object {
         private const val STRINGS_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_Strings"
         private const val TEXTS_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_Texts"
-        private const val LOCALES_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_Locales"
         private const val QUANTITY_STRINGS_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_Quantity_Strings"
         private const val STRING_ARRAYS_SHARED_PREF_NAME = "dev.b3nedikt.restring.Restring_String_Arrays"
-
-        private const val LOCALES_SHARED_PREF_KEY = "dev.b3nedikt.restring.Restring_Locales_Key"
     }
 }

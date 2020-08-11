@@ -1,7 +1,6 @@
 package dev.b3nedikt.restring
 
 import android.content.Context
-import android.content.ContextWrapper
 import dev.b3nedikt.restring.repository.CachedStringRepository
 import dev.b3nedikt.restring.repository.MemoryStringRepository
 import dev.b3nedikt.restring.repository.SharedPrefStringRepository
@@ -15,6 +14,12 @@ object Restring {
 
     private var isInitialized = false
     private lateinit var stringRepository: StringRepository
+
+    /**
+     * Map of string ids to string names. These strings are only managed by restring,
+     * meaning their id is not in R.string, instead their id has been assigned by restring.
+     */
+    internal val managedStrings = mutableMapOf<Int, String>()
 
     /**
      * The [Locale] currently used by restring, this defaults to [Locale.getDefault].

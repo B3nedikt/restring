@@ -10,6 +10,9 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.spy
 import com.nhaarman.mockitokotlin2.whenever
+import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
+import org.amshove.kluent.shouldNotBeNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -33,6 +36,58 @@ class RestringResourcesTest {
     private val resources = context.resources
 
     private val restringResources = spy(RestringResources(resources, repository, context))
+
+    @Test
+    fun shouldAssignResourceIdToStringManagedOnlyByRestring() {
+        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+
+        val stringId = restringResources.getIdentifier(
+                name = STR_KEY_NOT_IN_STRINGS_XML,
+                defType = "string",
+                defPackage = context.packageName
+        )
+
+        stringId.shouldNotBeNull()
+    }
+
+    @Test
+    fun identicalManagedStringsShouldShareTheSameId() {
+        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+
+        val stringId1 = restringResources.getIdentifier(
+                name = STR_KEY_NOT_IN_STRINGS_XML,
+                defType = "string",
+                defPackage = context.packageName
+        )
+
+        val stringId2 = restringResources.getIdentifier(
+                name = STR_KEY_NOT_IN_STRINGS_XML,
+                defType = "string",
+                defPackage = context.packageName
+        )
+
+        stringId1 shouldBeEqualTo stringId2
+    }
+
+    @Test
+    fun managedStringIdsShouldBeUnique() {
+        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+        whenever(repository.getString(locale, ANOTHER_STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+
+        val stringId1 = restringResources.getIdentifier(
+                name = STR_KEY_NOT_IN_STRINGS_XML,
+                defType = "string",
+                defPackage = context.packageName
+        )
+
+        val stringId2 = restringResources.getIdentifier(
+                name = ANOTHER_STR_KEY_NOT_IN_STRINGS_XML,
+                defType = "string",
+                defPackage = context.packageName
+        )
+
+        stringId1 shouldNotBeEqualTo stringId2
+    }
 
     @Test
     fun shouldGetStringFromRepositoryIfExists() {
@@ -117,5 +172,8 @@ class RestringResourcesTest {
         private const val STR_VALUE = "STR_VALUE"
         private const val STR_VALUE_WITH_PARAM = "STR_VALUE %s"
         private val STR_VALUE_HTML = HtmlCompat.fromHtml("STR_<b>value</b>", HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+        private const val STR_KEY_NOT_IN_STRINGS_XML = "STR_KEY_NOT_IN_STRINGS_XML"
+        private const val ANOTHER_STR_KEY_NOT_IN_STRINGS_XML = "ANOTHER_STR_KEY_NOT_IN_STRINGS_XML"
     }
 }

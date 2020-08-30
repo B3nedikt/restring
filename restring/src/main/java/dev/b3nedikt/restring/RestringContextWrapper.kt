@@ -1,8 +1,8 @@
 package dev.b3nedikt.restring
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Resources
-import android.view.ContextThemeWrapper
 
 /**
  * Main Restring context wrapper which wraps the context for providing custom resources.
@@ -10,7 +10,7 @@ import android.view.ContextThemeWrapper
 internal class RestringContextWrapper private constructor(
         base: Context,
         stringRepository: StringRepository
-) : ContextThemeWrapper(base, base.applicationInfo.theme) {
+) : ContextWrapper(base) {
 
     private val res: Resources by lazy {
         val baseResources = super.getResources()

@@ -1,9 +1,9 @@
-[![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=4.0.6)](https://bintray.com/b3nedikt/restring/restring/4.0.6/link)
+[![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=4.0.7)](https://bintray.com/b3nedikt/restring/restring/4.0.7/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 [![Documentation](https://img.shields.io/badge/docs-documentation-green.svg)](https://b3nedikt.github.io/restring/)
 
-## Restring 4.0.6
+## Restring 4.0.7
 
 An easy way to replace bundled Strings dynamically, or provide new translations for Android.
 
@@ -11,7 +11,7 @@ An easy way to replace bundled Strings dynamically, or provide new translations 
 
 ```groovy
 // Replace bundled strings dynamically
-implementation 'dev.b3nedikt.restring:restring:4.0.6'
+implementation 'dev.b3nedikt.restring:restring:4.0.7'
 
 // Intercept view inflation
 implementation 'io.github.inflationx:viewpump:2.0.3'

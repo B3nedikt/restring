@@ -54,10 +54,10 @@ dependencies {
 
     // UI libraries
     implementation deps.appCompat
-    implementation deps.viewPump
 
     // Test libraries
     testImplementation deps.material
+    testImplementation deps.viewPump
 
     testImplementation deps.junit
     testImplementation deps.kluent
@@ -65,6 +65,7 @@ dependencies {
     testImplementation deps.robolectric
     testImplementation deps.mockitoKotlin
     testImplementation deps.testCore
+    testImplementation deps.viewPump
 
     testImplementation deps.reword
 }

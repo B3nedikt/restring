@@ -39,7 +39,11 @@ class RestringResourcesTest {
 
     @Test
     fun shouldAssignResourceIdToStringManagedOnlyByRestring() {
-        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(
+                        STR_KEY_NOT_IN_STRINGS_XML to STR_VALUE as CharSequence
+                ))
+        )
 
         val stringId = restringResources.getIdentifier(
                 name = STR_KEY_NOT_IN_STRINGS_XML,
@@ -52,7 +56,11 @@ class RestringResourcesTest {
 
     @Test
     fun identicalManagedStringsShouldShareTheSameId() {
-        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(
+                        STR_KEY_NOT_IN_STRINGS_XML to STR_VALUE as CharSequence
+                ))
+        )
 
         val stringId1 = restringResources.getIdentifier(
                 name = STR_KEY_NOT_IN_STRINGS_XML,
@@ -71,8 +79,12 @@ class RestringResourcesTest {
 
     @Test
     fun managedStringIdsShouldBeUnique() {
-        whenever(repository.getString(locale, STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
-        whenever(repository.getString(locale, ANOTHER_STR_KEY_NOT_IN_STRINGS_XML)).thenReturn(STR_VALUE)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(
+                        STR_KEY_NOT_IN_STRINGS_XML to STR_VALUE as CharSequence,
+                        ANOTHER_STR_KEY_NOT_IN_STRINGS_XML to STR_VALUE as CharSequence
+                ))
+        )
 
         val stringId1 = restringResources.getIdentifier(
                 name = STR_KEY_NOT_IN_STRINGS_XML,
@@ -91,7 +103,9 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetStringFromRepositoryIfExists() {
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(STR_KEY to STR_VALUE as CharSequence))
+        )
 
         val stringValue = restringResources.getString(STR_RES_ID)
 
@@ -100,7 +114,9 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetStringFromResourceIfNotExists() {
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf())
+        )
 
         val stringValue = restringResources.getString(STR_RES_ID)
 
@@ -111,7 +127,9 @@ class RestringResourcesTest {
     @Test
     fun shouldGetStringWithParamsFromRepositoryIfExists() {
         val param = "PARAM"
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE_WITH_PARAM)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(STR_KEY to STR_VALUE_WITH_PARAM as CharSequence))
+        )
 
         val stringValue = restringResources.getString(STR_RES_ID, param)
 
@@ -121,7 +139,9 @@ class RestringResourcesTest {
     @Test
     fun shouldGetStringWithParamsFromResourceIfNotExists() {
         val param = "PARAM"
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf())
+        )
 
         val stringValue = restringResources.getString(STR_RES_ID, param)
 
@@ -131,7 +151,9 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetHtmlTextFromRepositoryIfExists() {
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(STR_VALUE_HTML)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(STR_KEY to STR_VALUE_HTML as CharSequence))
+        )
 
         val realValue = restringResources.getText(STR_RES_ID)
 
@@ -142,7 +164,9 @@ class RestringResourcesTest {
 
     @Test
     fun shouldGetHtmlTextFromResourceIfNotExists() {
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf())
+        )
 
         val realValue = restringResources.getText(STR_RES_ID)
 
@@ -154,7 +178,9 @@ class RestringResourcesTest {
     @Test
     fun shouldReturnDefaultHtmlTextFromRepositoryIfResourceIdIsInvalid() {
         val def = Html.fromHtml("<b>def</b>", Html.FROM_HTML_MODE_COMPACT)
-        whenever(repository.getString(locale, STR_KEY)).thenReturn(null)
+        whenever(repository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf())
+        )
 
         val realValue = restringResources.getText(0, def)
 

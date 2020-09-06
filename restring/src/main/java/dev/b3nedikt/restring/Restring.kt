@@ -2,8 +2,7 @@ package dev.b3nedikt.restring
 
 import android.content.Context
 import dev.b3nedikt.restring.repository.CachedStringRepository
-import dev.b3nedikt.restring.repository.MemoryStringRepository
-import dev.b3nedikt.restring.repository.SharedPrefStringRepository
+import dev.b3nedikt.restring.repository.PersistentStringRepository
 import java.util.*
 
 
@@ -79,7 +78,7 @@ object Restring {
      */
     @JvmStatic
     fun setStrings(locale: Locale, newStrings: Map<String, String>) {
-        stringRepository.setStrings(locale, newStrings)
+        stringRepository.strings[locale]?.putAll(newStrings)
     }
 
     /**
@@ -91,7 +90,7 @@ object Restring {
      */
     @JvmStatic
     fun setString(locale: Locale, key: String, value: String) {
-        stringRepository.setString(locale, key, value)
+        stringRepository.strings[locale]?.put(key, value)
     }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
@@ -105,8 +104,7 @@ object Restring {
     }
 
     private fun defaultRepository(context: Context) = CachedStringRepository(
-            cacheRepository = MemoryStringRepository(),
-            persistentRepository = SharedPrefStringRepository(context)
+            persistentRepository = PersistentStringRepository(context)
     )
 
     /**

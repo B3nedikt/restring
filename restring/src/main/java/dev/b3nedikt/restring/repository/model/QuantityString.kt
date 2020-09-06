@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository
+package dev.b3nedikt.restring.repository.model
 
 import androidx.core.text.HtmlCompat
 import dev.b3nedikt.restring.PluralKeyword

@@ -23,7 +23,7 @@ internal class RestringResources(
         val identifier = super.getIdentifier(name, defType, defPackage)
 
         if (defType == "string" && identifier == 0) {
-            stringRepository.getString(Restring.locale, name) ?: return 0
+            stringRepository.strings[Restring.locale]?.get(name) ?: return 0
             val stringId = UUID.randomUUID().hashCode()
 
             val managedString = Restring.managedStrings
@@ -117,7 +117,7 @@ internal class RestringResources(
         val resultLocale = getLocale() ?: return null
 
         val stringKey = getResourceEntryName(id)
-        val quantityString = stringRepository.getQuantityString(resultLocale, stringKey)
+        val quantityString = stringRepository.quantityStrings[resultLocale]?.get(stringKey)
         return quantityString?.get(quantity.toPluralKeyword(resultLocale))
     }
 
@@ -125,7 +125,7 @@ internal class RestringResources(
         val resultLocale = getLocale() ?: return null
 
         val stringKey = getResourceEntryName(id)
-        return stringRepository.getStringArray(resultLocale, stringKey)
+        return stringRepository.stringArrays[resultLocale]?.get(stringKey)
     }
 
     private fun getStringFromRepository(id: Int): CharSequence? {
@@ -134,12 +134,12 @@ internal class RestringResources(
 
         try {
             val stringKey = getResourceEntryName(id)
-            return stringRepository.getString(resultLocale, stringKey)
+            return stringRepository.strings[resultLocale]?.get(stringKey)
         } catch (e: NotFoundException) {
 
             val stringKey = Restring.managedStrings[id]
             if (stringKey != null) {
-                return stringRepository.getString(resultLocale, stringKey)
+                return stringRepository.strings[resultLocale]?.get(stringKey)
             }
 
             throw e

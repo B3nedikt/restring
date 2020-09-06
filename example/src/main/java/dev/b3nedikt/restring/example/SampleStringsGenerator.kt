@@ -1,20 +1,15 @@
 package dev.b3nedikt.restring.example
 
-import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.example.Locales.LOCALE_AUSTRIAN_GERMAN
 import java.util.*
 
 /**
- * A example of a [Restring.StringsLoader].
- * In real applications, you might call an API to get your strings.
+ * Generates example strings
  */
-object SampleStringsLoader : Restring.StringsLoader {
+object SampleStringsGenerator {
 
-    override val locales = AppLocale.supportedLocales
-
-    override fun getStrings(locale: Locale): Map<String, CharSequence> {
+    fun getStrings(locale: Locale): Map<String, CharSequence> {
         val map = mutableMapOf<String, CharSequence>()
         when (locale) {
             Locale.ENGLISH -> {
@@ -36,7 +31,7 @@ object SampleStringsLoader : Restring.StringsLoader {
         return map
     }
 
-    override fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> {
+    fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> {
         return mapOf(
                 "string_array"
                         to
@@ -45,7 +40,7 @@ object SampleStringsLoader : Restring.StringsLoader {
         )
     }
 
-    override fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> {
+    fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> {
         return mapOf(
                 "quantity_string"
                         to

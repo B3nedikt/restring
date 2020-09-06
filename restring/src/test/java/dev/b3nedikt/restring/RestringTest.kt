@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.b3nedikt.restring.activity.TestActivity
-import dev.b3nedikt.restring.shadow.MyShadowAsyncTask
 import dev.b3nedikt.reword.RewordInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import org.amshove.kluent.shouldStartWith
@@ -20,18 +19,20 @@ import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = [MyShadowAsyncTask::class], sdk = [Build.VERSION_CODES.P])
+@Config(sdk = [Build.VERSION_CODES.P])
 class RestringTest {
 
     @Before
     fun setUp() {
-        Restring.init(
-                ApplicationProvider.getApplicationContext(),
-                RestringConfig.Builder()
-                        .stringsLoader(MyStringLoader())
-                        .build()
-        )
+        Restring.init(ApplicationProvider.getApplicationContext())
+
         ViewPump.init(ViewPump.builder().addInterceptor(RewordInterceptor).build())
+
+        val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
+
+        locales.forEach { locale ->
+            Restring.stringRepository.strings[locale]?.putAll(getStrings(locale))
+        }
 
         Robolectric.flushBackgroundThreadScheduler()
     }
@@ -85,19 +86,14 @@ class RestringTest {
         activityController.pause().stop().destroy()
     }
 
-    private inner class MyStringLoader : Restring.StringsLoader {
-
-        override val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
-
-        override fun getStrings(locale: Locale) = mapOf(
-                "header" to locale.language + "_" + "header",
-                "header_hint" to locale.language + "_" + "hint",
-                "menu1title" to locale.language + "_" + "Menu 1",
-                "menu1titleCondensed" to locale.language + "_" + "Menu1",
-                "menu2title" to locale.language + "_" + "Menu 2",
-                "menu2titleCondensed" to locale.language + "_" + "Menu2",
-                "menu3title" to locale.language + "_" + "Menu 3",
-                "menu3titleCondensed" to locale.language + "_" + "Menu3"
-        )
-    }
+    private fun getStrings(locale: Locale) = mapOf(
+            "header" to locale.language + "_" + "header",
+            "header_hint" to locale.language + "_" + "hint",
+            "menu1title" to locale.language + "_" + "Menu 1",
+            "menu1titleCondensed" to locale.language + "_" + "Menu1",
+            "menu2title" to locale.language + "_" + "Menu 2",
+            "menu2titleCondensed" to locale.language + "_" + "Menu2",
+            "menu3title" to locale.language + "_" + "Menu 3",
+            "menu3titleCondensed" to locale.language + "_" + "Menu3"
+    )
 }

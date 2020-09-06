@@ -43,7 +43,9 @@ class RestringContextWrapperTest {
 
     @Test
     fun shouldWrapResourcesAndGetStringsFromRepository() {
-        whenever(stringRepository.getString(locale, STR_KEY)).thenReturn(STR_VALUE)
+        whenever(stringRepository.strings).thenReturn(
+                mutableMapOf(locale to mutableMapOf(STR_KEY to STR_VALUE as CharSequence))
+        )
 
         val real = restringContextWrapper.resources.getString(STR_RES_ID)
 

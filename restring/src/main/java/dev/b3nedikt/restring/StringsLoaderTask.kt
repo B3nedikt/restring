@@ -55,13 +55,13 @@ internal class StringsLoaderTask(
     private fun saveInRepository(strings: Map<Locale, Map<String, Any>>) {
         for ((key, value) in strings) {
             runCatching {
-                stringRepository.setStrings(key, value as Map<String, CharSequence>)
+                stringRepository.strings.put(key, value as MutableMap<String, CharSequence>)
             }.onFailure {
                 runCatching {
-                    stringRepository.setStringArrays(key, value as Map<String, Array<CharSequence>>)
+                    stringRepository.stringArrays.put(key, value as MutableMap<String, Array<CharSequence>>)
                 }.onFailure {
                     runCatching {
-                        stringRepository.setQuantityStrings(key, value as Map<String, Map<PluralKeyword, CharSequence>>)
+                        stringRepository.quantityStrings.put(key, value as MutableMap<String, Map<PluralKeyword, CharSequence>>)
                     }
                 }
             }

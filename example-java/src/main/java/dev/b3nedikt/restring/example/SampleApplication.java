@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import dev.b3nedikt.app_locale.AppLocale;
 import dev.b3nedikt.restring.Restring;
-import dev.b3nedikt.restring.RestringConfig;
 import dev.b3nedikt.reword.RewordInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 
@@ -20,11 +19,7 @@ public class SampleApplication extends Application {
 
         AppLocale.setSupportedLocales(APP_LOCALES);
 
-        Restring.init(this,
-                new RestringConfig.Builder()
-                        .stringsLoader(new SampleStringsLoader())
-                        .build()
-        );
+        Restring.init(this);
 
         ViewPump.init(ViewPump.builder()
                 .addInterceptor(RewordInterceptor.INSTANCE)

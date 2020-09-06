@@ -12,7 +12,9 @@ import java.util.*
 object Restring {
 
     private var isInitialized = false
-    private lateinit var stringRepository: StringRepository
+
+    @JvmStatic
+    lateinit var stringRepository: StringRepository
 
     /**
      * Map of string ids to string names. These strings are only managed by restring,
@@ -42,19 +44,15 @@ object Restring {
      * Initialize Restring with the specified configuration.
      *
      * @param context of the application.
-     * @param config  of the Restring.
      */
-    @JvmOverloads
     @JvmStatic
-    fun init(context: Context, config: RestringConfig = RestringConfig.default) {
+    fun init(context: Context) {
         if (isInitialized) {
             return
         }
         isInitialized = true
 
-        config.localeProvider?.let { localeProvider = it }
-
-        initStringRepository(context, config)
+        stringRepository = CachedStringRepository(PersistentStringRepository(context))
     }
 
     /**
@@ -68,80 +66,5 @@ object Restring {
     fun wrapContext(base: Context): Context {
         if (base.resources is RestringResources) return base
         return RestringContextWrapper.wrap(base, stringRepository)
-    }
-
-    /**
-     * Set strings of a language.
-     *
-     * @param locale the strings are for.
-     * @param newStrings the strings of the language.
-     */
-    @JvmStatic
-    fun setStrings(locale: Locale, newStrings: Map<String, String>) {
-        stringRepository.strings[locale]?.putAll(newStrings)
-    }
-
-    /**
-     * Set a single string for a language.
-     *
-     * @param locale the string is for.
-     * @param key      the string key.
-     * @param value    the string value.
-     */
-    @JvmStatic
-    fun setString(locale: Locale, key: String, value: String) {
-        stringRepository.strings[locale]?.put(key, value)
-    }
-
-    private fun initStringRepository(context: Context, config: RestringConfig) {
-        stringRepository = config.stringRepository ?: defaultRepository(context)
-
-        config.stringsLoader?.let {
-            StringsLoaderTask(it, stringRepository).run {
-                if (config.loadAsync) runAsync() else runBlocking()
-            }
-        }
-    }
-
-    private fun defaultRepository(context: Context) = CachedStringRepository(
-            persistentRepository = PersistentStringRepository(context)
-    )
-
-    /**
-     * Loader of strings skeleton. Clients can implement this interface if they want to load
-     * strings on initialization. First the list of languages will be asked, then strings of each
-     * language.
-     */
-    interface StringsLoader {
-
-        /**
-         * List of supported languages
-         */
-        val locales: List<Locale>
-
-        /**
-         * Get strings of a language as keys &amp; values.
-         *
-         * @param locale of the strings.
-         * @return the strings as (key, value).
-         */
-        @JvmDefault
-        fun getStrings(locale: Locale): Map<String, CharSequence> = emptyMap()
-
-        /** Get quantity strings of a language as keys &amp; values.
-         *
-         * @param locale of the quantity strings.
-         * @return the quantity strings as (key, value).
-         */
-        @JvmDefault
-        fun getQuantityStrings(locale: Locale): Map<String, Map<PluralKeyword, CharSequence>> = emptyMap()
-
-        /** Get string arrays of a language as keys &amp; values.
-         *
-         * @param locale of the quantity strings.
-         * @return the string arrays as (key, value).
-         */
-        @JvmDefault
-        fun getStringArrays(locale: Locale): Map<String, Array<CharSequence>> = emptyMap()
     }
 }

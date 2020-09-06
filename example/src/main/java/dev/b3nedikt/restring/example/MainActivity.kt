@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.ContentFrameLayout
 import dev.b3nedikt.app_locale.AppLocale
+import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.reword.Reword
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,6 +17,12 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        AppLocale.supportedLocales.forEach {
+            Restring.stringRepository.strings[it]?.putAll(SampleStringsGenerator.getStrings(it))
+            Restring.stringRepository.quantityStrings[it]?.putAll(SampleStringsGenerator.getQuantityStrings(it))
+            Restring.stringRepository.stringArrays[it]?.putAll(SampleStringsGenerator.getStringArrays(it))
+        }
 
         val localeStrings = AppLocale.supportedLocales.map { it.language + " " + it.country }
         val adapter = ArrayAdapter(this,

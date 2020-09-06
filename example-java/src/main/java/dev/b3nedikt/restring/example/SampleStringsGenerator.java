@@ -3,30 +3,17 @@ package dev.b3nedikt.restring.example;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import dev.b3nedikt.app_locale.AppLocale;
 import dev.b3nedikt.restring.PluralKeyword;
-import dev.b3nedikt.restring.Restring;
 
 /**
- * A sample of a {@link Restring.StringsLoader}. In a real application,
- * you might call an API to get your strings.
- * <p>
- * All overridden methods will be called on background thread.
+ * Generates sample data
  */
-public class SampleStringsLoader implements Restring.StringsLoader {
+public class SampleStringsGenerator {
 
     @NotNull
-    @Override
-    public List<Locale> getLocales() {
-        return AppLocale.getSupportedLocales();
-    }
-
-    @NotNull
-    @Override
     public Map<String, CharSequence> getStrings(@NotNull Locale locale) {
         final Map<String, CharSequence> map = new HashMap<>();
         if (locale == Locale.ENGLISH) {
@@ -43,7 +30,6 @@ public class SampleStringsLoader implements Restring.StringsLoader {
     }
 
     @NotNull
-    @Override
     public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NotNull Locale locale) {
         final Map<String, Map<PluralKeyword, CharSequence>> map = new HashMap<>();
 
@@ -56,7 +42,6 @@ public class SampleStringsLoader implements Restring.StringsLoader {
     }
 
     @NotNull
-    @Override
     public Map<String, CharSequence[]> getStringArrays(@NotNull Locale locale) {
         final Map<String, CharSequence[]> map = new HashMap<>();
 

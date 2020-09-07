@@ -1,177 +1,236 @@
 package dev.b3nedikt.restring
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
+import android.content.res.*
+import android.graphics.Movie
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
-import java.util.*
+import android.os.Bundle
+import android.util.AttributeSet
+import android.util.DisplayMetrics
+import android.util.TypedValue
+import androidx.annotation.RequiresApi
+import java.io.InputStream
 
 
 /**
- * This is the wrapped resources which will be provided by Restring.
- * For getting strings and texts, it checks the strings repository first and if there's a new string
- * that will be returned, otherwise it will fallback to the original resource strings.
+ * Wrapped [Resources] which will be provided by Restring.
+ * Delegates all calls relevant for restring to the [ResourcesDelegate], every other call is
+ * directed to the passed [baseResources].
  */
 @Suppress("DEPRECATION")
 internal class RestringResources(
-        private var res: Resources,
-        private val stringRepository: StringRepository,
-        private val context: Context
-) : Resources(res.assets, res.displayMetrics, res.configuration) {
+        private var baseResources: Resources,
+        stringRepository: StringRepository,
+        context: Context
+) : Resources(baseResources.assets, baseResources.displayMetrics, baseResources.configuration) {
 
-    override fun getIdentifier(name: String, defType: String?, defPackage: String?): Int {
+    private val resourcesDelegate = ResourcesDelegate(context, baseResources, stringRepository)
 
-        val identifier = super.getIdentifier(name, defType, defPackage)
-
-        if (defType == "string" && identifier == 0) {
-            stringRepository.strings[Restring.locale]?.get(name) ?: return 0
-            val stringId = UUID.randomUUID().hashCode()
-
-            val managedString = Restring.managedStrings
-                    .toList()
-                    .firstOrNull { it.second == name }
-
-            if (managedString != null) {
-                return managedString.first
-            }
-
-            Restring.managedStrings[stringId] = name
-            return stringId
-        }
-
-        return identifier
+    override fun getIdentifier(name: String, defType: String, defPackage: String): Int {
+        return resourcesDelegate.getIdentifier(name, defType, defPackage)
     }
 
     @Throws(NotFoundException::class)
     override fun getString(id: Int): String {
-        setLocale()
-
-        val value = getStringFromRepository(id)
-        return value?.toString() ?: res.getString(id)
+        return resourcesDelegate.getString(id)
     }
 
     @Throws(NotFoundException::class)
     override fun getString(id: Int, vararg formatArgs: Any): String {
-        setLocale()
-
-        val value = getStringFromRepository(id)
-        if (value != null) return String.format(value.toString(), *formatArgs)
-        return res.getString(id, *formatArgs)
+        return resourcesDelegate.getString(id, *formatArgs)
     }
 
     @Throws(NotFoundException::class)
     override fun getText(id: Int): CharSequence {
-        setLocale()
-
-        val value = getStringFromRepository(id)
-        return value ?: res.getText(id)
+        return resourcesDelegate.getText(id)
     }
 
     override fun getText(id: Int, def: CharSequence): CharSequence {
-        setLocale()
-
-        val value = runCatching {
-            getStringFromRepository(id)
-        }.getOrNull()
-
-        return value ?: res.getText(id, def)
+        return resourcesDelegate.getText(id, def)
     }
 
     override fun getQuantityText(id: Int, quantity: Int): CharSequence {
-        setLocale()
-
-        val value = getQuantityStringFromRepository(id, quantity)
-        return value ?: res.getQuantityText(id, quantity)
+        return resourcesDelegate.getQuantityText(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int): String {
-        setLocale()
-
-        val value = getQuantityStringFromRepository(id, quantity)?.toString()
-        return value ?: res.getQuantityString(id, quantity)
+        return resourcesDelegate.getQuantityString(id, quantity)
     }
 
     override fun getQuantityString(id: Int, quantity: Int, vararg formatArgs: Any?): String {
-        setLocale()
-
-        val value = getQuantityStringFromRepository(id, quantity)?.toString()
-                ?.let { String.format(it, *formatArgs) }
-        return value ?: res.getQuantityString(id, quantity, *formatArgs)
+        return resourcesDelegate.getQuantityString(id, quantity, *formatArgs)
     }
 
     override fun getStringArray(id: Int): Array<String> {
-        setLocale()
-
-        val value = getStringArrayFromRepository(id)
-        return value?.map { it.toString() }?.toTypedArray() ?: res.getStringArray(id)
+        return resourcesDelegate.getStringArray(id)
     }
 
     override fun getTextArray(id: Int): Array<CharSequence> {
-        setLocale()
-
-        val value = getStringArrayFromRepository(id)
-        return value ?: res.getTextArray(id)
+        return resourcesDelegate.getTextArray(id)
     }
 
-    private fun getQuantityStringFromRepository(id: Int, quantity: Int): CharSequence? {
-
-        val resultLocale = getLocale() ?: return null
-
-        val stringKey = getResourceEntryName(id)
-        val quantityString = stringRepository.quantityStrings[resultLocale]?.get(stringKey)
-        return quantityString?.get(quantity.toPluralKeyword(resultLocale))
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun getFont(id: Int): Typeface {
+        return baseResources.getFont(id)
     }
 
-    private fun getStringArrayFromRepository(id: Int): Array<CharSequence>? {
-        val resultLocale = getLocale() ?: return null
-
-        val stringKey = getResourceEntryName(id)
-        return stringRepository.stringArrays[resultLocale]?.get(stringKey)
+    override fun getIntArray(id: Int): IntArray {
+        return baseResources.getIntArray(id)
     }
 
-    private fun getStringFromRepository(id: Int): CharSequence? {
-
-        val resultLocale = getLocale() ?: return null
-
-        try {
-            val stringKey = getResourceEntryName(id)
-            return stringRepository.strings[resultLocale]?.get(stringKey)
-        } catch (e: NotFoundException) {
-
-            val stringKey = Restring.managedStrings[id]
-            if (stringKey != null) {
-                return stringRepository.strings[resultLocale]?.get(stringKey)
-            }
-
-            throw e
-        }
+    override fun obtainTypedArray(id: Int): TypedArray {
+        return baseResources.obtainTypedArray(id)
     }
 
-    private fun getLocale(): Locale? {
-        val currentLocale = Restring.locale
-        val supportedLocales = stringRepository.supportedLocales
-
-        return if (supportedLocales.contains(currentLocale)) {
-            currentLocale
-        } else {
-            supportedLocales.find { it.language == currentLocale.language }
-        }
+    override fun getDimension(id: Int): Float {
+        return baseResources.getDimension(id)
     }
 
-    private fun setLocale() {
-        if (Restring.localeProvider.isInitial) return
-
-        val conf = res.configuration
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            conf.setLocale(Restring.locale)
-            res = context.createConfigurationContext(conf).resources
-        } else {
-            conf.locale = Restring.locale
-            res.updateConfiguration(conf, res.displayMetrics)
-        }
+    override fun getDimensionPixelOffset(id: Int): Int {
+        return baseResources.getDimensionPixelOffset(id)
     }
 
-    private fun Int.toPluralKeyword(locale: Locale): PluralKeyword =
-            PluralKeyword.fromQuantity(res, locale, this)
+    override fun getDimensionPixelSize(id: Int): Int {
+        return baseResources.getDimensionPixelSize(id)
+    }
+
+    override fun getFraction(id: Int, base: Int, pbase: Int): Float {
+        return baseResources.getFraction(id, base, pbase)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    override fun getDrawable(id: Int): Drawable {
+        return baseResources.getDrawable(id)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun getDrawable(id: Int, theme: Theme?): Drawable {
+        return baseResources.getDrawable(id, theme)
+    }
+
+    override fun getDrawableForDensity(id: Int, density: Int): Drawable? {
+        return baseResources.getDrawableForDensity(id, density)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun getDrawableForDensity(id: Int, density: Int, theme: Theme?): Drawable? {
+        return baseResources.getDrawableForDensity(id, density, theme)
+    }
+
+    override fun getMovie(id: Int): Movie {
+        return baseResources.getMovie(id)
+    }
+
+    override fun getColor(id: Int): Int {
+        return baseResources.getColor(id)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun getColor(id: Int, theme: Theme?): Int {
+        return baseResources.getColor(id, theme)
+    }
+
+    @SuppressLint("UseCompatLoadingForColorStateLists")
+    override fun getColorStateList(id: Int): ColorStateList {
+        return baseResources.getColorStateList(id)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun getColorStateList(id: Int, theme: Theme?): ColorStateList {
+        return baseResources.getColorStateList(id, theme)
+    }
+
+    override fun getBoolean(id: Int): Boolean {
+        return baseResources.getBoolean(id)
+    }
+
+    override fun getInteger(id: Int): Int {
+        return baseResources.getInteger(id)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun getFloat(id: Int): Float {
+        return baseResources.getFloat(id)
+    }
+
+    override fun getLayout(id: Int): XmlResourceParser {
+        return baseResources.getLayout(id)
+    }
+
+    override fun getAnimation(id: Int): XmlResourceParser {
+        return baseResources.getAnimation(id)
+    }
+
+    override fun getXml(id: Int): XmlResourceParser {
+        return baseResources.getXml(id)
+    }
+
+    override fun openRawResource(id: Int): InputStream {
+        return baseResources.openRawResource(id)
+    }
+
+    override fun openRawResource(id: Int, value: TypedValue?): InputStream {
+        return baseResources.openRawResource(id, value)
+    }
+
+    override fun openRawResourceFd(id: Int): AssetFileDescriptor {
+        return baseResources.openRawResourceFd(id)
+    }
+
+    override fun getValue(id: Int, outValue: TypedValue?, resolveRefs: Boolean) {
+        baseResources.getValue(id, outValue, resolveRefs)
+    }
+
+    override fun getValue(name: String?, outValue: TypedValue?, resolveRefs: Boolean) {
+        baseResources.getValue(name, outValue, resolveRefs)
+    }
+
+    override fun getValueForDensity(id: Int, density: Int, outValue: TypedValue?, resolveRefs: Boolean) {
+        baseResources.getValueForDensity(id, density, outValue, resolveRefs)
+    }
+
+    override fun obtainAttributes(set: AttributeSet?, attrs: IntArray?): TypedArray {
+        return baseResources.obtainAttributes(set, attrs)
+    }
+
+    override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
+        baseResources.updateConfiguration(config, metrics)
+    }
+
+    override fun getDisplayMetrics(): DisplayMetrics {
+        return baseResources.displayMetrics
+    }
+
+    override fun getConfiguration(): Configuration {
+        return baseResources.configuration
+    }
+
+    override fun getResourceName(resid: Int): String {
+        return baseResources.getResourceName(resid)
+    }
+
+    override fun getResourcePackageName(resid: Int): String {
+        return baseResources.getResourcePackageName(resid)
+    }
+
+    override fun getResourceTypeName(resid: Int): String {
+        return baseResources.getResourceTypeName(resid)
+    }
+
+    override fun getResourceEntryName(resid: Int): String {
+        return baseResources.getResourceEntryName(resid)
+    }
+
+    override fun parseBundleExtras(parser: XmlResourceParser?, outBundle: Bundle?) {
+        baseResources.parseBundleExtras(parser, outBundle)
+    }
+
+    override fun parseBundleExtra(tagName: String?, attrs: AttributeSet?, outBundle: Bundle?) {
+        baseResources.parseBundleExtra(tagName, attrs, outBundle)
+    }
 }
 

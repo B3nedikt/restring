@@ -1,10 +1,10 @@
-package dev.b3nedikt.restring.repository
+package dev.b3nedikt.restring.internal.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import dev.b3nedikt.restring.LocaleUtil
+import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
 import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.repository.persistent.*
+import dev.b3nedikt.restring.internal.repository.persistent.*
 import java.util.*
 
 internal class PersistentStringRepository(private val context: Context) : MutableStringRepository {

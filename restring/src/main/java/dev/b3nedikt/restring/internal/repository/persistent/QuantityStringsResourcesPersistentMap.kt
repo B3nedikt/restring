@@ -1,9 +1,9 @@
-package dev.b3nedikt.restring.repository.persistent
+package dev.b3nedikt.restring.internal.repository.persistent
 
 import android.content.SharedPreferences
 import android.text.Spanned
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.repository.model.QuantityString
+import dev.b3nedikt.restring.internal.repository.model.QuantityString
 
 /**
  * [PersistentMap] which persists quantity strings in the [SharedPreferences]

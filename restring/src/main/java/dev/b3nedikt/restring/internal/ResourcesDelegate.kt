@@ -1,8 +1,11 @@
-package dev.b3nedikt.restring
+package dev.b3nedikt.restring.internal
 
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import dev.b3nedikt.restring.PluralKeyword
+import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.restring.StringRepository
 import java.util.*
 
 /**

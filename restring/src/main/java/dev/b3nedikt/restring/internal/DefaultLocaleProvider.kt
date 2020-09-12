@@ -1,5 +1,6 @@
-package dev.b3nedikt.restring
+package dev.b3nedikt.restring.internal
 
+import dev.b3nedikt.restring.LocaleProvider
 import java.util.*
 
 /**

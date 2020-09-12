@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package dev.b3nedikt.restring
+package dev.b3nedikt.restring.internal
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,6 +14,7 @@ import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import androidx.annotation.RequiresApi
+import dev.b3nedikt.restring.StringRepository
 import java.io.InputStream
 
 

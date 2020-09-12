@@ -1,7 +1,7 @@
-package dev.b3nedikt.restring.repository
+package dev.b3nedikt.restring.internal.repository
 
 import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.repository.observable.observableMap
+import dev.b3nedikt.restring.internal.repository.observable.observableMap
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 

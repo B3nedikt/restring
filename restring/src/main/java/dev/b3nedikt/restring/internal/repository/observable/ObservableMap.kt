@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository.observable
+package dev.b3nedikt.restring.internal.repository.observable
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

@@ -1,8 +1,9 @@
-package dev.b3nedikt.restring
+package dev.b3nedikt.restring.internal
 
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
+import dev.b3nedikt.restring.StringRepository
 
 /**
  * Main Restring context wrapper which wraps the context for providing custom resources.

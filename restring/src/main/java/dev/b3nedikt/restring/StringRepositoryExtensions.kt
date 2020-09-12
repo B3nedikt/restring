@@ -1,7 +1,4 @@
-package dev.b3nedikt.restring.repository
-
-import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.StringRepository
+package dev.b3nedikt.restring
 
 /**
  * Returns a [MutableStringRepository] from this [StringRepository] if possible.

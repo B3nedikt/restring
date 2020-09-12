@@ -1,7 +1,7 @@
-package dev.b3nedikt.restring.repository.persistent
+package dev.b3nedikt.restring.internal.repository.persistent
 
 import android.content.SharedPreferences
-import dev.b3nedikt.restring.LocaleUtil
+import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
 import java.util.*
 
 /**

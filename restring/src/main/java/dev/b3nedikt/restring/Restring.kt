@@ -1,6 +1,7 @@
 package dev.b3nedikt.restring
 
 import android.content.Context
+import android.content.ContextWrapper
 import dev.b3nedikt.restring.repository.CachedStringRepository
 import dev.b3nedikt.restring.repository.PersistentStringRepository
 import dev.b3nedikt.restring.repository.toMutableRepository
@@ -97,11 +98,9 @@ object Restring {
     }
 
     /**
-     * Wraps context of an activity to provide Restring features.
-     * Will return the context as it was passed in, if it is already wrapped.
-     *
-     * @param base context of an activity.
-     * @return the wrapped context.
+     * Wraps the context with a [ContextWrapper] which provides the [RestringResources] instead
+     * of the default resources. If the provided context is already wrapped, it will be returned
+     * unchanged by this method.
      */
     @JvmStatic
     fun wrapContext(base: Context): Context {

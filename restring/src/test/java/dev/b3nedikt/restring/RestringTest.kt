@@ -8,7 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dev.b3nedikt.restring.activity.TestActivity
 import dev.b3nedikt.reword.RewordInterceptor
-import io.github.inflationx.viewpump.ViewPump
+import dev.b3nedikt.viewpump.ViewPump
 import org.amshove.kluent.shouldStartWith
 import org.junit.Before
 import org.junit.Test

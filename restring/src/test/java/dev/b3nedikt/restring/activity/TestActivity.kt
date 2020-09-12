@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dev.b3nedikt.restring.R
 
 import dev.b3nedikt.restring.Restring
-import io.github.inflationx.viewpump.ViewPumpContextWrapper
+import dev.b3nedikt.viewpump.ViewPumpContextWrapper
 
 class TestActivity : AppCompatActivity() {
 

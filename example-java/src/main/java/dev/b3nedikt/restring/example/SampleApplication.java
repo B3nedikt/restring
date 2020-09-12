@@ -9,7 +9,7 @@ import java.util.Locale;
 import dev.b3nedikt.app_locale.AppLocale;
 import dev.b3nedikt.restring.Restring;
 import dev.b3nedikt.reword.RewordInterceptor;
-import io.github.inflationx.viewpump.ViewPump;
+import dev.b3nedikt.viewpump.ViewPump;
 
 public class SampleApplication extends Application {
 

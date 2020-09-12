@@ -32,12 +32,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    // Support the @JvmDefault annotation
-    kotlinOptions {
-        freeCompilerArgs = ['-Xjvm-default=enable']
-        jvmTarget = "1.8"
-    }
-
     testOptions {
         unitTests {
             includeAndroidResources = true

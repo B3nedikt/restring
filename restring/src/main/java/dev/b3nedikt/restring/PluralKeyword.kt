@@ -48,11 +48,15 @@ enum class PluralKeyword {
     OTHER;
 
     companion object {
-        fun fromQuantity(baseResources: Resources, locale: Locale, quantity: Int) =
+
+        /**
+         * Creates a [PluralKeyword]
+         */
+        fun fromQuantity(resources: Resources, locale: Locale, quantity: Int): PluralKeyword =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     PluralRules.forLocale(locale).select(quantity.toDouble())
                 } else {
-                    baseResources.getQuantityString(R.plurals.quantity_strings, quantity)
+                    resources.getQuantityString(R.plurals.quantity_strings, quantity)
                 }.run { valueOf(toUpperCase(Locale.ROOT)) }
     }
 }

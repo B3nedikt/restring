@@ -4,9 +4,12 @@ import android.content.SharedPreferences
 import dev.b3nedikt.restring.LocaleUtil
 import java.util.*
 
+/**
+ * A [PersistentSet] which persists [Locale]s in the [SharedPreferences]
+ */
 internal class LocalesPersistentSet(
         private val sharedPreferences: SharedPreferences
-) : PersistentSet<Locale>() {
+) : PersistentSet<Locale> {
 
     override fun find(key: Locale): Locale? {
         val localeString = sharedPreferences

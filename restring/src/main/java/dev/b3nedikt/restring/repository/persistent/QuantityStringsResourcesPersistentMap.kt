@@ -5,6 +5,9 @@ import android.text.Spanned
 import dev.b3nedikt.restring.PluralKeyword
 import dev.b3nedikt.restring.repository.model.QuantityString
 
+/**
+ * [PersistentMap] which persists quantity strings in the [SharedPreferences]
+ */
 internal class QuantityStringsResourcesPersistentMap(
         sharedPreferences: SharedPreferences
 ) : ResourcesPersistentMap<Map<PluralKeyword, CharSequence>>(sharedPreferences) {

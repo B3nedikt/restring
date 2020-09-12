@@ -5,7 +5,7 @@ import java.util.*
 /**
  * Default implementation of [LocaleProvider]
  */
-object DefaultLocaleProvider : LocaleProvider {
+internal object DefaultLocaleProvider : LocaleProvider {
 
     override var isInitial = true
 

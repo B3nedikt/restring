@@ -31,7 +31,7 @@ class RestringTest {
         val locales = listOf(Locale.ENGLISH, Locale.GERMAN)
 
         locales.forEach { locale ->
-            Restring.stringRepository.strings[locale]?.putAll(getStrings(locale))
+            Restring.putStrings(locale, getStrings(locale))
         }
 
         Robolectric.flushBackgroundThreadScheduler()

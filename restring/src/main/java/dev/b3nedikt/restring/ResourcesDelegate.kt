@@ -6,7 +6,8 @@ import android.os.Build
 import java.util.*
 
 /**
- * A delegate class for [Resources]
+ * A delegate class for [Resources]. Handles all resource calls relevant to restring without
+ * modifying the original [baseResources].
  */
 internal class ResourcesDelegate(
         private val context: Context,

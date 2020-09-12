@@ -18,10 +18,10 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AppLocale.supportedLocales.forEach {
-            Restring.stringRepository.strings[it]?.putAll(SampleStringsGenerator.getStrings(it))
-            Restring.stringRepository.quantityStrings[it]?.putAll(SampleStringsGenerator.getQuantityStrings(it))
-            Restring.stringRepository.stringArrays[it]?.putAll(SampleStringsGenerator.getStringArrays(it))
+        AppLocale.supportedLocales.forEach { locale ->
+            Restring.putStrings(locale, SampleStringsGenerator.getStrings(locale))
+            Restring.putQuantityStrings(locale, SampleStringsGenerator.getQuantityStrings(locale))
+            Restring.putStringArrays(locale, SampleStringsGenerator.getStringArrays(locale))
         }
 
         val localeStrings = AppLocale.supportedLocales.map { it.language + " " + it.country }

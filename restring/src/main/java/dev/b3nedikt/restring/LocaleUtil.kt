@@ -3,6 +3,10 @@ package dev.b3nedikt.restring
 import android.os.Build
 import java.util.*
 
+/**
+ * Util class for converting [Locale]s to their language tag and vice versa, uses the normal java
+ * implementation on Lollipop and above.
+ */
 internal object LocaleUtil {
 
     fun toLanguageTag(locale: Locale): String {

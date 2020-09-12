@@ -3,7 +3,10 @@ package dev.b3nedikt.restring.repository.persistent
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-internal abstract class PersistentSet<E> : MutableSet<E>, ReadOnlyProperty<Any?, MutableSet<E>> {
+/**
+ * A [MutableSet] which persists all calls to it
+ */
+internal interface PersistentSet<E> : MutableSet<E>, ReadOnlyProperty<Any?, MutableSet<E>> {
 
     override fun add(element: E): Boolean {
         val contained = find(element) != null
@@ -67,15 +70,33 @@ internal abstract class PersistentSet<E> : MutableSet<E>, ReadOnlyProperty<Any?,
         return this
     }
 
-    abstract fun find(key: E): E?
+    /**
+     * Returns a element if it exists
+     */
+    fun find(key: E): E?
 
-    abstract fun findAll(): Collection<E>
+    /**
+     * Returns all elements managed by this set
+     */
+    fun findAll(): Collection<E>
 
-    abstract fun save(element: E)
+    /**
+     * Persists the [element]
+     */
+    fun save(element: E)
 
-    abstract fun saveAll(elements: Collection<E>)
+    /**
+     * Persists all [elements]
+     */
+    fun saveAll(elements: Collection<E>)
 
-    abstract fun delete(element: E)
+    /**
+     * Deletes the [element]
+     */
+    fun delete(element: E)
 
-    abstract fun deleteAll()
+    /**
+     * Deletes all elements managed by this set
+     */
+    fun deleteAll()
 }

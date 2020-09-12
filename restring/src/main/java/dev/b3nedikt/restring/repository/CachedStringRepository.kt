@@ -1,46 +1,42 @@
 package dev.b3nedikt.restring.repository
 
-import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.StringRepository
+import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.repository.observable.observableMap
 import java.util.*
+import kotlin.properties.ReadWriteProperty
 
-class CachedStringRepository(val persistentRepository: StringRepository) : StringRepository {
+/**
+ * Implementation of a [MutableStringRepository] that caches strings in memory, while persisting
+ * writes to the [persistentRepository]
+ */
+internal class CachedStringRepository(
+        val persistentRepository: MutableStringRepository
+) : MutableStringRepository {
 
     override val supportedLocales: Set<Locale> get() = _supportedLocales
     private val _supportedLocales: MutableSet<Locale> = persistentRepository.supportedLocales.toMutableSet()
 
-    override val strings: MutableMap<Locale, MutableMap<String, CharSequence>> by observableMap(
-            initialValue = persistentRepository.strings,
-            defaultValue = getDefaultStringsMap(persistentRepository.strings),
-            afterPut = { key, value ->
-                persistentRepository.strings[key] = value
+    override val strings by observableResourcesMap(persistentRepository.strings)
 
-                _supportedLocales.add(key)
-            }
-    )
+    override val quantityStrings by observableResourcesMap(persistentRepository.quantityStrings)
 
-    override val quantityStrings: MutableMap<Locale, MutableMap<String, Map<PluralKeyword, CharSequence>>> by observableMap(
-            initialValue = persistentRepository.quantityStrings,
-            defaultValue = getDefaultStringsMap(persistentRepository.quantityStrings),
-            afterPut = { key, value ->
-                persistentRepository.quantityStrings[key] = value
+    override val stringArrays by observableResourcesMap(persistentRepository.stringArrays)
 
-                _supportedLocales.add(key)
-            }
-    )
+    private fun <R> observableResourcesMap(
+            persistentMap: MutableMap<Locale, MutableMap<String, R>>
+    ): ReadWriteProperty<Any?, MutableMap<Locale, MutableMap<String, R>>> {
+        return observableMap(
+                initialValue = persistentMap,
+                defaultValue = getDefaultResourcesMap(persistentMap),
+                afterPut = { key, value ->
+                    persistentMap[key] = value
 
-    override val stringArrays: MutableMap<Locale, MutableMap<String, Array<CharSequence>>> by observableMap(
-            initialValue = persistentRepository.stringArrays,
-            defaultValue = getDefaultStringsMap(persistentRepository.stringArrays),
-            afterPut = { key, value ->
-                persistentRepository.stringArrays[key] = value
+                    _supportedLocales.add(key)
+                }
+        )
+    }
 
-                _supportedLocales.add(key)
-            }
-    )
-
-    private fun <T> getDefaultStringsMap(
+    private fun <T> getDefaultResourcesMap(
             delegateMap: MutableMap<Locale, MutableMap<String, T>>
     ): (key: Locale) -> MutableMap<String, T> {
         return { locale ->

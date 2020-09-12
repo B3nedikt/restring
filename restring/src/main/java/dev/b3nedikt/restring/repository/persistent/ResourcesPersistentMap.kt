@@ -2,9 +2,12 @@ package dev.b3nedikt.restring.repository.persistent
 
 import android.content.SharedPreferences
 
+/**
+ * [PersistentMap] with string resource names as keys and the string resources as value
+ */
 internal abstract class ResourcesPersistentMap<T>(
         private val sharedPreferences: SharedPreferences
-) : PersistentMap<String, T>() {
+) : PersistentMap<String, T> {
 
     override fun find(key: String): T? {
         val value = sharedPreferences.getString(key, null) ?: return null

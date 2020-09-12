@@ -3,11 +3,15 @@ package dev.b3nedikt.restring.repository.persistent
 import android.content.Context
 import java.util.*
 
+/**
+ * A [PersistentMap] which used [Locale]s as key and maps of resource name, resource value pairs
+ * as its values.
+ */
 internal class LocalePersistentMap<V>(
         val context: Context,
         val locales: MutableSet<Locale>,
         val persistentMapFactory: (locale: Locale) -> ResourcesPersistentMap<V>
-) : PersistentMap<Locale, MutableMap<String, V>>() {
+) : PersistentMap<Locale, MutableMap<String, V>> {
 
     private val delegateMaps: MutableMap<Locale, MutableMap<String, V>> by lazy {
         val initialMap = mutableMapOf<Locale, MutableMap<String, V>>()

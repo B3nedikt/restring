@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package dev.b3nedikt.restring
 
 import android.annotation.SuppressLint
@@ -20,9 +22,8 @@ import java.io.InputStream
  * Delegates all calls relevant for restring to the [ResourcesDelegate], every other call is
  * directed to the passed [baseResources].
  */
-@Suppress("DEPRECATION")
 internal class RestringResources(
-        private var baseResources: Resources,
+        private val baseResources: Resources,
         stringRepository: StringRepository,
         context: Context
 ) : Resources(baseResources.assets, baseResources.displayMetrics, baseResources.configuration) {
@@ -33,17 +34,14 @@ internal class RestringResources(
         return resourcesDelegate.getIdentifier(name, defType, defPackage)
     }
 
-    @Throws(NotFoundException::class)
     override fun getString(id: Int): String {
         return resourcesDelegate.getString(id)
     }
 
-    @Throws(NotFoundException::class)
     override fun getString(id: Int, vararg formatArgs: Any): String {
         return resourcesDelegate.getString(id, *formatArgs)
     }
 
-    @Throws(NotFoundException::class)
     override fun getText(id: Int): CharSequence {
         return resourcesDelegate.getText(id)
     }

@@ -26,7 +26,6 @@ Initialize Restring in your Application class:
 
 ```kotlin
 Restring.init(this)
-Restring.localeProvider = AppLocaleLocaleProvider
 
 ViewPump.init(ViewPump.builder()
         .addInterceptor(RewordInterceptor)
@@ -120,6 +119,35 @@ Keep in mind that this repository is immutable, so you need to either:
 - Implement the MutableStringRepository, which will allow you to use the normal mutation methods of the Restring facade like Restring.putStrings(...).
 
 - Provide your own mutation methods in your derived class.
+
+## App Locale integration
+
+This library was build for easy integration with my library [AppLocale](https://github.com/B3nedikt/AppLocale). AppLocale simplifies managing the Locales supported by your app.
+
+To integrate it you need to first create a custom LocaleProvider:
+
+```kotlin
+object AppLocaleLocaleProvider : LocaleProvider {
+
+    override val isInitial
+        get() = AppLocale.isInitial
+
+    override var currentLocale
+        get() = AppLocale.desiredLocale
+        set(value) {
+            AppLocale.desiredLocale = value
+        }
+}
+```
+
+Then you can install this custom LocaleProvider when initializing Restring in your application class:
+
+```kotlin
+Restring.init(this)
+Restring.localeProvider = AppLocaleLocaleProvider
+```
+
+If you already have some mechanism in your app to manage its Locales, you can easily integrate it with a custom LocaleProvider as well.
 
 ## Notes
 

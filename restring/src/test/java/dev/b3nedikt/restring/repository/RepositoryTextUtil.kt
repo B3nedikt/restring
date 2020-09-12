@@ -14,8 +14,10 @@ internal fun generateStringArrays(count: Int): Map<String, Array<CharSequence>> 
     val stringArrays = mutableMapOf<String, Array<CharSequence>>()
 
     for (i in 0 until count) {
-        stringArrays["key$i"] = "value$i ".repeat(10).trimEnd().split( " ")
-                .map { it as CharSequence }
+        stringArrays["key$i"] = "value$i "
+                .repeat(10)
+                .trimEnd()
+                .split( " ")
                 .toTypedArray()
     }
     return stringArrays

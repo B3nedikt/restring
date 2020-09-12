@@ -10,7 +10,7 @@ import java.util.*
 
 /**
  * A Android library to replace string resources dynamically.
- * Restring supports all 3 types of string resources: [strings], [quantityStrings] & [stringArrays].
+ * Restring supports all 3 types of string resources: strings, quantity strings, & string arrays.
  */
 object Restring {
 

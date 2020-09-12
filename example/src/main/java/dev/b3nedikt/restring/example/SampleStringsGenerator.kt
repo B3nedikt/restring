@@ -35,7 +35,7 @@ object SampleStringsGenerator {
         return mapOf(
                 "string_array"
                         to
-                        arrayOf<CharSequence>("String Array 1 $locale (from restring)",
+                        arrayOf("String Array 1 $locale (from restring)",
                                 "String Array 2 $locale (from restring)")
         )
     }

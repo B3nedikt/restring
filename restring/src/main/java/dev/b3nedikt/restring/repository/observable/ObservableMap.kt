@@ -5,6 +5,11 @@ import kotlin.reflect.KProperty
 
 /**
  * A [MutableMap] which calls back functions when changed
+ *
+ * @param initialValue the value the map has when initialized, the content of this map is copied
+ * into the new [ObservableMap]
+ * @param defaultValue value to which a value which has previously not been returned by [get] is
+ * set to
  */
 internal abstract class ObservableMap<K, V>(
         initialValue: MutableMap<K, V>,

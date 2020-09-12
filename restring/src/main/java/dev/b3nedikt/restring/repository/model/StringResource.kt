@@ -1,8 +1,16 @@
 package dev.b3nedikt.restring.repository.model
 
+import android.text.Spannable
 import androidx.core.text.HtmlCompat
 import org.json.JSONObject
 
+/**
+ * Data class for quantity strings
+ *
+ * @param value the quantity string
+ * @property isText if the value [CharSequence] is a text, meaning it is HTML formatted and can be
+ * used by a [Spannable].
+ */
 internal data class StringResource(
         val value: CharSequence,
         val isText: Boolean

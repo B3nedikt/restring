@@ -5,6 +5,15 @@ import kotlin.properties.ReadWriteProperty
 /**
  * Returns a property delegate for a mutable map that where all read/write operations can
  * be observed.
+ *
+ * @param initialValue the value the map has when initialized, the content of this map is copied
+ * into the new [ObservableMap]
+ * @param defaultValue value to which a value which has previously not been returned by [get] is
+ * set to
+ * @param afterPut triggered after a single new value has been put into the map
+ * @param afterPutAll triggered after multiple new values have been put into the map
+ * @param afterRemove triggered after a single value has been removed from the map
+ * @param afterClear triggered after all values have been removed from the map
  */
 internal inline fun <K, V> observableMap(
         initialValue: MutableMap<K, V>,

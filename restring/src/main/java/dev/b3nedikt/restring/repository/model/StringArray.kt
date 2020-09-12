@@ -1,9 +1,17 @@
 package dev.b3nedikt.restring.repository.model
 
+import android.text.Spannable
 import androidx.core.text.HtmlCompat
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * Data class for string arrays
+ *
+ * @param value the string array
+ * @param isText if at least one of the [CharSequence]s of the string array is a text,
+ * meaning it is HTML formatted and can be used by a [Spannable].
+ */
 internal data class StringArray(
         val value: List<CharSequence>,
         val isText: Boolean

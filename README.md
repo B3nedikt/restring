@@ -1,100 +1,83 @@
-[![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=4.0.7)](https://bintray.com/b3nedikt/restring/restring/4.0.7/link)
+[![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=5.0.0)](https://bintray.com/b3nedikt/restring/restring/5.0.0/link)
 [![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
 [![Documentation](https://img.shields.io/badge/docs-documentation-green.svg)](https://b3nedikt.github.io/restring/)
 
-## Restring 4.0.7
+## Restring 5.0.0
 
-An easy way to replace bundled Strings dynamically, or provide new translations for Android.
+An easy way to replace bundled Strings dynamically, or provide new translations for Android. Also supports plurals & string arrays.
 
 ### 1. Add dependencies
 
 ```groovy
 // Replace bundled strings dynamically
-implementation 'dev.b3nedikt.restring:restring:4.0.7'
+implementation 'dev.b3nedikt.restring:restring:5.0.0'
 
 // Intercept view inflation
-implementation 'io.github.inflationx:viewpump:2.0.3'
+implementation 'dev.b3nedikt.viewpump:viewpump:3.0.0'
 
 // Allows to update the text of views at runtime without recreating the activity
-implementation 'dev.b3nedikt.reword:reword:1.1.0'
+implementation 'dev.b3nedikt.reword:reword:2.0.0'
 ```
 
 ### 2. Initialize
 
 Initialize Restring in your Application class:
 
-```java
-Restring.init(this,
-        new RestringConfig.Builder()
-                .stringsLoader(new SampleStringsLoader())
-                .loadAsync(false) // If string loader should load strings asynchronously, default true
-                .build()
-        );
+```kotlin
+Restring.init(this)
+Restring.localeProvider = AppLocaleLocaleProvider
 
 ViewPump.init(ViewPump.builder()
-        .addInterceptor(RewordInterceptor.INSTANCE)
+        .addInterceptor(RewordInterceptor)
         .build()
-        );
 ```
 
 ### 3. Inject into Context
 
 if you have a BaseActivity you can add this there, otherwise you have to add it to all of your activities!
 
-```java
- @Override
- protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)));
-}
+```kotlin
+abstract class BaseActivity : AppCompatActivity() {
 
-@Override
-public Resources getResources() {
-    return Restring.wrapContext(getBaseContext()).getResources();
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)))
+    }
+
+    override fun getResources(): Resources {
+        return Restring.wrapContext(baseContext).resources
+    }
 }
 ```
+
+If you use fragments add the following to your BaseFragment:
+
+```kotlin
+abstract class BaseFragment : Fragment() {
+
+    override fun onResume() {
+        super.onResume()
+
+        ViewPump.setOverwriteContext(Restring.wrapContext(requireContext()))
+    }
+
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        val wrappedContext = ViewPumpContextWrapper.wrap(Restring.wrapContext(requireContext()))
+        return wrappedContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    }
+}
+```
+
+Also should you use the application context somewhere to retrieve strings
+and inject it with a DI tool like koin or dagger, I would recommend wrapping it in your
+application class with Restring.wrap(...) when providing it to your DI tool.
 
 ### 4. Provide new Strings
 
-There're two ways to provide new Strings. You can use either way or both.
+Now load your strings like this:
 
-First way: You can implement Restring.StringsLoader like this:
-
-```java
-public class SampleStringsLoader implements Restring.StringsLoader {
-
-  @NotNull
-  @Override
-  public List<Locale> getLocales() {
-    return Arrays.asList(Locale.ENGLISH, Locale.US);
-  }
-
-  @NotNull
-  @Override
-  public Map<String, CharSequence> getStrings(@NotNull Locale locale) {
-    final Map<String, CharSequence> map = new HashMap<>();
-    // Load strings here...
-    return map;
-  }
-}
-```
-
-and initialize Restring like this:
-
-```java
-Restring.init(context,
-              new RestringConfig.Builder()
-                  .stringsLoader(new MyStringsLoader())
-                  .build()
-        );
-```
-
-Second way:
-Load your Strings in any way / any time / any place and just call this:
-
-```java
-// e.g. locale=Locale.EN newStrings=map of (key-value)s
-Restring.setStrings(locale, newStrings);
+```kotlin
+Restring.putStrings(Locale.FRENCH, frenchStringsMap)
 ```
 
 Now all strings in your app will be overriden by new strings provided to Restring.
@@ -103,12 +86,8 @@ Now all strings in your app will be overriden by new strings provided to Restrin
 
 Restring works with the current locale by default, however you can change your apps language like this:
 
-```java
-Restring.setLocale(Locale.FRENCH);
-
-// The layout containing the views you want to localize
-final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-Restring.reword(rootView);
+```kotlin
+Restring.locale = Locale.FRENCH
 ```
 
 Restring will start using strings of the new locale.
@@ -118,60 +97,36 @@ Restring will start using strings of the new locale.
 After providing new strings or changing the app language you can either restart the app,
 or reload the UI like this:
 
-```java
+```kotlin
 // The layout containing the views you want to localize
-final View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
-Reword.reword(rootView);
+val rootView = window.decorView.findViewById<ContentFrameLayout>(android.R.id.content)
+Reword.reword(rootView)
 ```
+
+If you have changed the texts of views in code, you need to update these
+texts manually of course, as this call will only update those string resources which
+you set in your xml layout files.
 
 ## Custom Repository
 
-By default, Restring will hold strings in memory for caching and persist them to shared preferences after loading.
-You can however change the repository for saving the strings, to e.g. only keep them in memory like this:
+By default, Restring will hold strings in memory for caching and persist them to shared preferences after every write operation. You can however change the repository behavior by providing a custom implementation of the StringRepository interface to Restring like this:
 
 ```java
-Restring.init(this,
-        new RestringConfig.Builder()
-                .stringsLoader(new SampleStringsLoader())
-                .stringRepository(new MemoryStringRepository())
-                .build()
-);
+Restring.stringRepository = newRepository
 ```
 
-If needed you can also provide custom repositories if you want to e.g. save the strings in a database
-instead of the SharedPreferences, or if you don´t want to use the StringsLoader mechanism.
+Keep in mind that this repository is immutable, so you need to either:
 
-## Plurals & String arrays
+- Implement the MutableStringRepository, which will allow you to use the normal mutation methods of the Restring facade like Restring.putStrings(...).
 
-Restring also supports quantity strings (plurals) and string arrays.
-Just provide them in the strings loader like this or return an empty map if you don´t need plurals or string arrays.
-These two methods already have a default implementation returning an empty map.
-
-```java
-public class SampleStringsLoader implements Restring.StringsLoader {
-
-    ...
-
-    @NotNull
-    @Override
-    public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NotNull Locale locale) {
-        // Load quantity strings (plurals) here
-        return map;
-    }
-
-    @NotNull
-    @Override
-    public Map<String, CharSequence[]> getStringArrays(@NotNull Locale locale) {
-        // Load string arrays here
-        return map;
-    }
-}
-```
+- Provide your own mutation methods in your derived class.
 
 ## Notes
 
 For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback.
 In other words, only the new provided strings will be overriden and for the rest the bundled version will be used.
+If you want you can also provide Restring with string resources which are not in your apps string.xmls. Restring
+will generated an id for these at runtime.
 
 ## License
 

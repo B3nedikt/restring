@@ -1,8 +1,8 @@
-package dev.b3nedikt.restring.repository.persistent
+package dev.b3nedikt.restring.internal.repository.persistent
 
 import android.content.SharedPreferences
 import android.text.Spanned
-import dev.b3nedikt.restring.repository.model.StringArray
+import dev.b3nedikt.restring.internal.repository.model.StringArray
 
 /**
  * [PersistentMap] which persists string array resources to the [SharedPreferences]

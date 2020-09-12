@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import dev.b3nedikt.restring.internal.RestringContextWrapper
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.Before
 import org.junit.Test

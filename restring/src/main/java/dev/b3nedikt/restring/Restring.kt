@@ -2,9 +2,11 @@ package dev.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
-import dev.b3nedikt.restring.repository.CachedStringRepository
-import dev.b3nedikt.restring.repository.PersistentStringRepository
-import dev.b3nedikt.restring.repository.toMutableRepository
+import dev.b3nedikt.restring.internal.DefaultLocaleProvider
+import dev.b3nedikt.restring.internal.RestringContextWrapper
+import dev.b3nedikt.restring.internal.RestringResources
+import dev.b3nedikt.restring.internal.repository.CachedStringRepository
+import dev.b3nedikt.restring.internal.repository.PersistentStringRepository
 import java.util.*
 
 

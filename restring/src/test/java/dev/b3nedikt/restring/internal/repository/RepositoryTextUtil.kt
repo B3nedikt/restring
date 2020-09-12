@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository
+package dev.b3nedikt.restring.internal.repository
 
 import dev.b3nedikt.restring.PluralKeyword
 

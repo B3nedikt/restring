@@ -4,6 +4,9 @@ import android.content.SharedPreferences
 import android.text.Spanned
 import dev.b3nedikt.restring.repository.model.StringArray
 
+/**
+ * [PersistentMap] which persists string array resources to the [SharedPreferences]
+ */
 internal class StringArraysPersistentMap(
         sharedPreferences: SharedPreferences
 ) : ResourcesPersistentMap<Array<CharSequence>>(sharedPreferences) {

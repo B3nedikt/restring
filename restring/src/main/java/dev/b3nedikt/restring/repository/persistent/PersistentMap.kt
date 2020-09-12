@@ -4,9 +4,9 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 /**
- * A [MutableMap] which calls back functions when changed
+ * A [MutableMap] which persists all calls to it by acting as a [KeyValueStore]
  */
-internal abstract class PersistentMap<K, V>
+internal interface PersistentMap<K, V>
     : MutableMap<K, V>, ReadOnlyProperty<Any?, MutableMap<K, V>>, KeyValueStore<K, V> {
 
     override val size: Int

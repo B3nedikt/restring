@@ -32,23 +32,11 @@ public class MainActivity extends BaseActivity {
 
         SampleStringsGenerator generator = new SampleStringsGenerator();
 
-        for(Locale locale : AppLocale.getSupportedLocales()){
-            Restring.getStringRepository()
-                    .getStrings()
-                    .get(locale)
-                    .putAll(generator.getStrings(locale));
-
-            Restring.getStringRepository()
-                    .getQuantityStrings()
-                    .get(locale)
-                    .putAll(generator.getQuantityStrings(locale));
-
-            Restring.getStringRepository()
-                    .getStringArrays()
-                    .get(locale)
-                    .putAll(generator.getStringArrays(locale));
+        for (Locale locale : AppLocale.getSupportedLocales()) {
+            Restring.putStrings(locale, generator.getStrings(locale));
+            Restring.putQuantityStrings(locale, generator.getQuantityStrings(locale));
+            Restring.putStringArrays(locale, generator.getStringArrays(locale));
         }
-
 
         spinner = findViewById(R.id.spinner);
         stringArrayTextView = findViewById(R.id.stringArrayTextView);

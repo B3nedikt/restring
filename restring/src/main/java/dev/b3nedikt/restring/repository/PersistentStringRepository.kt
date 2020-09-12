@@ -3,12 +3,11 @@ package dev.b3nedikt.restring.repository
 import android.content.Context
 import android.content.SharedPreferences
 import dev.b3nedikt.restring.LocaleUtil
-import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.StringRepository
+import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.repository.persistent.*
 import java.util.*
 
-class PersistentStringRepository(private val context: Context) : StringRepository {
+internal class PersistentStringRepository(private val context: Context) : MutableStringRepository {
 
     override val supportedLocales: Set<Locale>
         get() = _supportedLocales
@@ -16,11 +15,7 @@ class PersistentStringRepository(private val context: Context) : StringRepositor
     private val _supportedLocales by
     LocalesPersistentSet(context.getSharedPreferences(LOCALES_SHARED_PREF_NAME, Context.MODE_PRIVATE))
 
-
-    override val strings: MutableMap<Locale, MutableMap<String, CharSequence>> by
-    LocalePersistentMap(
-            context = context,
-            locales = _supportedLocales,
+    override val strings by localeToResourcesPersistentMap(
             persistentMapFactory = { locale ->
                 val sharedPrefs = getPreferencesForLocale(
                         prefsName = STRINGS_SHARED_PREF_NAME,
@@ -28,13 +23,9 @@ class PersistentStringRepository(private val context: Context) : StringRepositor
                 )
 
                 StringResourcesPersistentMap(sharedPrefs)
-            }
-    )
+            })
 
-    override val quantityStrings: MutableMap<Locale, MutableMap<String, Map<PluralKeyword, CharSequence>>> by
-    LocalePersistentMap(
-            context = context,
-            locales = _supportedLocales,
+    override val quantityStrings by localeToResourcesPersistentMap(
             persistentMapFactory = { locale ->
                 val sharedPrefs = getPreferencesForLocale(
                         prefsName = QUANTITY_STRINGS_SHARED_PREF_NAME,
@@ -42,13 +33,9 @@ class PersistentStringRepository(private val context: Context) : StringRepositor
                 )
 
                 QuantityStringsResourcesPersistentMap(sharedPrefs)
-            }
-    )
+            })
 
-    override val stringArrays: MutableMap<Locale, MutableMap<String, Array<CharSequence>>> by
-    LocalePersistentMap(
-            context = context,
-            locales = _supportedLocales,
+    override val stringArrays by localeToResourcesPersistentMap(
             persistentMapFactory = { locale ->
                 val sharedPrefs = getPreferencesForLocale(
                         prefsName = STRING_ARRAYS_SHARED_PREF_NAME,
@@ -56,8 +43,17 @@ class PersistentStringRepository(private val context: Context) : StringRepositor
                 )
 
                 StringArraysPersistentMap(sharedPrefs)
-            }
-    )
+            })
+
+    private fun <V> localeToResourcesPersistentMap(
+            persistentMapFactory: (locale: Locale) -> ResourcesPersistentMap<V>
+    ): LocalePersistentMap<V> {
+        return LocalePersistentMap(
+                context = context,
+                locales = _supportedLocales,
+                persistentMapFactory = persistentMapFactory
+        )
+    }
 
     private fun getPreferencesForLocale(prefsName: String, locale: Locale): SharedPreferences {
         val sharedPrefName = prefsName + "_" + LocaleUtil.toLanguageTag(locale)

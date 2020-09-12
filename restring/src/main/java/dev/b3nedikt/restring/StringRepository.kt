@@ -3,27 +3,33 @@ package dev.b3nedikt.restring
 import java.util.*
 
 /**
- * Repository of strings.
+ * Immutable repository of strings resources. Restring supports all 3 types of string resources:
+ * [strings], [quantityStrings] & [stringArrays].
  */
 interface StringRepository {
 
     /**
-     * The [Locale]s supported by the repository
+     * The [Locale]s supported by the repository, Restring will only replace strings of [Locale]s
+     * in this set. Meaning if [strings] contains a string resource, but this string resource
+     * does belong to a [Locale] not in the [supportedLocales], it will get used by Restring.
      */
     val supportedLocales: Set<Locale>
 
     /**
-     * The strings managed by the repository
+     * The string resources with their [Locale] as key and maps of string resource names to
+     * their resource value as value.
      */
-    val strings: MutableMap<Locale, MutableMap<String, CharSequence>>
+    val strings: Map<Locale, Map<String, CharSequence>>
 
     /**
-     * The quantity strings managed by the repository
+     * The quantity string resources with their [Locale] as key and maps of string resource names to
+     * their resource value as value.
      */
-    val quantityStrings: MutableMap<Locale, MutableMap<String, Map<PluralKeyword, CharSequence>>>
+    val quantityStrings: Map<Locale, Map<String, Map<PluralKeyword, CharSequence>>>
 
     /**
-     * The string arrays managed by the repository
+     * The string array resources with their [Locale] as key and maps of string resource names to
+     * their resource value as value.
      */
-    val stringArrays: MutableMap<Locale, MutableMap<String, Array<CharSequence>>>
+    val stringArrays: Map<Locale, Map<String, Array<CharSequence>>>
 }

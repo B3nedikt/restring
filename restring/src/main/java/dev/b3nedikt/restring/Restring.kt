@@ -3,16 +3,21 @@ package dev.b3nedikt.restring
 import android.content.Context
 import dev.b3nedikt.restring.repository.CachedStringRepository
 import dev.b3nedikt.restring.repository.PersistentStringRepository
+import dev.b3nedikt.restring.repository.toMutableRepository
 import java.util.*
 
 
 /**
- * A Android library to replace string resources dynamically
+ * A Android library to replace string resources dynamically.
+ * Restring supports all 3 types of string resources: [strings], [quantityStrings] & [stringArrays].
  */
 object Restring {
 
     private var isInitialized = false
 
+    /**
+     * The [StringRepository] used by Restring
+     */
     @JvmStatic
     lateinit var stringRepository: StringRepository
 
@@ -53,6 +58,42 @@ object Restring {
         isInitialized = true
 
         stringRepository = CachedStringRepository(PersistentStringRepository(context))
+    }
+
+    /**
+     * Add string resources to [Restring] which should be returned from calls to [Context.getResources]
+     * instead of the ones from the strings.xml files.
+     */
+    @JvmStatic
+    fun putStrings(
+            locale: Locale,
+            strings: Map<String, CharSequence>
+    ) {
+        stringRepository.toMutableRepository().strings[locale]?.putAll(strings)
+    }
+
+    /**
+     * Add string array Resources to [Restring] which should be returned from calls to
+     * [Context.getResources] instead of the ones from the strings.xml files.
+     */
+    @JvmStatic
+    fun putStringArrays(
+            locale: Locale,
+            stringArrays: Map<String, Array<CharSequence>>
+    ) {
+        stringRepository.toMutableRepository().stringArrays[locale]?.putAll(stringArrays)
+    }
+
+    /**
+     * Add quantity string Resources to [Restring] which should be returned from calls to
+     * [Context.getResources] instead of the ones from the strings.xml files.
+     */
+    @JvmStatic
+    fun putQuantityStrings(
+            locale: Locale,
+            quantityStrings: Map<String, Map<PluralKeyword, CharSequence>>
+    ) {
+        stringRepository.toMutableRepository().quantityStrings[locale]?.putAll(quantityStrings)
     }
 
     /**

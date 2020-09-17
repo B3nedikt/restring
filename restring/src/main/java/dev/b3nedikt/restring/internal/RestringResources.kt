@@ -196,8 +196,9 @@ internal class RestringResources(
         return baseResources.obtainAttributes(set, attrs)
     }
 
+    @Suppress("UNNECESSARY_SAFE_CALL")
     override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
-        baseResources.updateConfiguration(config, metrics)
+        baseResources?.updateConfiguration(config, metrics)
     }
 
     override fun getDisplayMetrics(): DisplayMetrics {

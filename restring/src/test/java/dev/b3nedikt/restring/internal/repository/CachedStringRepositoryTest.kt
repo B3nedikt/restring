@@ -20,7 +20,7 @@ class CachedStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val persistentRepository = PersistentStringRepository(context)
+    private val persistentRepository = SharedPrefsStringRepository(context)
 
     private val stringRepository = CachedStringRepository(
             persistentRepository = persistentRepository

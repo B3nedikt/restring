@@ -11,7 +11,7 @@ import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
  *  set
  * @param stringKey the name of the preference where the value set will be stored to us a string set
  */
-class SharedPrefsValueSetStore<E>(
+internal class SharedPrefsValueSetStore<E>(
         private val sharedPreferences: SharedPreferences,
         private val serializer: Serializer<E, String>,
         private val stringKey: String

@@ -7,7 +7,7 @@ import java.util.*
  * A [PersistentMap] which used [Locale]s as key and maps of resource name, resource value pairs
  * as its values.
  */
-internal class LocalePersistentMap<V>(
+internal class LocalizedResourcesPersistentMap<V>(
         val context: Context,
         val locales: MutableSet<Locale>,
         val persistentMapFactory: (locale: Locale) -> ResourcesPersistentMap<V>

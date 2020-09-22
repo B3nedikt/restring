@@ -3,7 +3,7 @@ package dev.b3nedikt.restring.internal.repository.persistent
 /**
  * Stores data as key-value pairs
  */
-internal interface KeyValueStore<K, V> {
+interface KeyValueStore<K, V> {
 
     /**
      * Returns the value for a given key

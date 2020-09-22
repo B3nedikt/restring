@@ -8,7 +8,7 @@ import dev.b3nedikt.restring.internal.repository.persistent.Serializer
 /**
  * [Serializer] for quantity string resources
  */
-object QuantityStringsSerializer : Serializer<Map<PluralKeyword, CharSequence>, String> {
+internal object QuantityStringsSerializer : Serializer<Map<PluralKeyword, CharSequence>, String> {
 
     override fun serialize(value: Map<PluralKeyword, CharSequence>): String {
         return QuantityString(value, value.any { it is Spanned }).toJson()

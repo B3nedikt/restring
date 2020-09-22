@@ -7,7 +7,7 @@ import java.util.*
 /**
  * [Serializer] for [Locale]s
  */
-object LocaleSerializer : Serializer<Locale, String> {
+internal object LocaleSerializer : Serializer<Locale, String> {
 
     override fun serialize(value: Locale): String {
         return LocaleUtil.toLanguageTag(value)

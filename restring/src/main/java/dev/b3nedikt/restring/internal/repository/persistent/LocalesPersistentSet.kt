@@ -1,5 +1,6 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
+import dev.b3nedikt.restring.repository.ValueSetStore
 import java.util.*
 
 /**

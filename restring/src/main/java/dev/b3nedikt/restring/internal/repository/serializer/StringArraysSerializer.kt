@@ -7,7 +7,7 @@ import dev.b3nedikt.restring.internal.repository.persistent.Serializer
 /**
  * [Serializer] for string array resources
  */
-object StringArraysSerializer : Serializer<Array<CharSequence>, String> {
+internal object StringArraysSerializer : Serializer<Array<CharSequence>, String> {
 
     override fun serialize(value: Array<CharSequence>): String {
         return StringArray(value.toList(), value is Spanned).toJson()

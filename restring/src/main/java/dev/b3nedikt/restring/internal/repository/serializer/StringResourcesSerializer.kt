@@ -7,7 +7,7 @@ import dev.b3nedikt.restring.internal.repository.persistent.Serializer
 /**
  * [Serializer] for string resources
  */
-object StringResourcesSerializer : Serializer<CharSequence, String> {
+internal object StringResourcesSerializer : Serializer<CharSequence, String> {
 
     override fun serialize(value: CharSequence): String {
         return StringResource(value, value is Spanned).toJson()

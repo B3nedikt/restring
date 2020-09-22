@@ -18,9 +18,9 @@ class SharedPrefStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val stringRepository = PersistentStringRepository(context)
+    private val stringRepository = SharedPrefsStringRepository(context)
 
-    private val newStringRepository = PersistentStringRepository(context)
+    private val newStringRepository = SharedPrefsStringRepository(context)
 
     @Test
     fun shouldGetLocalesAfterInsertingStrings() {

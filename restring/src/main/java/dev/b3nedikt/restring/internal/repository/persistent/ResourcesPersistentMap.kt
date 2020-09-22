@@ -3,7 +3,7 @@ package dev.b3nedikt.restring.internal.repository.persistent
 /**
  * [PersistentMap] with string resource names as keys and the string resources as value
  */
-class ResourcesPersistentMap<T>(
+internal class ResourcesPersistentMap<T>(
         private val keyValueStore: KeyValueStore<String, T>
 ) : PersistentMap<String, T> {
 

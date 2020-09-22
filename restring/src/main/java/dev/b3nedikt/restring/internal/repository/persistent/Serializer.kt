@@ -4,7 +4,7 @@ package dev.b3nedikt.restring.internal.repository.persistent
  * Serializes arbitrary objects of type [T] into objects of type [R], and vice versa for
  * deserialization
  */
-interface Serializer<T, R> {
+internal interface Serializer<T, R> {
 
     /**
      * Serialize a value of type [T] into a value of type [R]

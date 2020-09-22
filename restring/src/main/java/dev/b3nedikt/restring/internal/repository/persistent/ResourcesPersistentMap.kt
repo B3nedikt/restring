@@ -1,52 +1,33 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
-import android.content.SharedPreferences
-
 /**
  * [PersistentMap] with string resource names as keys and the string resources as value
  */
-internal abstract class ResourcesPersistentMap<T>(
-        private val sharedPreferences: SharedPreferences
+class ResourcesPersistentMap<T>(
+        private val keyValueStore: KeyValueStore<String, T>
 ) : PersistentMap<String, T> {
 
     override fun find(key: String): T? {
-        val value = sharedPreferences.getString(key, null) ?: return null
-        return fromJson(value)
+        return keyValueStore.find(key)
     }
 
     override fun findAll(): Map<out String, T> {
-        return sharedPreferences.all.mapValues { fromJson(it.value as String) }
+        return keyValueStore.findAll()
     }
 
     override fun save(key: String, value: T) {
-        sharedPreferences.edit()
-                .putString(key, toJson(value))
-                .apply()
+        keyValueStore.save(key, value)
     }
 
     override fun saveAll(from: Map<out String, T>) {
-        sharedPreferences.edit()
-                .run {
-                    from.forEach {
-                        putString(it.key, toJson(it.value))
-                    }
-                    apply()
-                }
+        keyValueStore.saveAll(from)
     }
 
     override fun delete(key: String) {
-        sharedPreferences.edit()
-                .remove(key)
-                .apply()
+        keyValueStore.delete(key)
     }
 
     override fun deleteAll() {
-        sharedPreferences.edit()
-                .clear()
-                .apply()
+        keyValueStore.deleteAll()
     }
-
-    abstract fun fromJson(string: String): T
-
-    abstract fun toJson(value: T): String
 }

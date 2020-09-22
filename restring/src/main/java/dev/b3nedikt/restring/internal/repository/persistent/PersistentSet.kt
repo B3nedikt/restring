@@ -6,7 +6,8 @@ import kotlin.reflect.KProperty
 /**
  * A [MutableSet] which persists all calls to it
  */
-internal interface PersistentSet<E> : MutableSet<E>, ReadOnlyProperty<Any?, MutableSet<E>> {
+internal interface PersistentSet<E>
+    : MutableSet<E>, ReadOnlyProperty<Any?, MutableSet<E>>, ValueSetStore<E> {
 
     override fun add(element: E): Boolean {
         val contained = find(element) != null
@@ -69,34 +70,4 @@ internal interface PersistentSet<E> : MutableSet<E>, ReadOnlyProperty<Any?, Muta
     override fun getValue(thisRef: Any?, property: KProperty<*>): MutableSet<E> {
         return this
     }
-
-    /**
-     * Returns a element if it exists
-     */
-    fun find(key: E): E?
-
-    /**
-     * Returns all elements managed by this set
-     */
-    fun findAll(): Collection<E>
-
-    /**
-     * Persists the [element]
-     */
-    fun save(element: E)
-
-    /**
-     * Persists all [elements]
-     */
-    fun saveAll(elements: Collection<E>)
-
-    /**
-     * Deletes the [element]
-     */
-    fun delete(element: E)
-
-    /**
-     * Deletes all elements managed by this set
-     */
-    fun deleteAll()
 }

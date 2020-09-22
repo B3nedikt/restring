@@ -2,6 +2,9 @@ package dev.b3nedikt.restring.internal.repository.persistent
 
 import android.content.SharedPreferences
 
+/**
+ * [KeyValueStore] which stores key/value pairs in the shared preferences
+ */
 class SharedPreferencesKeyValueStore<V>(
         private val sharedPreferences: SharedPreferences,
         private val serializer: Serializer<V, String>,

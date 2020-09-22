@@ -1,66 +1,35 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
-import android.content.SharedPreferences
-import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
 import java.util.*
 
 /**
- * A [PersistentSet] which persists [Locale]s in the [SharedPreferences]
+ * A [PersistentSet] which persists [Locale]s in a [ValueSetStore]
  */
 internal class LocalesPersistentSet(
-        private val sharedPreferences: SharedPreferences
+        private val valueSetStore: ValueSetStore<Locale>
 ) : PersistentSet<Locale> {
 
     override fun find(key: Locale): Locale? {
-        val localeString = sharedPreferences
-                .getStringSet("Locales", null)
-                ?.find { LocaleUtil.fromLanguageTag(it) == key }
-                ?: return null
-
-        return LocaleUtil.fromLanguageTag(localeString)
+        return valueSetStore.find(key)
     }
 
     override fun findAll(): Collection<Locale> {
-        return sharedPreferences
-                .getStringSet("Locales", null)
-                ?.map { LocaleUtil.fromLanguageTag(it) }
-                ?: emptySet()
+        return valueSetStore.findAll()
     }
 
     override fun save(element: Locale) {
-        val oldSet = findAll()
-        val newSet = (oldSet + element)
-                .map { LocaleUtil.toLanguageTag(it) }
-                .toSet()
-
-        sharedPreferences.edit()
-                .putStringSet("Locales", newSet)
-                .apply()
+        valueSetStore.save(element)
     }
 
     override fun saveAll(elements: Collection<Locale>) {
-        val oldSet = findAll()
-        val newSet = (oldSet + elements)
-                .map { LocaleUtil.toLanguageTag(it) }
-                .toSet()
-
-        sharedPreferences.edit()
-                .putStringSet("Locales", newSet)
-                .apply()
+        valueSetStore.saveAll(elements)
     }
 
     override fun delete(element: Locale) {
-        val oldSet = findAll()
-        val newSet = (oldSet - element)
-                .map { LocaleUtil.toLanguageTag(it) }
-                .toSet()
-
-        sharedPreferences.edit()
-                .putStringSet("Locales", newSet)
-                .apply()
+        valueSetStore.delete(element)
     }
 
     override fun deleteAll() {
-        sharedPreferences.edit().clear().apply()
+        valueSetStore.deleteAll()
     }
 }

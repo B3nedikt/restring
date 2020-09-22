@@ -3,10 +3,8 @@ package dev.b3nedikt.restring.internal.repository
 import android.content.Context
 import android.content.SharedPreferences
 import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.internal.repository.persistent.LocalesPersistentSet
-import dev.b3nedikt.restring.internal.repository.persistent.LocalizedResourcesPersistentMap
-import dev.b3nedikt.restring.internal.repository.persistent.ResourcesPersistentMap
-import dev.b3nedikt.restring.internal.repository.persistent.SharedPreferencesKeyValueStore
+import dev.b3nedikt.restring.internal.repository.persistent.*
+import dev.b3nedikt.restring.internal.repository.serializer.LocaleSerializer
 import dev.b3nedikt.restring.internal.repository.serializer.QuantityStringsSerializer
 import dev.b3nedikt.restring.internal.repository.serializer.StringArraysSerializer
 import dev.b3nedikt.restring.internal.repository.serializer.StringResourcesSerializer
@@ -19,7 +17,13 @@ internal class PersistentStringRepository(private val context: Context) : Mutabl
         get() = _supportedLocales
 
     private val _supportedLocales by
-    LocalesPersistentSet(context.getSharedPreferences(LOCALES_SHARED_PREF_NAME, Context.MODE_PRIVATE))
+    LocalesPersistentSet(
+            SharedPrefsValueSetStore(
+                    sharedPreferences = context.getSharedPreferences(LOCALES_SHARED_PREF_NAME, Context.MODE_PRIVATE),
+                    serializer = LocaleSerializer,
+                    stringKey = "Locales"
+            )
+    )
 
     override val strings by localizedResourcesPersistentMap(
             persistentMapFactory = { locale ->

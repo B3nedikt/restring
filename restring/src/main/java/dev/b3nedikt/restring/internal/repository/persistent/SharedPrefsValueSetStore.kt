@@ -2,6 +2,7 @@ package dev.b3nedikt.restring.internal.repository.persistent
 
 import android.content.SharedPreferences
 import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
+import dev.b3nedikt.restring.repository.ValueSetStore
 
 /**
  * [ValueSetStore] that stores value sets in the [SharedPreferences]

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
+import dev.b3nedikt.restring.repository.SharedPrefsStringRepository
 import org.amshove.kluent.shouldContainSame
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -18,9 +19,13 @@ class SharedPrefStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val stringRepository = SharedPrefsStringRepository(context)
+    private val stringRepository = SharedPrefsStringRepository { sharedPreferencesName ->
+        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+    }
 
-    private val newStringRepository = SharedPrefsStringRepository(context)
+    private val newStringRepository = SharedPrefsStringRepository { sharedPreferencesName ->
+        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+    }
 
     @Test
     fun shouldGetLocalesAfterInsertingStrings() {

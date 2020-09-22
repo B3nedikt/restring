@@ -1,6 +1,5 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
-import android.content.Context
 import java.util.*
 
 /**
@@ -8,7 +7,6 @@ import java.util.*
  * as its values.
  */
 internal class LocalizedResourcesPersistentMap<V>(
-        val context: Context,
         val locales: MutableSet<Locale>,
         val persistentMapFactory: (locale: Locale) -> ResourcesPersistentMap<V>
 ) : PersistentMap<Locale, MutableMap<String, V>> {

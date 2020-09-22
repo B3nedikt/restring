@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
+import dev.b3nedikt.restring.repository.CachedStringRepository
+import dev.b3nedikt.restring.repository.SharedPrefsStringRepository
 import junit.framework.TestCase.assertEquals
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainSame
@@ -20,7 +22,9 @@ class CachedStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val persistentRepository = SharedPrefsStringRepository(context)
+    private val persistentRepository = SharedPrefsStringRepository { sharedPreferencesName ->
+        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+    }
 
     private val stringRepository = CachedStringRepository(
             persistentRepository = persistentRepository

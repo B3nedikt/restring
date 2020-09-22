@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository
+package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.internal.repository.observable.observableMap
@@ -9,7 +9,7 @@ import kotlin.properties.ReadWriteProperty
  * Implementation of a [MutableStringRepository] that caches strings in memory, while persisting
  * writes to the [persistentRepository]
  */
-internal class CachedStringRepository(
+class CachedStringRepository(
         val persistentRepository: MutableStringRepository
 ) : MutableStringRepository {
 

@@ -1,13 +1,13 @@
-package dev.b3nedikt.restring.internal.repository
+package dev.b3nedikt.restring.repository
 
-import android.content.Context
 import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.internal.repository.persistent.*
+import dev.b3nedikt.restring.internal.repository.persistent.LocalesPersistentSet
+import dev.b3nedikt.restring.internal.repository.persistent.LocalizedResourcesPersistentMap
+import dev.b3nedikt.restring.internal.repository.persistent.ResourcesPersistentMap
 import java.util.*
 
 class PersistentStringRepository(
-        private val context: Context,
         localesValueSetStore: ValueSetStore<Locale>,
         stringsKeyValueStoreFactory: (locale: Locale) -> KeyValueStore<String, CharSequence>,
         quantityStringsKeyValueStoreFactory: (locale: Locale) -> KeyValueStore<String, Map<PluralKeyword, CharSequence>>,
@@ -29,7 +29,6 @@ class PersistentStringRepository(
             crossinline keyValueStoreFactory: (locale: Locale) -> KeyValueStore<String, V>
     ): LocalizedResourcesPersistentMap<V> {
         return LocalizedResourcesPersistentMap(
-                context = context,
                 locales = _supportedLocales,
                 persistentMapFactory = { locale ->
                     ResourcesPersistentMap(

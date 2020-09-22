@@ -1,5 +1,7 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
+import dev.b3nedikt.restring.repository.KeyValueStore
+
 /**
  * [PersistentMap] with string resource names as keys and the string resources as value
  */

@@ -1,7 +1,7 @@
-package dev.b3nedikt.restring.repository.serializer
+package dev.b3nedikt.restring.internal.repository.serializer
 
 import android.text.Spanned
-import dev.b3nedikt.restring.repository.model.StringArray
+import dev.b3nedikt.restring.internal.repository.model.StringArray
 
 /**
  * [Serializer] for string array resources

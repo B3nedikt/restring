@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository.model
+package dev.b3nedikt.restring.internal.repository.model
 
 import android.os.Build
 import dev.b3nedikt.restring.repository.generateQuantityString

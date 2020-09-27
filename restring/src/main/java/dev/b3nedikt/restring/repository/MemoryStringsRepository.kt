@@ -2,7 +2,7 @@ package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.repository.observable.observableMap
+import dev.b3nedikt.restring.internal.repository.observable.observableMap
 import java.util.*
 
 /**

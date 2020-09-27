@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository.persistent
+package dev.b3nedikt.restring.internal.repository.persistent
 
 import dev.b3nedikt.restring.repository.KeyValueStore
 

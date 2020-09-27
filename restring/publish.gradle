@@ -4,7 +4,7 @@ ext {
 
     publishedGroupId = 'dev.b3nedikt.restring'
     artifact = 'restring'
-    libraryVersion = '5.0.1'
+    libraryVersion = '5.1.0'
 
     libraryName = 'Restring'
     libraryDescription = 'A Android library to replace string resources dynamically'

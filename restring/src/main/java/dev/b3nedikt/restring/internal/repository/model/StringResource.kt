@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.repository.model
+package dev.b3nedikt.restring.internal.repository.model
 
 import androidx.core.text.HtmlCompat
 import org.json.JSONObject

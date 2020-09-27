@@ -106,20 +106,6 @@ If you have changed the texts of views in code, you need to update these
 texts manually of course, as this call will only update those string resources which
 you set in your xml layout files.
 
-## Custom Repository
-
-By default, Restring will hold strings in memory for caching and persist them to shared preferences after every write operation. You can however change the repository behavior by providing a custom implementation of the StringRepository interface to Restring like this:
-
-```java
-Restring.stringRepository = newRepository
-```
-
-Keep in mind that this repository is immutable, so you need to either:
-
-- Implement the MutableStringRepository, which will allow you to use the normal mutation methods of the Restring facade like Restring.putStrings(...).
-
-- Provide your own mutation methods in your derived class.
-
 ## App Locale integration
 
 This library was build for easy integration with my library [AppLocale](https://github.com/B3nedikt/AppLocale). AppLocale simplifies managing the Locales supported by your app.
@@ -148,6 +134,33 @@ Restring.localeProvider = AppLocaleLocaleProvider
 ```
 
 If you already have some mechanism in your app to manage its Locales, you can easily integrate it with a custom LocaleProvider as well.
+
+## Custom Repository
+
+By default, Restring will hold strings in memory for caching and persist them to the shared preferences after every write operation.
+You can however change this behavior by providing a custom implementation of the StringRepository interface to Restring like this:
+
+```java
+Restring.stringRepository = newRepository
+```
+
+Restring comes with four StringRepository implementations for different use cases:
+
+- MemoryStringRepository: Use this if you only want to keep strings in memory.
+
+- CachedStringRepository: Keeps all strings in memory & mirrors write operations to a persistent repository
+  provided as a constructor parameter to it. On initialization it loads all data saved in the persistent repository.
+
+- PersistentStringRepository: Simplifies implementing a repository which writes string resources to disk.
+
+- SharedPrefsStringRepository: Uses the PersistentStringRepository as a delegate to write string resources to
+  androids SharedPreferences.
+
+If these are not what you need you can also implement the StringRepository interface directly. The StringRepository interface is immutable, so you need to either:
+
+- Implement the MutableStringRepository, which will allow you to use the normal mutation methods of the Restring facade like Restring.putStrings(...).
+
+- Provide your own mutation methods in your implementation of the StringRepository interface.
 
 ## Notes
 

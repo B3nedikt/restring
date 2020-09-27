@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository.persistent
+package dev.b3nedikt.restring.repository.persistent
 
 import java.util.*
 

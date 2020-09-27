@@ -1,7 +1,6 @@
-package dev.b3nedikt.restring.internal.repository.serializer
+package dev.b3nedikt.restring.repository.serializer
 
-import dev.b3nedikt.restring.internal.repository.persistent.Serializer
-import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
+import dev.b3nedikt.restring.repository.util.LocaleUtil
 import java.util.*
 
 /**

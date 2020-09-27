@@ -1,12 +1,12 @@
-package dev.b3nedikt.restring.internal.repository
+package dev.b3nedikt.restring.repository
 
 import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.repository.SharedPrefsStringRepository
+import junit.framework.TestCase.assertEquals
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainSame
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -15,17 +15,17 @@ import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class SharedPrefStringRepositoryTest {
+class CachedStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()
 
-    private val stringRepository = SharedPrefsStringRepository { sharedPreferencesName ->
+    private val persistentRepository = SharedPrefsStringRepository { sharedPreferencesName ->
         context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
     }
 
-    private val newStringRepository = SharedPrefsStringRepository { sharedPreferencesName ->
-        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
-    }
+    private val stringRepository = CachedStringRepository(
+            persistentRepository = persistentRepository
+    )
 
     @Test
     fun shouldGetLocalesAfterInsertingStrings() {
@@ -35,7 +35,7 @@ class SharedPrefStringRepositoryTest {
         stringRepository.strings[Locale.ENGLISH]?.putAll(strings)
         stringRepository.strings[Locale.FRENCH]?.putAll(strings)
 
-        newStringRepository.supportedLocales shouldContainSame locales
+        locales shouldContainSame stringRepository.supportedLocales
     }
 
     @Test
@@ -43,9 +43,9 @@ class SharedPrefStringRepositoryTest {
         val locale = Locale.ENGLISH
         val strings = generateStrings(10)
 
-        stringRepository.strings[locale]!!.putAll(strings)
+        stringRepository.strings[locale]?.putAll(strings)
 
-        assertEquals(strings, newStringRepository.strings[locale])
+        strings shouldBeEqualTo stringRepository.strings[locale]
     }
 
     @Test
@@ -53,11 +53,10 @@ class SharedPrefStringRepositoryTest {
         val locale = Locale.ENGLISH
         val stringCount = 10
         val strings = generateStrings(stringCount)
-
         stringRepository.strings[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(newStringRepository.strings[locale]?.get("key$i"), "value$i")
+            assertEquals(stringRepository.strings[locale]?.get("key$i"), "value$i")
         }
     }
 
@@ -70,20 +69,19 @@ class SharedPrefStringRepositoryTest {
         stringRepository.strings[locale]?.putAll(strings)
         stringRepository.strings[locale]?.put("key5", "aNewValue")
 
-        assertEquals(newStringRepository.strings[locale]?.get("key5"), "aNewValue")
+        assertEquals(stringRepository.strings[locale]?.get("key5"), "aNewValue")
     }
 
     @Test
     fun shouldGetSingleStringArray() {
         val locale = Locale.ENGLISH
         val stringCount = 10
-        val strings = generateStringArrays(stringCount)
-
+        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
         stringRepository.stringArrays[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(newStringRepository.stringArrays[locale]?.get("key$i")?.contentDeepToString(),
-                    strings["key$i"]?.contentDeepToString())
+            stringRepository.stringArrays[locale]?.get("key$i")?.contentDeepToString() shouldBeEqualTo
+                    strings["key$i"]?.contentDeepToString()
         }
     }
 
@@ -97,8 +95,8 @@ class SharedPrefStringRepositoryTest {
         val stringArray: Array<CharSequence> = arrayOf("aNewValue")
         stringRepository.stringArrays[locale]?.put("key5", stringArray)
 
-        assertEquals(newStringRepository.stringArrays[locale]?.get("key5")?.contentDeepToString(),
-                stringArray.contentDeepToString())
+        stringRepository.stringArrays[locale]?.get("key5")?.contentDeepToString() shouldBeEqualTo
+                stringArray.contentDeepToString()
     }
 
     @Test
@@ -110,7 +108,7 @@ class SharedPrefStringRepositoryTest {
         stringRepository.quantityStrings[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(newStringRepository.quantityStrings[locale]?.get("key$i"), strings["key$i"])
+            stringRepository.quantityStrings[locale]?.get("key$i") shouldBeEqualTo strings["key$i"]
         }
     }
 
@@ -124,6 +122,6 @@ class SharedPrefStringRepositoryTest {
         val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
         stringRepository.quantityStrings[locale]?.put("key5", quantityString)
 
-        assertEquals(newStringRepository.quantityStrings[locale]?.get("key5"), quantityString)
+        stringRepository.quantityStrings[locale]?.get("key5") shouldBeEqualTo quantityString
     }
 }

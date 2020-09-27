@@ -1,8 +1,7 @@
-package dev.b3nedikt.restring.internal.repository.serializer
+package dev.b3nedikt.restring.repository.serializer
 
 import android.text.Spanned
-import dev.b3nedikt.restring.internal.repository.model.StringResource
-import dev.b3nedikt.restring.internal.repository.persistent.Serializer
+import dev.b3nedikt.restring.repository.model.StringResource
 
 /**
  * [Serializer] for string resources

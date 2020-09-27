@@ -1,7 +1,8 @@
-package dev.b3nedikt.restring.internal.repository.persistent
+package dev.b3nedikt.restring.repository.persistent
 
 import android.content.SharedPreferences
 import dev.b3nedikt.restring.repository.KeyValueStore
+import dev.b3nedikt.restring.repository.serializer.Serializer
 
 /**
  * [KeyValueStore] which stores key/value pairs in the shared preferences

@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository.persistent
+package dev.b3nedikt.restring.repository.serializer
 
 /**
  * Serializes arbitrary objects of type [T] into objects of type [R], and vice versa for

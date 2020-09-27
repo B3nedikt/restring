@@ -1,7 +1,7 @@
 package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.internal.repository.observable.observableMap
+import dev.b3nedikt.restring.repository.observable.observableMap
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 
@@ -14,7 +14,8 @@ class CachedStringRepository(
 ) : MutableStringRepository {
 
     override val supportedLocales: Set<Locale> get() = _supportedLocales
-    private val _supportedLocales: MutableSet<Locale> = persistentRepository.supportedLocales.toMutableSet()
+    private val _supportedLocales: MutableSet<Locale> =
+            persistentRepository.supportedLocales.toMutableSet()
 
     override val strings by observableResourcesMap(persistentRepository.strings)
 
@@ -41,7 +42,6 @@ class CachedStringRepository(
     ): (key: Locale) -> MutableMap<String, T> {
         return { locale ->
             val map: MutableMap<String, T> by observableMap(
-                    initialValue = mutableMapOf(),
                     afterPut = { key, value ->
                         delegateMap[locale]?.put(key, value)
                     },
@@ -50,11 +50,10 @@ class CachedStringRepository(
                     },
                     afterRemove = { key ->
                         delegateMap[locale]?.remove(key)
-                    },
-                    afterClear = {
-                        delegateMap[locale]?.clear()
                     }
-            )
+            ) {
+                delegateMap[locale]?.clear()
+            }
             map
         }
     }

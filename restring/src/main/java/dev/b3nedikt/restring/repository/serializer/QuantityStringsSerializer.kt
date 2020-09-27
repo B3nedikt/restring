@@ -1,9 +1,8 @@
-package dev.b3nedikt.restring.internal.repository.serializer
+package dev.b3nedikt.restring.repository.serializer
 
 import android.text.Spanned
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.internal.repository.model.QuantityString
-import dev.b3nedikt.restring.internal.repository.persistent.Serializer
+import dev.b3nedikt.restring.repository.model.QuantityString
 
 /**
  * [Serializer] for quantity string resources

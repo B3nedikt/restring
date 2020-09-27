@@ -1,8 +1,9 @@
-package dev.b3nedikt.restring.internal.repository.persistent
+package dev.b3nedikt.restring.repository.persistent
 
 import android.content.SharedPreferences
-import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
 import dev.b3nedikt.restring.repository.ValueSetStore
+import dev.b3nedikt.restring.repository.serializer.Serializer
+import dev.b3nedikt.restring.repository.util.LocaleUtil
 
 /**
  * [ValueSetStore] that stores value sets in the [SharedPreferences]
@@ -10,7 +11,7 @@ import dev.b3nedikt.restring.repository.ValueSetStore
  * @param sharedPreferences the [SharedPreferences] we store the values in
  * @param serializer the [Serializer] used to serialize & deserialize a single element of the value
  *  set
- * @param stringKey the name of the preference where the value set will be stored to us a string set
+ * @param stringKey the name of the preference where the value set will be stored to as a string set
  */
 internal class SharedPrefsValueSetStore<E>(
         private val sharedPreferences: SharedPreferences,

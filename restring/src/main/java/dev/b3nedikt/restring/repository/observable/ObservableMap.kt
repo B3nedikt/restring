@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository.observable
+package dev.b3nedikt.restring.repository.observable
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -12,12 +12,14 @@ import kotlin.reflect.KProperty
  * set to
  */
 internal abstract class ObservableMap<K, V>(
-        initialValue: MutableMap<K, V>,
+        initialValue: MutableMap<K, V>?,
         private val defaultValue: (key: K) -> V?
 ) : MutableMap<K, V>, ReadWriteProperty<Any?, MutableMap<K, V>> {
 
     private val delegateMap = mutableMapOf<K, V>().apply {
-        putAll(initialValue)
+        if (initialValue != null) {
+            putAll(initialValue)
+        }
     }
 
     override val size: Int

@@ -2,13 +2,13 @@ package dev.b3nedikt.restring.repository
 
 import android.content.SharedPreferences
 import dev.b3nedikt.restring.MutableStringRepository
-import dev.b3nedikt.restring.internal.repository.persistent.SharedPreferencesKeyValueStore
-import dev.b3nedikt.restring.internal.repository.persistent.SharedPrefsValueSetStore
-import dev.b3nedikt.restring.internal.repository.serializer.LocaleSerializer
-import dev.b3nedikt.restring.internal.repository.serializer.QuantityStringsSerializer
-import dev.b3nedikt.restring.internal.repository.serializer.StringArraysSerializer
-import dev.b3nedikt.restring.internal.repository.serializer.StringResourcesSerializer
-import dev.b3nedikt.restring.internal.repository.util.LocaleUtil
+import dev.b3nedikt.restring.repository.persistent.SharedPreferencesKeyValueStore
+import dev.b3nedikt.restring.repository.persistent.SharedPrefsValueSetStore
+import dev.b3nedikt.restring.repository.serializer.LocaleSerializer
+import dev.b3nedikt.restring.repository.serializer.QuantityStringsSerializer
+import dev.b3nedikt.restring.repository.serializer.StringArraysSerializer
+import dev.b3nedikt.restring.repository.serializer.StringResourcesSerializer
+import dev.b3nedikt.restring.repository.util.LocaleUtil
 import java.util.*
 
 /**

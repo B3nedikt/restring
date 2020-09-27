@@ -1,6 +1,5 @@
-package dev.b3nedikt.restring.internal.repository.model
+package dev.b3nedikt.restring.repository.model
 
-import android.text.Spannable
 import androidx.core.text.HtmlCompat
 import dev.b3nedikt.restring.PluralKeyword
 import org.json.JSONObject
@@ -9,8 +8,8 @@ import org.json.JSONObject
  * Data class for quantity strings
  *
  * @param value the quantity string
- * @param isText if at least one of the [CharSequence]s of the quantity string is a text,
- * meaning it is HTML formatted and can be used by a [Spannable].
+ * @param isText if at least one of the [CharSequence]s is a text, meaning it has styling, false
+ * if all the [CharSequence] implementations are [String]s.
  */
 internal data class QuantityString(
         val value: Map<PluralKeyword, CharSequence>,

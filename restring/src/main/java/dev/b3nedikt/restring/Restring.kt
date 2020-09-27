@@ -16,8 +16,6 @@ import java.util.*
  */
 object Restring {
 
-    private var isInitialized = false
-
     /**
      * The [StringRepository] used by Restring
      */
@@ -49,17 +47,14 @@ object Restring {
     var localeProvider: LocaleProvider = DefaultLocaleProvider
 
     /**
-     * Initialize Restring with the specified configuration.
+     * Initialize Restring with the default repository implementation, this needs to be called
+     * before any other interaction with restring as long as you don´t initialize the repository
+     * yourself. Should ideally be called in your application class.
      *
-     * @param context of the application.
+     * @param context the application context.
      */
     @JvmStatic
     fun init(context: Context) {
-        if (isInitialized) {
-            return
-        }
-        isInitialized = true
-
         stringRepository = CachedStringRepository(
                 SharedPrefsStringRepository { sharedPreferencesName ->
                     context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
@@ -105,11 +100,17 @@ object Restring {
 
     /**
      * Wraps the context with a [ContextWrapper] which provides the [RestringResources] instead
-     * of the default resources. If the provided context is already wrapped, it will be returned
-     * unchanged by this method.
+     * of the default resources. If the provided [base] context is already wrapped, it will be
+     * returned unchanged by this method. If this method is called either before a call to
+     * [Restring.init] or before you set your custom [Restring.stringRepository], the provided
+     * [base] context will also get returned unchanged.
      */
     @JvmStatic
     fun wrapContext(base: Context): Context {
+        if (this::stringRepository.isInitialized.not()) {
+            return base
+        }
+
         if (base.resources is RestringResources) return base
         return RestringContextWrapper.wrap(base, stringRepository)
     }

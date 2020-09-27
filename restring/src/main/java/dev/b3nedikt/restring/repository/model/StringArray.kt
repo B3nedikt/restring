@@ -1,6 +1,5 @@
-package dev.b3nedikt.restring.internal.repository.model
+package dev.b3nedikt.restring.repository.model
 
-import android.text.Spannable
 import androidx.core.text.HtmlCompat
 import org.json.JSONArray
 import org.json.JSONObject
@@ -8,9 +7,9 @@ import org.json.JSONObject
 /**
  * Data class for string arrays
  *
- * @param value the string array
- * @param isText if at least one of the [CharSequence]s of the string array is a text,
- * meaning it is HTML formatted and can be used by a [Spannable].
+ * @param value the string array as a list
+ * @param isText f at least one of the [CharSequence]s is a text, meaning it has styling, false
+ * if all the [CharSequence] implementations are [String]s.
  */
 internal data class StringArray(
         val value: List<CharSequence>,
@@ -18,7 +17,9 @@ internal data class StringArray(
 ) {
 
     fun toJson() = JSONObject().run {
-        put(VALUE_KEY, JSONArray(value))
+        val stringArray = if (isText) value.map { text -> text.toString() } else value
+
+        put(VALUE_KEY, JSONArray(stringArray))
 
         put(IS_TEXT_KEY, isText)
 

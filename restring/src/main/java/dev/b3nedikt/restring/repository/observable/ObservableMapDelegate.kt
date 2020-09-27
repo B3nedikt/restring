@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository.observable
+package dev.b3nedikt.restring.repository.observable
 
 import kotlin.properties.ReadWriteProperty
 
@@ -8,15 +8,15 @@ import kotlin.properties.ReadWriteProperty
  *
  * @param initialValue the value the map has when initialized, the content of this map is copied
  * into the new [ObservableMap]
- * @param defaultValue value to which a value which has previously not been returned by [get] is
- * set to
+ * @param defaultValue value for a given key to which a value which has previously not been
+ * returned by [get] is set to
  * @param afterPut triggered after a single new value has been put into the map
  * @param afterPutAll triggered after multiple new values have been put into the map
  * @param afterRemove triggered after a single value has been removed from the map
  * @param afterClear triggered after all values have been removed from the map
  */
 internal inline fun <K, V> observableMap(
-        initialValue: MutableMap<K, V>,
+        initialValue: MutableMap<K, V>? = null,
         noinline defaultValue: (key: K) -> V? = { _: K -> null },
         crossinline afterPut: (key: K, value: V) -> Unit = { _: K, _: V -> },
         crossinline afterPutAll: (from: Map<out K, V>) -> Unit = {},

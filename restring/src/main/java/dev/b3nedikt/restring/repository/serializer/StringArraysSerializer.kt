@@ -1,8 +1,7 @@
-package dev.b3nedikt.restring.internal.repository.serializer
+package dev.b3nedikt.restring.repository.serializer
 
 import android.text.Spanned
-import dev.b3nedikt.restring.internal.repository.model.StringArray
-import dev.b3nedikt.restring.internal.repository.persistent.Serializer
+import dev.b3nedikt.restring.repository.model.StringArray
 
 /**
  * [Serializer] for string array resources
@@ -10,7 +9,7 @@ import dev.b3nedikt.restring.internal.repository.persistent.Serializer
 internal object StringArraysSerializer : Serializer<Array<CharSequence>, String> {
 
     override fun serialize(value: Array<CharSequence>): String {
-        return StringArray(value.toList(), value is Spanned).toJson()
+        return StringArray(value.toList(), value.any { it is Spanned }).toJson()
     }
 
     override fun deserialize(value: String): Array<CharSequence> {

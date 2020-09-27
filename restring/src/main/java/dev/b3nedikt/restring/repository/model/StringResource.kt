@@ -1,6 +1,5 @@
-package dev.b3nedikt.restring.internal.repository.model
+package dev.b3nedikt.restring.repository.model
 
-import android.text.Spannable
 import androidx.core.text.HtmlCompat
 import org.json.JSONObject
 
@@ -8,8 +7,8 @@ import org.json.JSONObject
  * Data class for quantity strings
  *
  * @param value the quantity string
- * @property isText if the value [CharSequence] is a text, meaning it is HTML formatted and can be
- * used by a [Spannable].
+ * @property isText if the [CharSequence]s is a text, meaning it has styling, false
+ * if the [CharSequence] implementations is a [String]s.
  */
 internal data class StringResource(
         val value: CharSequence,

@@ -1,15 +1,10 @@
-package dev.b3nedikt.restring.internal.repository
+package dev.b3nedikt.restring.repository
 
-import android.content.Context
 import android.os.Build
-import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
-import dev.b3nedikt.restring.repository.CachedStringRepository
-import dev.b3nedikt.restring.repository.SharedPrefsStringRepository
 import junit.framework.TestCase.assertEquals
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainSame
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -18,17 +13,9 @@ import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class CachedStringRepositoryTest {
+class MemoryStringRepositoryTest {
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
-
-    private val persistentRepository = SharedPrefsStringRepository { sharedPreferencesName ->
-        context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
-    }
-
-    private val stringRepository = CachedStringRepository(
-            persistentRepository = persistentRepository
-    )
+    private val stringRepository = MemoryStringsRepository()
 
     @Test
     fun shouldGetLocalesAfterInsertingStrings() {
@@ -111,7 +98,7 @@ class CachedStringRepositoryTest {
         stringRepository.quantityStrings[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
-            Assert.assertEquals(stringRepository.quantityStrings[locale]?.get("key$i"), strings["key$i"])
+            stringRepository.quantityStrings[locale]?.get("key$i") shouldBeEqualTo strings["key$i"]
         }
     }
 
@@ -125,6 +112,6 @@ class CachedStringRepositoryTest {
         val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")
         stringRepository.quantityStrings[locale]?.put("key5", quantityString)
 
-        Assert.assertEquals(stringRepository.quantityStrings[locale]?.get("key5"), quantityString)
+        stringRepository.quantityStrings[locale]?.get("key5") shouldBeEqualTo quantityString
     }
 }

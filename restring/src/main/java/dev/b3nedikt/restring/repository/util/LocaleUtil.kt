@@ -1,4 +1,4 @@
-package dev.b3nedikt.restring.internal.repository.util
+package dev.b3nedikt.restring.repository.util
 
 import android.os.Build
 import java.util.*

@@ -164,10 +164,10 @@ If these are not what you need you can also implement the StringRepository inter
 
 ## Notes
 
-For displaying a string, Restring tries to find it in dynamic strings, and will use bundled version as fallback.
+For displaying a string, Restring tries to find it in the dynamic strings, and will use the bundled version as fallback.
 In other words, only the new provided strings will be overriden and for the rest the bundled version will be used.
 If you want you can also provide Restring with string resources which are not in your apps string.xmls. Restring
-will generated an id for these at runtime.
+will generate an id for these at runtime.
 
 ## License
 

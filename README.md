@@ -14,10 +14,10 @@ An easy way to replace bundled Strings dynamically, or provide new translations 
 implementation 'dev.b3nedikt.restring:restring:5.1.0'
 
 // Intercept view inflation
-implementation 'dev.b3nedikt.viewpump:viewpump:3.0.1'
+implementation 'dev.b3nedikt.viewpump:viewpump:4.0.1'
 
 // Allows to update the text of views at runtime without recreating the activity
-implementation 'dev.b3nedikt.reword:reword:2.0.2'
+implementation 'dev.b3nedikt.reword:reword:3.0.1'
 ```
 
 ### 2. Initialize
@@ -27,42 +27,26 @@ Initialize Restring in your Application class:
 ```kotlin
 Restring.init(this)
 
-ViewPump.init(ViewPump.builder()
-        .addInterceptor(RewordInterceptor)
-        .build()
+ViewPump.init(RewordInterceptor)
 ```
 
 ### 3. Inject into Context
 
-if you have a BaseActivity you can add this there, otherwise you have to add it to all of your activities!
+If you have a BaseActivity you can add this there, otherwise you have to add it to all of your activities:
 
 ```kotlin
 abstract class BaseActivity : AppCompatActivity() {
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)))
+    private val appCompatDelegate: AppCompatDelegate by lazy {
+        ViewPumpAppCompatDelegate(
+                baseDelegate = super.getDelegate(),
+                baseContext = this,
+                wrapContext = { baseContext -> Restring.wrapContext(baseContext) }
+        )
     }
 
-    override fun getResources(): Resources {
-        return Restring.wrapContext(baseContext).resources
-    }
-}
-```
-
-If you use fragments add the following to your BaseFragment:
-
-```kotlin
-abstract class BaseFragment : Fragment() {
-
-    override fun onResume() {
-        super.onResume()
-
-        ViewPump.setOverwriteContext(Restring.wrapContext(requireContext()))
-    }
-
-    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
-        val wrappedContext = ViewPumpContextWrapper.wrap(Restring.wrapContext(requireContext()))
-        return wrappedContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    override fun getDelegate(): AppCompatDelegate {
+        return appCompatDelegate
     }
 }
 ```

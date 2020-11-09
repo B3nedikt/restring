@@ -1,18 +1,21 @@
 package dev.b3nedikt.restring.example
 
-import android.content.Context
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.ViewPumpAppCompatDelegate
 import dev.b3nedikt.restring.Restring
-import dev.b3nedikt.viewpump.ViewPumpContextWrapper
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)))
+    private val appCompatDelegate: AppCompatDelegate by lazy {
+        ViewPumpAppCompatDelegate(
+                baseDelegate = super.getDelegate(),
+                baseContext = this,
+                wrapContext = { baseContext -> Restring.wrapContext(baseContext) }
+        )
     }
 
-    override fun getResources(): Resources {
-        return Restring.wrapContext(baseContext).resources
+    override fun getDelegate(): AppCompatDelegate {
+        return appCompatDelegate
     }
 }

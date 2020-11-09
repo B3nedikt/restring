@@ -1,22 +1,26 @@
 package dev.b3nedikt.restring.example;
 
-import android.content.Context;
-import android.content.res.Resources;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.ViewPumpAppCompatDelegate;
 
 import dev.b3nedikt.restring.Restring;
-import dev.b3nedikt.viewpump.ViewPumpContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)));
-    }
+    private AppCompatDelegate appCompatDelegate = null;
 
+    @NonNull
     @Override
-    public Resources getResources() {
-        return Restring.wrapContext(getBaseContext()).getResources();
+    public AppCompatDelegate getDelegate() {
+        if (appCompatDelegate == null) {
+            appCompatDelegate = new ViewPumpAppCompatDelegate(
+                    super.getDelegate(),
+                    this,
+                    Restring::wrapContext
+            );
+        }
+        return appCompatDelegate;
     }
 }

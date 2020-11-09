@@ -20,11 +20,7 @@ public class SampleApplication extends Application {
         AppLocale.setSupportedLocales(APP_LOCALES);
 
         Restring.init(this);
-
-        ViewPump.init(ViewPump.builder()
-                .addInterceptor(RewordInterceptor.INSTANCE)
-                .build()
-        );
+        ViewPump.init(RewordInterceptor.INSTANCE);
     }
 
     private static final List<Locale> APP_LOCALES =

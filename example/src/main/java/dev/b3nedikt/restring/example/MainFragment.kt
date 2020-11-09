@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.ContentFrameLayout
+import androidx.fragment.app.Fragment
 import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.reword.Reword
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
-class MainFragment : BaseFragment() {
+class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)

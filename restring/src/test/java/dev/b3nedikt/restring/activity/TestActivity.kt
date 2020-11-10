@@ -1,22 +1,29 @@
 package dev.b3nedikt.restring.activity
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.ViewPumpAppCompatDelegate
 import dev.b3nedikt.restring.R
-
 import dev.b3nedikt.restring.Restring
-import dev.b3nedikt.viewpump.ViewPumpContextWrapper
 
 class TestActivity : AppCompatActivity() {
 
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(Restring.wrapContext(newBase)))
+    private val appCompatDelegate: AppCompatDelegate by lazy {
+        ViewPumpAppCompatDelegate(
+                baseDelegate = super.getDelegate(),
+                baseContext = this,
+                wrapContext = { baseContext -> Restring.wrapContext(baseContext) }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_AppCompat)
         setContentView(R.layout.test_layout)
+    }
+
+    override fun getDelegate(): AppCompatDelegate {
+        return appCompatDelegate
     }
 }

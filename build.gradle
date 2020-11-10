@@ -42,8 +42,8 @@ ext {
 
             appCompat       : "androidx.appcompat:appcompat:1.2.0",
             material        : "com.google.android.material:material:1.2.0",
-            constraintLayout: "androidx.constraintlayout:constraintlayout:1.1.3",
-            viewPump        : "dev.b3nedikt.viewpump:viewpump:4.0.2",
+            constraintLayout: "androidx.constraintlayout:constraintlayout:2.0.4",
+            viewPump        : "dev.b3nedikt.viewpump:viewpump:4.0.3",
             reword          : "dev.b3nedikt.reword:reword:3.0.1",
             appLocale       : "dev.b3nedikt.applocale:applocale:2.0.3",
 

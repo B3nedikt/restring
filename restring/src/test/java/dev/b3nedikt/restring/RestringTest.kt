@@ -34,8 +34,6 @@ class RestringTest {
         locales.forEach { locale ->
             Restring.putStrings(locale, getStrings(locale))
         }
-
-        Robolectric.flushBackgroundThreadScheduler()
     }
 
     @Test

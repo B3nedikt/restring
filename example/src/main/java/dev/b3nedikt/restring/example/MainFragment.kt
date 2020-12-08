@@ -7,22 +7,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.widget.ContentFrameLayout
 import androidx.fragment.app.Fragment
 import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.reword.Reword
-import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    private lateinit var spinner: Spinner
+
+    private lateinit var stringArrayTextView: TextView
+    private lateinit var stringNotInStringsXmlTextView: TextView
+    private lateinit var quantityStringTextView: TextView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        spinner = view.findViewById(R.id.spinner)
+
+        stringArrayTextView = view.findViewById(R.id.stringArrayTextView)
+        stringNotInStringsXmlTextView = view.findViewById(R.id.stringNotInStringsXmlTextView)
+        quantityStringTextView = view.findViewById(R.id.quantityStringTextView)
 
         AppLocale.supportedLocales.forEach { locale ->
             Restring.putStrings(locale, SampleStringsGenerator.getStrings(locale))

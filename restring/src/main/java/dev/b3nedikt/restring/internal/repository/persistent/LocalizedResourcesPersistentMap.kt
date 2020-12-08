@@ -11,15 +11,10 @@ internal class LocalizedResourcesPersistentMap<V>(
         val persistentMapFactory: (locale: Locale) -> ResourcesPersistentMap<V>
 ) : PersistentMap<Locale, MutableMap<String, V>> {
 
-    private val delegateMaps: MutableMap<Locale, MutableMap<String, V>> by lazy {
-        val initialMap = mutableMapOf<Locale, MutableMap<String, V>>()
+    private val delegateMaps: MutableMap<Locale, MutableMap<String, V>> by lazy(::mutableMapOf)
 
-        locales.forEach {
-            initialMap[it] = persistentMapFactory.invoke(it)
-        }
-
-        return@lazy initialMap
-    }
+    override val size: Int
+        get() = locales.size
 
     override fun find(key: Locale): MutableMap<String, V>? {
         if (delegateMaps[key] == null) {

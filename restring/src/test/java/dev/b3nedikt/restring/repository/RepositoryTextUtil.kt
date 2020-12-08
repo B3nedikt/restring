@@ -4,25 +4,22 @@ import androidx.core.text.HtmlCompat
 import dev.b3nedikt.restring.PluralKeyword
 
 internal fun generateStrings(count: Int): Map<String, String> {
-    val strings = mutableMapOf<String, String>()
-    for (i in 0 until count) {
-        strings["key$i"] = "value$i"
-    }
-    return strings
+    return generateSequence(0, { it + 1 })
+            .take(count)
+            .associate { "key$it" to "$STRING_VALUE$it" }
+            .toMap()
 }
 
 internal fun generateStringArrays(count: Int): Map<String, Array<CharSequence>> {
-    val stringArrays = mutableMapOf<String, Array<CharSequence>>()
-
-    for (i in 0 until count) {
-        stringArrays["key$i"] = generateStringArray()
-    }
-    return stringArrays
+    return generateSequence(0, { it + 1 })
+            .take(count)
+            .associate { "key$it" to generateStringArray() }
 }
 
 internal fun generateStringArray(): Array<CharSequence> {
-    return generateSequence { STRING_VALUE }
+    return generateSequence(0, { it + 1 })
             .take(10)
+            .map { "$STRING_VALUE$it" }
             .toList()
             .toTypedArray()
 }
@@ -35,12 +32,10 @@ internal fun generateTextArray(): Array<CharSequence> {
 }
 
 internal fun generateQuantityStrings(count: Int): Map<String, Map<PluralKeyword, CharSequence>> {
-    val quantityStrings = mutableMapOf<String, Map<PluralKeyword, CharSequence>>()
-
-    for (i in 0 until count) {
-        quantityStrings["key$i"] = generateQuantityString()
-    }
-    return quantityStrings
+    return generateSequence(0, { it + 1 })
+            .take(count)
+            .associate { "key$it" to generateQuantityString() }
+            .toMap()
 }
 
 internal fun generateQuantityString(): MutableMap<PluralKeyword, CharSequence> {

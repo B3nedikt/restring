@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
-import junit.framework.TestCase.assertEquals
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainSame
 import org.junit.Test
@@ -35,7 +34,7 @@ class CachedStringRepositoryTest {
         stringRepository.strings[Locale.ENGLISH]?.putAll(strings)
         stringRepository.strings[Locale.FRENCH]?.putAll(strings)
 
-        locales shouldContainSame stringRepository.supportedLocales
+        stringRepository.supportedLocales shouldContainSame locales
     }
 
     @Test
@@ -45,7 +44,7 @@ class CachedStringRepositoryTest {
 
         stringRepository.strings[locale]?.putAll(strings)
 
-        strings shouldBeEqualTo stringRepository.strings[locale]
+        stringRepository.strings[locale]!! shouldContainSame strings
     }
 
     @Test
@@ -55,9 +54,7 @@ class CachedStringRepositoryTest {
         val strings = generateStrings(stringCount)
         stringRepository.strings[locale]?.putAll(strings)
 
-        for (i in 0 until stringCount) {
-            assertEquals(stringRepository.strings[locale]?.get("key$i"), "value$i")
-        }
+        stringRepository.strings[locale]!! shouldContainSame strings
     }
 
     @Test
@@ -69,14 +66,15 @@ class CachedStringRepositoryTest {
         stringRepository.strings[locale]?.putAll(strings)
         stringRepository.strings[locale]?.put("key5", "aNewValue")
 
-        assertEquals(stringRepository.strings[locale]?.get("key5"), "aNewValue")
+        stringRepository.strings[locale]?.get("key5") shouldBeEqualTo "aNewValue"
     }
 
     @Test
     fun shouldGetSingleStringArray() {
         val locale = Locale.ENGLISH
         val stringCount = 10
-        val strings: Map<String, Array<CharSequence>> = generateStringArrays(stringCount)
+        val strings = generateStringArrays(stringCount)
+
         stringRepository.stringArrays[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
@@ -95,8 +93,7 @@ class CachedStringRepositoryTest {
         val stringArray: Array<CharSequence> = arrayOf("aNewValue")
         stringRepository.stringArrays[locale]?.put("key5", stringArray)
 
-        stringRepository.stringArrays[locale]?.get("key5")?.contentDeepToString() shouldBeEqualTo
-                stringArray.contentDeepToString()
+        stringRepository.stringArrays[locale]?.get("key5")!! shouldContainSame stringArray
     }
 
     @Test
@@ -107,9 +104,7 @@ class CachedStringRepositoryTest {
         val strings = generateQuantityStrings(stringCount)
         stringRepository.quantityStrings[locale]?.putAll(strings)
 
-        for (i in 0 until stringCount) {
-            stringRepository.quantityStrings[locale]?.get("key$i") shouldBeEqualTo strings["key$i"]
-        }
+        stringRepository.quantityStrings[locale]!! shouldContainSame strings
     }
 
     @Test

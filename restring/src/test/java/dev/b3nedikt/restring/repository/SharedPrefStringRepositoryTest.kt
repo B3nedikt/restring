@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldContainSame
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -81,34 +82,32 @@ class SharedPrefStringRepositoryTest {
         stringRepository.stringArrays[locale]?.putAll(strings)
 
         for (i in 0 until stringCount) {
-            assertEquals(newStringRepository.stringArrays[locale]?.get("key$i")?.contentDeepToString(),
-                    strings["key$i"]?.contentDeepToString())
+            newStringRepository.stringArrays[locale]?.get("key$i")?.contentDeepToString() shouldBeEqualTo
+                    strings["key$i"]?.contentDeepToString()
         }
     }
 
     @Test
     fun shouldSetSingleStringArray() {
         val locale = Locale.ENGLISH
-        val stringCount = 10
-        val strings = generateStringArrays(stringCount)
+        val strings = generateStringArrays(count = 10)
 
         stringRepository.stringArrays[locale]?.putAll(strings)
         val stringArray: Array<CharSequence> = arrayOf("aNewValue")
         stringRepository.stringArrays[locale]?.put("key5", stringArray)
 
-        assertEquals(newStringRepository.stringArrays[locale]?.get("key5")?.contentDeepToString(),
-                stringArray.contentDeepToString())
+        newStringRepository.stringArrays[locale]?.get("key5")?.contentDeepToString() shouldBeEqualTo
+                stringArray.contentDeepToString()
     }
 
     @Test
     fun shouldGetSingleQuantityString() {
         val locale = Locale.ENGLISH
-        val stringCount = 10
 
-        val strings = generateQuantityStrings(stringCount)
+        val strings = generateQuantityStrings(count = 10)
         stringRepository.quantityStrings[locale]?.putAll(strings)
 
-        for (i in 0 until stringCount) {
+        for (i in 0 until 10) {
             assertEquals(newStringRepository.quantityStrings[locale]?.get("key$i"), strings["key$i"])
         }
     }
@@ -116,8 +115,8 @@ class SharedPrefStringRepositoryTest {
     @Test
     fun shouldSetSingleQuantityString() {
         val locale = Locale.ENGLISH
-        val stringCount = 10
-        val strings = generateQuantityStrings(stringCount)
+
+        val strings = generateQuantityStrings(count = 10)
 
         stringRepository.quantityStrings[locale]?.putAll(strings)
         val quantityString = mapOf(PluralKeyword.ONE to "aNewValue")

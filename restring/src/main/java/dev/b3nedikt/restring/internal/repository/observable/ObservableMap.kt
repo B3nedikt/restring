@@ -6,55 +6,76 @@ import kotlin.reflect.KProperty
 /**
  * A [MutableMap] which calls back functions when changed
  *
- * @param initialValue the value the map has when initialized, the content of this map is copied
- * into the new [ObservableMap]
- * @param defaultValue value to which a value which has previously not been returned by [get] is
+ * @param initialMap the value the map has when initialized, this map instance will be lazily
+ * queried when needed
+ * @param createDefaultValue value to which a value which has previously not been returned by [get] is
  * set to
  */
 internal abstract class ObservableMap<K, V>(
-        initialValue: MutableMap<K, V>?,
-        private val defaultValue: (key: K) -> V?
+        private val initialMap: MutableMap<K, V>?,
+        private val createDefaultValue: (key: K) -> V?
 ) : MutableMap<K, V>, ReadWriteProperty<Any?, MutableMap<K, V>> {
 
-    private val delegateMap = mutableMapOf<K, V>().apply {
-        if (initialValue != null) {
-            putAll(initialValue)
-        }
-    }
+    private val delegateMap = mutableMapOf<K, V?>()
 
     override val size: Int
-        get() = delegateMap.size
+        get() = delegateMap.size + (initialMap?.size ?: 0)
 
-    override fun containsKey(key: K): Boolean = delegateMap.containsKey(key)
+    override fun containsKey(key: K): Boolean {
+        return delegateMap.containsKey(key) || initialMap?.containsKey(key) == true
+    }
 
-    override fun containsValue(value: V): Boolean = delegateMap.containsValue(value)
+    override fun containsValue(value: V): Boolean {
+        return delegateMap.containsValue(value) || initialMap?.containsValue(value) == true
+    }
 
     override fun get(key: K): V? {
-        val value = delegateMap[key]
+        var value = delegateMap[key]
 
-        if (value == null) {
-            defaultValue(key)?.let {
-                put(key, it)
+        if (delegateMap.containsKey(key).not()) {
+            value = initialMap?.get(key)
+
+            value?.let {
+                delegateMap[key] = value
                 return it
             }
+
+            val defaultValue = createDefaultValue(key)
+
+            if (defaultValue != null) {
+                put(key, defaultValue)
+            } else {
+                delegateMap[key] = value
+            }
+
+            return defaultValue
         }
 
         return value
     }
 
-    override fun isEmpty(): Boolean = delegateMap.isEmpty()
+    override fun isEmpty(): Boolean = delegateMap.isEmpty() && (initialMap?.isEmpty() == true)
 
+    @Suppress("UNCHECKED_CAST")
     override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
-        get() = delegateMap.entries
+        get() = (initialMap?.entries?.plus(delegateMap.entries.toSet())
+                ?: delegateMap.entries.toSet())
+                as MutableSet<MutableMap.MutableEntry<K, V>>
 
     override val keys: MutableSet<K>
-        get() = delegateMap.keys
+        get() = (initialMap?.keys?.plus(delegateMap.keys) ?: delegateMap.keys)
+                as MutableSet<K>
 
+    @Suppress("UNCHECKED_CAST")
     override val values: MutableCollection<V>
-        get() = delegateMap.values
+        get() = (initialMap?.values?.plus(delegateMap.values.filterNotNull())
+                ?: delegateMap.values.filterNotNull())
+                as MutableCollection<V>
+
 
     override fun clear() {
         delegateMap.clear()
+        initialMap?.clear()
         afterClear()
     }
 
@@ -70,7 +91,12 @@ internal abstract class ObservableMap<K, V>(
     }
 
     override fun remove(key: K): V? {
-        val previousValue = delegateMap.remove(key)
+        var previousValue = delegateMap.remove(key)
+
+        if (previousValue == null) {
+            previousValue = initialMap?.remove(key)
+        }
+
         afterRemove(key)
         return previousValue
     }

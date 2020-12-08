@@ -38,7 +38,7 @@ internal data class StringArray(
             val value = mutableListOf<CharSequence>()
 
             for (i in 0 until valueJsonArray.length()) {
-                val string = valueJsonArray.getString(0)
+                val string = valueJsonArray.getString(i)
 
                 val text = if (isText) {
                     HtmlCompat.fromHtml(string, HtmlCompat.FROM_HTML_MODE_COMPACT)

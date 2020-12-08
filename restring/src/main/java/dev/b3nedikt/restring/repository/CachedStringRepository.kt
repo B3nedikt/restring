@@ -27,7 +27,6 @@ class CachedStringRepository(
             persistentMap: MutableMap<Locale, MutableMap<String, R>>
     ): ReadWriteProperty<Any?, MutableMap<Locale, MutableMap<String, R>>> {
         return observableMap(
-                initialValue = persistentMap,
                 defaultValue = getDefaultResourcesMap(persistentMap),
                 afterPut = { key, value ->
                     persistentMap[key] = value
@@ -38,22 +37,22 @@ class CachedStringRepository(
     }
 
     private fun <T> getDefaultResourcesMap(
-            delegateMap: MutableMap<Locale, MutableMap<String, T>>
+            persistentMap: MutableMap<Locale, MutableMap<String, T>>
     ): (key: Locale) -> MutableMap<String, T> {
         return { locale ->
             val map: MutableMap<String, T> by observableMap(
+                    initialValue = persistentMap[locale],
                     afterPut = { key, value ->
-                        delegateMap[locale]?.put(key, value)
+                        persistentMap[locale]?.put(key, value)
                     },
                     afterPutAll = { map ->
-                        delegateMap[locale]?.putAll(map)
+                        persistentMap[locale]?.putAll(map)
                     },
                     afterRemove = { key ->
-                        delegateMap[locale]?.remove(key)
-                    }
-            ) {
-                delegateMap[locale]?.clear()
-            }
+                        persistentMap[locale]?.remove(key)
+                    },
+                    afterClear = { persistentMap[locale]?.clear() }
+            )
             map
         }
     }

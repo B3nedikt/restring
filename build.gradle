@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.4.21'
     ext.dokka_version = '0.10.1'
     ext.jacoco_version = '0.8.5'
 
@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath "org.jacoco:org.jacoco.core:$jacoco_version"
@@ -50,7 +50,7 @@ ext {
             junit           : "junit:junit:4.12",
             kluent          : "org.amshove.kluent:kluent-android:1.61",
             mockito         : "org.mockito:mockito-inline:3.4.6",
-            robolectric     : "org.robolectric:robolectric:4.3.1",
+            robolectric     : "org.robolectric:robolectric:4.4",
             mockitoKotlin   : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0",
             testCore        : "androidx.test:core:1.2.0"
     ]

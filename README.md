@@ -132,8 +132,9 @@ Restring comes with four StringRepository implementations for different use case
 
 - MemoryStringRepository: Use this if you only want to keep strings in memory.
 
-- CachedStringRepository: Keeps all strings in memory & mirrors write operations to a persistent repository
-  provided as a constructor parameter to it. On initialization it loads all data saved in the persistent repository.
+- CachedStringRepository: Keeps all strings in memory & mirrors write operations to a PersistentStringRepository
+  provided as a constructor parameter to it. All strings saved in the PersistentStringRepository are loaded lazily only
+  when they are needed and cached in memory afterwards.
 
 - PersistentStringRepository: Simplifies implementing a repository which writes string resources to disk.
 

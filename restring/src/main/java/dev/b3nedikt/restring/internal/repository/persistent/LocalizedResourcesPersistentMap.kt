@@ -44,6 +44,7 @@ internal class LocalizedResourcesPersistentMap<V>(
     }
 
     override fun deleteAll() {
+        delegateMaps.values.forEach { it.clear() }
         delegateMaps.clear()
     }
 }

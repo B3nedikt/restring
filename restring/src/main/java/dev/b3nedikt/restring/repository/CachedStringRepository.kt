@@ -32,6 +32,9 @@ class CachedStringRepository(
                     persistentMap[key] = value
 
                     _supportedLocales.add(key)
+                },
+                afterClear = {
+                    persistentMap.clear()
                 }
         )
     }

@@ -1,0 +1,54 @@
+name: Release a new version
+on:
+  workflow_dispatch:
+    inputs:
+      changeLog:
+        description: 'Changelog'
+        required: true
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Build with Gradle
+      run: ./gradlew publishReleasePublicationToMavenCentralRepository
+      env:
+          mavenUsername: ${{ secrets.MAVEN_USERNAME }}
+          mavenPassword: ${{ secrets.MAVEN_PASSWORD }}
+          signingKeyId: ${{ secrets.GPG_SIGNING_KEY_ID }}
+          signingKey: ${{ secrets.GPG_SIGNING_KEY }}
+          signingPassword: ${{ secrets.GPG_PASSWORD }}
+
+    - name: Release
+      uses: nexus-actions/release-nexus-staging-repo@v1.1
+      with:
+          username: ${{ secrets.MAVEN_USERNAME }}
+          password: ${{ secrets.MAVEN_PASSWORD }}
+          staging_repository_id: ${{ secrets.STAGING_REPOSITORY_ID }}
+
+    - name: Read version from gradle.properties
+      id: read_version
+      uses: christian-draeger/read-properties@1.0.1
+      with:
+        path: './src/main/resources/application.properties'
+        property: 'version'
+
+    - name: Create Github Release
+      run: |
+        gh release create ${{ env.version }} -n "${{ env.message }}" -t "${{ env.name }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        version: ${{ steps.read_version.outputs.value }}
+        message: ${{ github.event.inputs.changeLog }}
+        name: ${{ steps.read_version.outputs.value }}
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1

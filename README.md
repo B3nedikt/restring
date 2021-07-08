@@ -1,7 +1,7 @@
-[![Download](https://api.bintray.com/packages/b3nedikt/restring/restring/images/download.svg?version=5.1.2)](https://bintray.com/b3nedikt/restring/restring/5.1.2/link)
-[![Build Status](https://travis-ci.org/B3nedikt/restring.svg?branch=master)](https://travis-ci.org/B3nedikt/restring)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.b3nedikt.restring/restring/badge.svg)](https://maven-badges.herokuapp.com/maven-central/dev.b3nedikt.restring/restring)
+[![Build & Test](https://github.com/B3nedikt/restring/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/B3nedikt/restring/actions/workflows/build-and-test.yaml)
 [![codecov](https://codecov.io/gh/B3nedikt/restring/branch/master/graph/badge.svg)](https://codecov.io/gh/B3nedikt/restring)
-[![Documentation](https://img.shields.io/badge/docs-documentation-green.svg)](https://b3nedikt.github.io/restring/)
+[![javadoc](https://javadoc.io/badge2/dev.b3nedikt.restring/restring/javadoc.svg)](https://javadoc.io/doc/dev.b3nedikt.restring/restring)
 
 ## Restring 5.1.2
 

@@ -58,8 +58,8 @@ internal abstract class ObservableMap<K, V>(
 
     @Suppress("UNCHECKED_CAST")
     override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
-        get() = (initialMap?.entries?.plus(delegateMap.entries.toSet())
-                ?: delegateMap.entries.toSet())
+        get() = (initialMap?.entries?.plus(delegateMap.entries.toMutableSet())
+                ?: delegateMap.entries.toMutableSet())
                 as MutableSet<MutableMap.MutableEntry<K, V>>
 
     override val keys: MutableSet<K>

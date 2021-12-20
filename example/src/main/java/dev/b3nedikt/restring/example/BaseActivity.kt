@@ -11,7 +11,7 @@ abstract class BaseActivity : AppCompatActivity() {
         ViewPumpAppCompatDelegate(
                 baseDelegate = super.getDelegate(),
                 baseContext = this,
-                wrapContext = { baseContext -> Restring.wrapContext(baseContext) }
+                wrapContext = Restring::wrapContext
         )
     }
 

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(AppConfig.compileSdk)
+    compileSdk = AppConfig.compileSdk
 
     defaultConfig {
         applicationId = "dev.b3nedikt.restring.example_java"
-        minSdkVersion(AppConfig.minSdk)
-        targetSdkVersion(AppConfig.targetSdk)
+        minSdk = AppConfig.minSdk
+        targetSdk = AppConfig.targetSdk
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

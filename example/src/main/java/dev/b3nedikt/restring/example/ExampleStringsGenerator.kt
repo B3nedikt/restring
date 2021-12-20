@@ -6,13 +6,13 @@ import java.util.*
 /**
  * Generates example strings
  */
-object SampleStringsGenerator {
+object ExampleStringsGenerator {
 
     fun getStrings(locale: Locale): Map<String, CharSequence> {
         return mapOf<String, CharSequence>(
             "title" to "Title $locale (from restring)",
             "subtitle" to "Subtitle $locale (from restring).",
-            "ma_string_not_in_strings_xml" to "A string resource not in strings xml $locale",
+            "a_string_not_in_strings_xml" to "A string resource not in strings xml $locale",
         )
     }
 

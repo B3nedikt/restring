@@ -1,6 +1,6 @@
 package dev.b3nedikt.restring.example;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -13,8 +13,8 @@ import dev.b3nedikt.restring.PluralKeyword;
  */
 public class SampleStringsGenerator {
 
-    @NotNull
-    public Map<String, CharSequence> getStrings(@NotNull Locale locale) {
+    @NonNull
+    public Map<String, CharSequence> getStrings(@NonNull Locale locale) {
         final Map<String, CharSequence> map = new HashMap<>();
         if (locale == Locale.ENGLISH) {
             map.put("title", "Title (from restring).");
@@ -29,8 +29,8 @@ public class SampleStringsGenerator {
         return map;
     }
 
-    @NotNull
-    public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NotNull Locale locale) {
+    @NonNull
+    public Map<String, Map<PluralKeyword, CharSequence>> getQuantityStrings(@NonNull Locale locale) {
         final Map<String, Map<PluralKeyword, CharSequence>> map = new HashMap<>();
 
         final Map<PluralKeyword, CharSequence> quantityStrings = new HashMap<>();
@@ -41,8 +41,8 @@ public class SampleStringsGenerator {
         return map;
     }
 
-    @NotNull
-    public Map<String, CharSequence[]> getStringArrays(@NotNull Locale locale) {
+    @NonNull
+    public Map<String, CharSequence[]> getStringArrays(@NonNull Locale locale) {
         final Map<String, CharSequence[]> map = new HashMap<>();
 
         final CharSequence[] stringArray = new CharSequence[2];

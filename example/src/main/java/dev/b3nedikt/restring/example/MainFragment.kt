@@ -33,7 +33,6 @@ class MainFragment : Fragment() {
     private lateinit var quantityStringTextView: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         spinner = view.findViewById(R.id.spinner)
 
@@ -42,9 +41,9 @@ class MainFragment : Fragment() {
         quantityStringTextView = view.findViewById(R.id.quantityStringTextView)
 
         AppLocale.supportedLocales.forEach { locale ->
-            Restring.putStrings(locale, SampleStringsGenerator.getStrings(locale))
-            Restring.putQuantityStrings(locale, SampleStringsGenerator.getQuantityStrings(locale))
-            Restring.putStringArrays(locale, SampleStringsGenerator.getStringArrays(locale))
+            Restring.putStrings(locale, ExampleStringsGenerator.getStrings(locale))
+            Restring.putQuantityStrings(locale, ExampleStringsGenerator.getQuantityStrings(locale))
+            Restring.putStringArrays(locale, ExampleStringsGenerator.getStringArrays(locale))
         }
 
         val localeStrings = AppLocale.supportedLocales.map { it.language + " " + it.country }

@@ -10,10 +10,10 @@ object Dependencies {
     const val viewPump = "dev.b3nedikt.viewpump:viewpump:4.0.10"
     const val reword = "dev.b3nedikt.reword:reword:4.0.1"
 
-    const val junit = "junit:junit:4.12"
-    const val kluent = "org.amshove.kluent:kluent-android:1.59"
-    const val robolectric = "org.robolectric:robolectric:4.5.1"
-    const val mockitoKotlin = "org.mockito.kotlin:mockito-kotlin:3.2.0"
-    const val mockitoInline = "org.mockito:mockito-inline:3.11.2"
-    const val testCore = "androidx.test:core:1.2.0"
+    const val junit = "junit:junit:4.13.2"
+    const val kluent = "org.amshove.kluent:kluent-android:1.68"
+    const val robolectric = "org.robolectric:robolectric:4.7.3"
+    const val mockitoKotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    const val mockitoInline = "org.mockito:mockito-inline:4.2.0"
+    const val testCore = "androidx.test:core:1.4.0"
 }

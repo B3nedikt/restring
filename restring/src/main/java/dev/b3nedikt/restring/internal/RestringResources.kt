@@ -102,6 +102,7 @@ internal class RestringResources(
         return baseResources.getFraction(id, base, pbase)
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun getDrawable(id: Int): Drawable {
         return baseResources.getDrawable(id)
@@ -113,6 +114,7 @@ internal class RestringResources(
         return baseResources.getDrawable(id, theme)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getDrawableForDensity(id: Int, density: Int): Drawable? {
         return baseResources.getDrawableForDensity(id, density)
     }
@@ -122,10 +124,12 @@ internal class RestringResources(
         return baseResources.getDrawableForDensity(id, density, theme)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getMovie(id: Int): Movie {
         return baseResources.getMovie(id)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getColor(id: Int): Int {
         return baseResources.getColor(id)
     }
@@ -135,6 +139,7 @@ internal class RestringResources(
         return baseResources.getColor(id, theme)
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("UseCompatLoadingForColorStateLists")
     override fun getColorStateList(id: Int): ColorStateList {
         return baseResources.getColorStateList(id)
@@ -198,9 +203,10 @@ internal class RestringResources(
         return baseResources.obtainAttributes(set, attrs)
     }
 
+    @Deprecated("Deprecated in Java")
     @Suppress("UNNECESSARY_SAFE_CALL")
     override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
-        baseResources?.updateConfiguration(config, metrics)
+        baseResources.updateConfiguration(config, metrics)
     }
 
     override fun getDisplayMetrics(): DisplayMetrics {

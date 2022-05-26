@@ -31,19 +31,23 @@ internal class LocalizedResourcesPersistentMap<V>(
 
     override fun save(key: Locale, value: MutableMap<String, V>) {
         if (delegateMaps.containsKey(key)) return
+        locales.add(key)
 
         delegateMaps[key] = persistentMapFactory.invoke(key)
     }
 
     override fun saveAll(from: Map<out Locale, MutableMap<String, V>>) {
+        locales.addAll(from.keys)
         from.forEach { save(it.key, it.value) }
     }
 
     override fun delete(key: Locale) {
+        locales.remove(key)
         delegateMaps.remove(key)
     }
 
     override fun deleteAll() {
+        locales.clear()
         delegateMaps.values.forEach { it.clear() }
         delegateMaps.clear()
     }

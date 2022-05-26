@@ -38,6 +38,29 @@ class CachedStringRepositoryTest {
     }
 
     @Test
+    fun shouldGetCorrectLocalesAfterRemovingOneLocale() {
+        val strings = generateStrings(10)
+
+        stringRepository.strings[Locale.ENGLISH]?.putAll(strings)
+        stringRepository.strings[Locale.FRENCH]?.putAll(strings)
+        stringRepository.strings.remove(Locale.ENGLISH)
+
+        stringRepository.supportedLocales shouldContainSame setOf(Locale.FRENCH)
+    }
+
+    @Test
+    fun shouldGetNoLocalesAndStringsAfterCallingClear() {
+        val strings = generateStrings(10)
+
+        stringRepository.strings[Locale.ENGLISH]?.putAll(strings)
+        stringRepository.strings[Locale.FRENCH]?.putAll(strings)
+        stringRepository.strings.clear()
+
+        stringRepository.supportedLocales.size shouldBeEqualTo 0
+        stringRepository.strings.size shouldBeEqualTo 0
+    }
+
+    @Test
     fun shouldSetAndGetStringPairs() {
         val locale = Locale.ENGLISH
         val strings = generateStrings(10)

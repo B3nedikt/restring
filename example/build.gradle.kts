@@ -16,11 +16,12 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        debug {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"))
         }
     }
+    namespace = "dev.b3nedikt.restring.example"
 }
 
 dependencies {

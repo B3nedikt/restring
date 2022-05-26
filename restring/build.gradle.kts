@@ -15,25 +15,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        buildTypes {
-            getByName("debug") {
-                isMinifyEnabled = false
-            }
-        }
-        buildTypes {
-            getByName("release") {
-                isMinifyEnabled = false
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-            }
-        }
-    }
-
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
     }
+    namespace = "dev.b3nedikt.restring"
 }
 
 dependencies {

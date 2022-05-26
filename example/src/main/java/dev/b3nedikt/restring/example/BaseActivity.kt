@@ -9,9 +9,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val appCompatDelegate: AppCompatDelegate by lazy {
         ViewPumpAppCompatDelegate(
-                baseDelegate = super.getDelegate(),
-                baseContext = this,
-                wrapContext = Restring::wrapContext
+            baseDelegate = super.getDelegate(),
+            baseContext = this,
+            wrapContext = Restring::wrapContext
         )
     }
 

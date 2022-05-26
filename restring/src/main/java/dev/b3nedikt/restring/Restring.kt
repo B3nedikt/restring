@@ -2,6 +2,7 @@ package dev.b3nedikt.restring
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.res.Resources
 import dev.b3nedikt.restring.internal.DefaultLocaleProvider
 import dev.b3nedikt.restring.internal.RestringContextWrapper
 import dev.b3nedikt.restring.internal.RestringResources
@@ -113,5 +114,26 @@ object Restring {
 
         if (base.resources is RestringResources) return base
         return RestringContextWrapper.wrap(base, stringRepository)
+    }
+
+    /**
+     * Creates a new instance of [RestringResources] based on the provided default resources. If
+     * the provided [baseResources] are already wrapped, they will be returned unchanged by this
+     * method. If this method is called either before a call to [Restring.init] or before you set
+     * your custom [Restring.stringRepository], the provide [baseResources] will also get returned
+     * unchanged.
+     *
+     * @param context the context used by the newly created [RestringResources]
+     * @param baseResources the resources to be wrapped, these should come from the super class of
+     * the provided [context]
+     */
+    @JvmStatic
+    fun wrapResources(context: Context, baseResources: Resources): Resources {
+        if (this::stringRepository.isInitialized.not()) {
+            return baseResources
+        }
+
+        if (baseResources is RestringResources) return baseResources
+        return RestringResources(baseResources, stringRepository, context)
     }
 }

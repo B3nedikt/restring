@@ -38,7 +38,7 @@ internal interface PersistentSet<E>
 
     override fun removeAll(elements: Collection<E>): Boolean {
         val allElements = findAll()
-        val contained = allElements.toMutableSet().removeAll(elements)
+        val contained = allElements.toMutableSet().removeAll(elements.toSet())
 
         if (contained) elements.forEach { delete(it) }
 

@@ -67,6 +67,18 @@
         tools:text="A quantity string" />
 
     <TextView
+        android:id="@+id/stringFromApplicationContextTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/string_from_application_context"
+        android:textColor="#FF777777"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/untranslatedTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <TextView
         android:id="@+id/stringNotInStringsXmlTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

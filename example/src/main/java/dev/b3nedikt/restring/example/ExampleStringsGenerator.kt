@@ -13,6 +13,7 @@ object ExampleStringsGenerator {
             "title" to "Title $locale (from restring)",
             "subtitle" to "Subtitle $locale (from restring).",
             "a_string_not_in_strings_xml" to "A string resource not in strings xml $locale",
+            "string_from_application_context" to "A string from the application context $locale"
         )
     }
 

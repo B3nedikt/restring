@@ -4,6 +4,7 @@
     <string name="text_view_text">TextView Text Deutsch</string>
     <string name="subtitle">Untertitel.</string>
     <string name="untranslated"><b>Nicht übersetzt</b></string>
+    <string name="string_from_application_context">A string from the application context DE</string>
 
     <string-array name="string_array">
         <item>String Array 1 DE</item>

@@ -212,7 +212,7 @@ internal class RestringResources(
     @Suppress("UNNECESSARY_SAFE_CALL", "SENSELESS_COMPARISON")
     override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
 
-        // On API Level < 23 baseResource may be null at this point, otherwise it is never null
+        // On API Level <= 23 baseResource may be null at this point, otherwise it is never null
         if (baseResources == null) {
             super.updateConfiguration(config, metrics)
         } else {

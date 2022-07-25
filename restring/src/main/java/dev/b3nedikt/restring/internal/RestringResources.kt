@@ -24,9 +24,9 @@ import java.io.InputStream
  * directed to the passed [baseResources].
  */
 internal class RestringResources(
-        private val baseResources: Resources,
-        stringRepository: StringRepository,
-        context: Context
+    private val baseResources: Resources,
+    stringRepository: StringRepository,
+    context: Context
 ) : Resources(baseResources.assets, baseResources.displayMetrics, baseResources.configuration) {
 
     private val resourcesDelegate by lazy {
@@ -195,7 +195,12 @@ internal class RestringResources(
         baseResources.getValue(name, outValue, resolveRefs)
     }
 
-    override fun getValueForDensity(id: Int, density: Int, outValue: TypedValue?, resolveRefs: Boolean) {
+    override fun getValueForDensity(
+        id: Int,
+        density: Int,
+        outValue: TypedValue?,
+        resolveRefs: Boolean
+    ) {
         baseResources.getValueForDensity(id, density, outValue, resolveRefs)
     }
 
@@ -204,9 +209,15 @@ internal class RestringResources(
     }
 
     @Deprecated("Deprecated in Java")
-    @Suppress("UNNECESSARY_SAFE_CALL")
+    @Suppress("UNNECESSARY_SAFE_CALL", "SENSELESS_COMPARISON")
     override fun updateConfiguration(config: Configuration?, metrics: DisplayMetrics?) {
-        baseResources.updateConfiguration(config, metrics)
+
+        // On API Level < 23 baseResource may be null at this point, otherwise it is never null
+        if (baseResources == null) {
+            super.updateConfiguration(config, metrics)
+        } else {
+            baseResources.updateConfiguration(config, metrics)
+        }
     }
 
     override fun getDisplayMetrics(): DisplayMetrics {

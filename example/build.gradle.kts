@@ -35,4 +35,6 @@ dependencies {
     implementation(Dependencies.applocale)
     implementation(Dependencies.viewPump)
     implementation(Dependencies.reword)
+
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 }

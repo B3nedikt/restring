@@ -30,7 +30,7 @@ internal class RestringResources(
 ) : Resources(baseResources.assets, baseResources.displayMetrics, baseResources.configuration) {
 
     private val resourcesDelegate by lazy {
-        ResourcesDelegate(context, baseResources, stringRepository)
+        ResourcesDelegate(context.applicationContext, baseResources, stringRepository)
     }
 
     override fun getIdentifier(name: String, defType: String?, defPackage: String?): Int {

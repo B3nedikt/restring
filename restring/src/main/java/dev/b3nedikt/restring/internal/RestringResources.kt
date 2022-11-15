@@ -5,6 +5,7 @@ package dev.b3nedikt.restring.internal
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.*
+import android.content.res.loader.ResourcesLoader
 import android.graphics.Movie
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -250,6 +251,16 @@ internal class RestringResources(
 
     override fun parseBundleExtra(tagName: String?, attrs: AttributeSet?, outBundle: Bundle?) {
         baseResources.parseBundleExtra(tagName, attrs, outBundle)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun addLoaders(vararg loaders: ResourcesLoader?) {
+        baseResources.addLoaders(*loaders)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun removeLoaders(vararg loaders: ResourcesLoader?) {
+        baseResources.removeLoaders(*loaders)
     }
 }
 

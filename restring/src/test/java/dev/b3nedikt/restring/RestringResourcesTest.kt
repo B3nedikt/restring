@@ -1,7 +1,6 @@
 package dev.b3nedikt.restring
 
 import android.content.Context
-import android.os.Build
 import android.text.Html
 import android.text.TextUtils
 import androidx.core.text.HtmlCompat
@@ -19,11 +18,9 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P])
 class RestringResourcesTest {
 
     private val locale = Locale.getDefault()

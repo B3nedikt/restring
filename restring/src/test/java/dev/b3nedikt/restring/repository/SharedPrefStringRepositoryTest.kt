@@ -1,7 +1,6 @@
 package dev.b3nedikt.restring.repository
 
 import android.content.Context
-import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.PluralKeyword
 import org.amshove.kluent.shouldBeEqualTo
@@ -10,11 +9,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P])
 class SharedPrefStringRepositoryTest {
 
     private val context: Context = ApplicationProvider.getApplicationContext()

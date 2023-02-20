@@ -17,7 +17,7 @@ implementation 'dev.b3nedikt.restring:restring:5.2.2'
 implementation 'dev.b3nedikt.viewpump:viewpump:4.0.10'
 
 // Allows to update the text of views at runtime without recreating the activity
-implementation 'dev.b3nedikt.reword:reword:4.0.3'
+implementation 'dev.b3nedikt.reword:reword:4.0.4'
 ```
 
 ### 2. Initialize
@@ -31,6 +31,21 @@ ViewPump.init(RewordInterceptor)
 ```
 
 ### 3. Inject into Context
+
+If you use your application `Context` to retrieve string resources add the following to your
+`Application` class:
+
+```kotlin
+class SampleApplication : Application() {
+
+    ...
+
+    override fun getResources(): Resources {
+        return AppLocale.wrapResources(applicationContext, super.getResources())
+    }
+}
+```
+
 
 If you have a BaseActivity you can add this there, otherwise you have to add it to all of your activities:
 
@@ -50,10 +65,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 }
 ```
-
-Also should you use the application context somewhere to retrieve strings
-and inject it with a DI tool like koin or dagger, I would recommend wrapping it in your
-application class with Restring.wrap(...) when providing it to your DI tool.
 
 ### 4. Provide new Strings
 

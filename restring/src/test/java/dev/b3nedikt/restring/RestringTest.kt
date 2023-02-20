@@ -72,8 +72,8 @@ class RestringTest {
                 is BottomNavigationView -> {
                     val itemCount = view.menu.size()
                     for (item in 0 until itemCount) {
-                        view.menu.getItem(item).title shouldStartWith lang
-                        view.menu.getItem(item).titleCondensed shouldStartWith lang
+                        view.menu.getItem(item).title!!.shouldStartWith(lang)
+                        view.menu.getItem(item).titleCondensed!!.shouldStartWith(lang)
                     }
                 }
             }

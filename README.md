@@ -14,7 +14,7 @@ An easy way to replace bundled Strings dynamically, or provide new translations 
 implementation 'dev.b3nedikt.restring:restring:5.2.2'
 
 // Intercept view inflation
-implementation 'dev.b3nedikt.viewpump:viewpump:4.0.10'
+implementation 'dev.b3nedikt.viewpump:viewpump:4.0.12'
 
 // Allows to update the text of views at runtime without recreating the activity
 implementation 'dev.b3nedikt.reword:reword:4.0.4'

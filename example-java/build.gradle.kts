@@ -26,10 +26,10 @@ android {
 dependencies {
     implementation(project(":restring"))
 
-    implementation(Dependencies.appCompat)
-    implementation(Dependencies.constraintLayout)
+    implementation(libs.appCompat)
+    implementation(libs.constraintLayout)
 
-    implementation(Dependencies.applocale)
-    implementation(Dependencies.viewPump)
-    implementation(Dependencies.reword)
+    implementation(libs.appLocale)
+    implementation(libs.viewPump)
+    implementation(libs.reword)
 }

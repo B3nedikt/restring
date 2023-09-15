@@ -34,13 +34,13 @@ tasks.register<JacocoReport>(name = "jacocoTestReport") {
     sourceDirectories.setFrom(files("${project.projectDir}/src/main/java"))
 
     classDirectories.setFrom(
-        fileTree("${project.buildDir}/tmp/kotlin-classes/debug") {
+        fileTree("${project.layout.buildDirectory}/tmp/kotlin-classes/debug") {
             exclude(fileFilter)
         }
     )
 
     executionData.setFrom(
-        fileTree(project.buildDir) {
+        fileTree(project.layout.buildDirectory) {
 
             include(
                 "jacoco/testDebugUnitTest.exec",

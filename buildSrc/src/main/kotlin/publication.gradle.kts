@@ -8,17 +8,12 @@ plugins {
     id("signing")
 }
 
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(android.sourceSets.getByName("main").java.srcDirs)
-}
-
 val javadocJar by tasks.registering(Jar::class) {
 
     dependsOn("dokkaHtml")
 
     archiveClassifier.set("javadoc")
-    from("$buildDir/dokka/html")
+    from("${layout.buildDirectory}/dokka/html")
 }
 
 afterEvaluate {
@@ -34,7 +29,6 @@ afterEvaluate {
                 artifactId = Pom.artifactId
                 version = project.version.toString()
 
-                artifact(sourcesJar)
                 artifact(javadocJar)
 
                 pom {

@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -27,12 +27,12 @@ android {
 dependencies {
     implementation(project(":restring"))
 
-    implementation(Dependencies.kotlin)
+    implementation(libs.kotlin.stdlib)
 
-    implementation(Dependencies.appCompat)
-    implementation(Dependencies.constraintLayout)
+    implementation(libs.appCompat)
+    implementation(libs.constraintLayout)
 
-    implementation(Dependencies.applocale)
-    implementation(Dependencies.viewPump)
-    implementation(Dependencies.reword)
+    implementation(libs.appLocale)
+    implementation(libs.viewPump)
+    implementation(libs.reword)
 }

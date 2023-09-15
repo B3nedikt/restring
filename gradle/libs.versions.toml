@@ -1,0 +1,45 @@
+[versions]
+
+kotlin = "1.9.0"
+agp = "8.1.1"
+dokka = "1.8.20"
+
+appcompat = "1.6.1"
+material = "1.9.0"
+constraintlayout = "2.1.4"
+
+applocale = "3.1.0"
+viewpump = "4.0.11"
+reword = "4.0.4"
+
+junit = "4.13.2"
+kluent = "1.72"
+robolectric = "4.9.2"
+mockito-kotlin = "4.1.0"
+mockito-inline = "4.2.0"
+core = "1.5.0"
+
+[libraries]
+
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib" }
+
+agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+
+appCompat = { module = "androidx.appcompat:appcompat" , version.ref = "appcompat" }
+material = { module = "com.google.android.material:material" , version.ref = "material" }
+constraintLayout = { module = "androidx.constraintlayout:constraintlayout" , version.ref = "constraintlayout" }
+
+appLocale = { module= "dev.b3nedikt.applocale:applocale" , version.ref = "applocale" }
+viewPump = { module= "dev.b3nedikt.viewpump:viewpump" , version.ref = "viewpump" }
+reword = { module= "dev.b3nedikt.reword:reword" , version.ref = "reword" }
+
+junit = { module = "junit:junit" , version.ref = "junit" }
+kluent = { module = "org.amshove.kluent:kluent-android" , version.ref = "kluent" }
+robolectric = { module = "org.robolectric:robolectric" , version.ref = "robolectric" }
+mockitoKotlin = { module = "org.mockito.kotlin:mockito-kotlin" , version.ref = "mockito-kotlin" }
+mockitoInline = { module = "org.mockito:mockito-inline" , version.ref = "mockito-inline" }
+testCore = { module = "androidx.test:core" , version.ref = "core" }
+
+[plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

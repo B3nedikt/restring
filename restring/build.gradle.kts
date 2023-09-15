@@ -1,9 +1,9 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
     id("org.jetbrains.dokka")
     id("jacoco-configuration")
     id("publication")
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -11,8 +11,17 @@ android {
 
     defaultConfig {
         minSdk = AppConfig.minSdk
-        targetSdk = AppConfig.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = false
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 
     testOptions {
@@ -24,19 +33,19 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.kotlin)
-    implementation(Dependencies.appCompat)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.appCompat)
 
     // Test libraries
-    testImplementation(Dependencies.junit)
-    testImplementation(Dependencies.kluent)
-    testImplementation(Dependencies.robolectric)
-    testImplementation(Dependencies.mockitoKotlin)
-    testImplementation(Dependencies.mockitoInline)
-    testImplementation(Dependencies.testCore)
+    testImplementation(libs.junit)
+    testImplementation(libs.kluent)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockitoKotlin)
+    testImplementation(libs.mockitoInline)
+    testImplementation(libs.testCore)
 
-    testImplementation(Dependencies.material)
+    testImplementation(libs.material)
 
-    testImplementation(Dependencies.viewPump)
-    testImplementation(Dependencies.reword)
+    testImplementation(libs.viewPump)
+    testImplementation(libs.reword)
 }

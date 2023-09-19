@@ -3,6 +3,7 @@ package dev.b3nedikt.restring.internal.repository.model
 import dev.b3nedikt.restring.repository.generateQuantityString
 import dev.b3nedikt.restring.repository.generateQuantityText
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldContainSame
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -17,11 +18,12 @@ class QuantityStringTest {
         QuantityString.fromJson(quantityString.toJson()) shouldBeEqualTo quantityString
     }
 
+
     @Test
     fun jsonConversionWorksForQuantityTexts() {
         val quantityText = QuantityString(generateQuantityText(), isText = true)
 
-        QuantityString.fromJson(quantityText.toJson()).value.map { it.toString() } shouldBeEqualTo
+        QuantityString.fromJson(quantityText.toJson()).value.map { it.toString() } shouldContainSame
                 quantityText.value.map { it.toString() }
     }
 }

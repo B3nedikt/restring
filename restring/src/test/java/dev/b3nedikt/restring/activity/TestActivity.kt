@@ -19,7 +19,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_AppCompat)
+        setTheme(androidx.appcompat.R.style.Theme_AppCompat)
         setContentView(R.layout.test_layout)
     }
 

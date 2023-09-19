@@ -155,7 +155,7 @@ class RestringResourcesTest {
 
         val realValue = restringResources.getText(STR_RES_ID)
 
-        val expected = Html.fromHtml(STR_VALUE_HTML.toString(), Html.FROM_HTML_MODE_COMPACT)
+        val expected = HtmlCompat.fromHtml(STR_VALUE_HTML.toString(), Html.FROM_HTML_MODE_COMPACT)
 
         realValue shouldBeEqualTo expected
     }
@@ -175,7 +175,7 @@ class RestringResourcesTest {
 
     @Test
     fun shouldReturnDefaultHtmlTextFromRepositoryIfResourceIdIsInvalid() {
-        val def = Html.fromHtml("<b>def</b>", Html.FROM_HTML_MODE_COMPACT)
+        val def = HtmlCompat.fromHtml("<b>def</b>", Html.FROM_HTML_MODE_COMPACT)
         whenever(repository.strings).thenReturn(
                 mutableMapOf(locale to mutableMapOf())
         )

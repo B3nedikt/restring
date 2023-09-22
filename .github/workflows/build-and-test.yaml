@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 17
+        cache: 'gradle'
 
     - name: Build with Gradle
       run: ./gradlew build test jacocoTestReport

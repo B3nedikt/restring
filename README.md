@@ -41,7 +41,7 @@ class SampleApplication : Application() {
     ...
 
     override fun getResources(): Resources {
-        return AppLocale.wrapResources(applicationContext, super.getResources())
+        return Restring.wrapResources(applicationContext, super.getResources())
     }
 }
 ```

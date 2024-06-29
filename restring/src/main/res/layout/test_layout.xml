@@ -17,10 +17,4 @@
         android:layout_height="wrap_content"
         app:title="@string/header" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat"
-        app:menu="@menu/test_menu" />
-
 </LinearLayout>

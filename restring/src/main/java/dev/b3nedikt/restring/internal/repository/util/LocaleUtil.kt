@@ -1,7 +1,7 @@
 package dev.b3nedikt.restring.internal.repository.util
 
 import android.os.Build
-import java.util.*
+import java.util.Locale
 
 /**
  * Util class for converting [Locale]s to their language tag and vice versa, uses the normal java
@@ -12,7 +12,10 @@ internal object LocaleUtil {
     fun toLanguageTag(locale: Locale): String {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return locale.toLanguageTag()
+            val languageTag = locale.toLanguageTag()
+            if (languageTag != "und") {
+                return languageTag
+            }
         }
 
         val language = locale.language
@@ -27,7 +30,10 @@ internal object LocaleUtil {
     fun fromLanguageTag(locale: String): Locale {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return Locale.forLanguageTag(locale)
+            val languageTag = Locale.forLanguageTag(locale)
+            if (languageTag.language != "") {
+                return languageTag
+            }
         }
 
         if (locale.contains("-")) {

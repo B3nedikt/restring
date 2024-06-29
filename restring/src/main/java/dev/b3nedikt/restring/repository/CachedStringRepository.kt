@@ -2,7 +2,7 @@ package dev.b3nedikt.restring.repository
 
 import dev.b3nedikt.restring.MutableStringRepository
 import dev.b3nedikt.restring.internal.repository.observable.observableMap
-import java.util.*
+import java.util.Locale
 import kotlin.properties.ReadWriteProperty
 
 /**

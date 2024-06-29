@@ -1,6 +1,6 @@
 package dev.b3nedikt.restring.internal.repository.persistent
 
-import java.util.*
+import java.util.Locale
 
 /**
  * A [PersistentMap] which used [Locale]s as key and maps of resource name, resource value pairs
@@ -43,6 +43,7 @@ internal class LocalizedResourcesPersistentMap<V>(
 
     override fun delete(key: Locale) {
         locales.remove(key)
+        delegateMaps[key]?.clear()
         delegateMaps.remove(key)
     }
 

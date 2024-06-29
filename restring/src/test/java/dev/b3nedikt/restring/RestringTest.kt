@@ -9,13 +9,14 @@ import dev.b3nedikt.restring.activity.TestActivity
 import dev.b3nedikt.restring.internal.DefaultLocaleProvider
 import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
+import org.amshove.kluent.shouldContainSame
 import org.amshove.kluent.shouldStartWith
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import java.util.*
+import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 class RestringTest {
@@ -80,6 +81,19 @@ class RestringTest {
         }
 
         activityController.pause().stop().destroy()
+    }
+
+    @Test
+    fun removingALocalShouldDeleteAllOfItsStrings() {
+
+        val strings = mapOf("key1" to "value1", "key2" to  "value2")
+        val strings2 = mapOf("key3" to "value3", "key4" to  "value4")
+
+        Restring.stringRepository.toMutableRepository().strings[Locale.ENGLISH]?.putAll(strings)
+        Restring.stringRepository.toMutableRepository().strings.remove(Locale.ENGLISH)
+        Restring.stringRepository.toMutableRepository().strings[Locale.ENGLISH]?.putAll(strings2)
+
+        Restring.stringRepository.toMutableRepository().strings[Locale.ENGLISH]!! shouldContainSame strings2
     }
 
     private fun getStrings(locale: Locale) = mapOf(

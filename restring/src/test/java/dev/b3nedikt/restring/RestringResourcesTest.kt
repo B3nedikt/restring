@@ -111,11 +111,58 @@ class RestringResourcesTest {
     }
 
     @Test
+    fun shouldGetStringFromRepositoryIfLanguageFallbackExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        whenever(repository.strings).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(STR_KEY to STR_VALUE as CharSequence),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
+        val stringValue = restringResources.getString(STR_RES_ID)
+
+        STR_VALUE shouldBeEqualTo stringValue
+    }
+
+    @Test
     fun shouldGetStringFromResourceIfNotExists() {
         whenever(repository.strings).thenReturn(
                 mutableMapOf(locale to mutableMapOf())
         )
 
+        val stringValue = restringResources.getString(STR_RES_ID)
+
+        val expected = resources.getText(STR_RES_ID)
+        assertEquals(expected, stringValue)
+    }
+
+    @Test
+    fun shouldGetStringFromResourceIfLanguageFallbackNotExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        whenever(repository.strings).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
         val stringValue = restringResources.getString(STR_RES_ID)
 
         val expected = resources.getText(STR_RES_ID)

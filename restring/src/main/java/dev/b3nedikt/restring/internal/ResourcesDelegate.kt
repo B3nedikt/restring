@@ -129,10 +129,15 @@ internal class ResourcesDelegate(
 
     private fun getStringFromRepository(id: Int): CharSequence? {
 
-        val resultLocale = getLocale() ?: return null
+        var resultLocale = getLocale() ?: return null
 
         try {
             val stringKey = baseResources.getResourceEntryName(id)
+
+            if(resultLocale.country.isNotEmpty() && stringRepository.strings[resultLocale]?.containsKey(stringKey) == false) {
+                resultLocale = Locale(resultLocale.language)
+            }
+
             return stringRepository.strings[resultLocale]?.get(stringKey)
         } catch (e: Resources.NotFoundException) {
 

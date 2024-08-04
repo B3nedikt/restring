@@ -6,9 +6,12 @@ import android.text.TextUtils
 import androidx.core.text.HtmlCompat
 import androidx.test.core.app.ApplicationProvider
 import dev.b3nedikt.restring.internal.RestringResources
+import dev.b3nedikt.restring.repository.generateQuantityString
+import dev.b3nedikt.restring.repository.generateStringArray
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import org.amshove.kluent.shouldNotBeNull
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -18,7 +21,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
-import java.util.*
+import java.util.Locale
 
 @RunWith(RobolectricTestRunner::class)
 class RestringResourcesTest {
@@ -131,6 +134,54 @@ class RestringResourcesTest {
         val stringValue = restringResources.getString(STR_RES_ID)
 
         STR_VALUE shouldBeEqualTo stringValue
+    }
+
+    @Test
+    fun shouldGetStringArrayFromRepositoryIfLanguageFallbackExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        val expectedStringArray = generateStringArray()
+        whenever(repository.stringArrays).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(STR_KEY to generateStringArray()),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
+        val stringArray = restringResources.getStringArray(STR_RES_ID)
+
+        assertArrayEquals(expectedStringArray, stringArray)
+    }
+
+    @Test
+    fun shouldGetQuantityStringFromRepositoryIfLanguageFallbackExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        val expectedQuantityString = generateQuantityString()
+        whenever(repository.quantityStrings).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(STR_KEY to expectedQuantityString),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
+        val quantityString = restringResources.getQuantityString(STR_RES_ID, 0)
+
+        assertEquals(expectedQuantityString[PluralKeyword.ZERO], quantityString)
     }
 
     @Test

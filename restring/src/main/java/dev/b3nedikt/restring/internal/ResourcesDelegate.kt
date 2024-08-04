@@ -6,16 +6,17 @@ import android.os.Build
 import dev.b3nedikt.restring.PluralKeyword
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.StringRepository
-import java.util.*
+import java.util.Locale
+import java.util.UUID
 
 /**
  * A delegate class for [Resources]. Handles all resource calls relevant to restring without
  * modifying the original [baseResources].
  */
 internal class ResourcesDelegate(
-        private val context: Context,
-        private val baseResources: Resources,
-        private val stringRepository: StringRepository
+    private val context: Context,
+    private val baseResources: Resources,
+    private val stringRepository: StringRepository
 ) {
 
     private var res: Resources = baseResources
@@ -29,8 +30,8 @@ internal class ResourcesDelegate(
             val stringId = UUID.randomUUID().hashCode()
 
             val managedString = Restring.managedStrings
-                    .toList()
-                    .firstOrNull { it.second == name }
+                .toList()
+                .firstOrNull { it.second == name }
 
             if (managedString != null) {
                 return managedString.first
@@ -93,7 +94,7 @@ internal class ResourcesDelegate(
         setLocale()
 
         val value = getQuantityStringFromRepository(id, quantity)?.toString()
-                ?.let { String.format(it, *formatArgs) }
+            ?.let { String.format(it, *formatArgs) }
         return value ?: res.getQuantityString(id, quantity, *formatArgs)
     }
 
@@ -113,41 +114,64 @@ internal class ResourcesDelegate(
 
     private fun getQuantityStringFromRepository(id: Int, quantity: Int): CharSequence? {
 
-        val resultLocale = getLocale() ?: return null
+        var resultLocale = getLocale() ?: return null
 
         val stringKey = baseResources.getResourceEntryName(id)
+
+        if (stringRepository.quantityStrings[resultLocale]?.containsKey(stringKey) == false) {
+            resultLocale = Restring.resourcesFallbackStrategy.getFallbackQuantityStringLocale(
+                locale = resultLocale,
+                stringKey = stringKey
+            ) ?: return null
+        }
+
         val quantityString = stringRepository.quantityStrings[resultLocale]?.get(stringKey)
         return quantityString?.get(quantity.toPluralKeyword(resultLocale))
     }
 
     private fun getStringArrayFromRepository(id: Int): Array<CharSequence>? {
-        val resultLocale = getLocale() ?: return null
+        var resultLocale = getLocale() ?: return null
 
         val stringKey = baseResources.getResourceEntryName(id)
+
+        if (stringRepository.stringArrays[resultLocale]?.containsKey(stringKey) == false) {
+            resultLocale = Restring.resourcesFallbackStrategy.getFallbackStringArrayLocale(
+                locale = resultLocale,
+                stringKey = stringKey
+            ) ?: return null
+        }
+
         return stringRepository.stringArrays[resultLocale]?.get(stringKey)
     }
 
     private fun getStringFromRepository(id: Int): CharSequence? {
 
-        var resultLocale = getLocale() ?: return null
-
         try {
             val stringKey = baseResources.getResourceEntryName(id)
 
-            if(resultLocale.country.isNotEmpty() && stringRepository.strings[resultLocale]?.containsKey(stringKey) == false) {
-                resultLocale = Locale(resultLocale.language)
-            }
-
-            return stringRepository.strings[resultLocale]?.get(stringKey)
+            return getStringFromRepository(stringKey)
         } catch (e: Resources.NotFoundException) {
 
             val stringKey = Restring.managedStrings[id]
             if (stringKey != null) {
-                return stringRepository.strings[resultLocale]?.get(stringKey)
+                return getStringFromRepository(stringKey)
             }
 
             throw e
         }
+    }
+
+    private fun getStringFromRepository(stringKey: String): CharSequence? {
+        var resultLocale = getLocale() ?: return null
+
+        if (stringRepository.strings[resultLocale]?.containsKey(stringKey) == false) {
+            resultLocale = Restring.resourcesFallbackStrategy.getFallbackStringLocale(
+                locale = resultLocale,
+                stringKey = stringKey
+            ) ?: return null
+        }
+
+        return stringRepository.strings[resultLocale]?.get(stringKey)
     }
 
     private fun getLocale(): Locale? {
@@ -177,5 +201,5 @@ internal class ResourcesDelegate(
     }
 
     private fun Int.toPluralKeyword(locale: Locale): PluralKeyword =
-            PluralKeyword.fromQuantity(baseResources, locale, this)
+        PluralKeyword.fromQuantity(baseResources, locale, this)
 }

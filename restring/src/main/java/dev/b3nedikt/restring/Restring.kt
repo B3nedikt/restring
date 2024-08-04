@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.res.Resources
 import dev.b3nedikt.restring.internal.DefaultLocaleProvider
+import dev.b3nedikt.restring.internal.DefaultResourcesFallbackStrategy
 import dev.b3nedikt.restring.internal.RestringContextWrapper
 import dev.b3nedikt.restring.internal.RestringResources
 import dev.b3nedikt.restring.repository.CachedStringRepository
 import dev.b3nedikt.restring.repository.SharedPrefsStringRepository
-import java.util.*
+import java.util.Locale
 
 
 /**
@@ -46,6 +47,13 @@ object Restring {
      */
     @JvmStatic
     var localeProvider: LocaleProvider = DefaultLocaleProvider
+
+    /**
+     * The [ResourcesFallbackStrategy] defines the way restring decides what to do if a string
+     * cannot be found in it's [stringRepository]
+     */
+    @JvmStatic
+    var resourcesFallbackStrategy: ResourcesFallbackStrategy = DefaultResourcesFallbackStrategy
 
     /**
      * Initialize Restring with the default repository implementation, this needs to be called

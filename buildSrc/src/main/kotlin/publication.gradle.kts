@@ -1,19 +1,11 @@
-import org.gradle.jvm.tasks.Jar
+
 import java.net.URI
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("com.android.library")
     id("maven-publish")
     id("signing")
-}
-
-val javadocJar by tasks.registering(Jar::class) {
-
-    dependsOn("dokkaHtml")
-
-    archiveClassifier.set("javadoc")
-    from("${layout.buildDirectory}/dokka/html")
 }
 
 afterEvaluate {
@@ -29,7 +21,7 @@ afterEvaluate {
                 artifactId = Pom.artifactId
                 version = project.version.toString()
 
-                artifact(javadocJar)
+                artifact(tasks.named("dokkaHtmlJar"))
 
                 pom {
                     name.set(Pom.libraryName)

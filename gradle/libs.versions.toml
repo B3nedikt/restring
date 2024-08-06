@@ -1,7 +1,7 @@
 [versions]
 
 kotlin = "2.0.0"
-agp = "8.5.0"
+agp = "8.5.1"
 dokka = "1.9.20"
 
 appcompat = "1.6.1"
@@ -24,7 +24,6 @@ core = "1.5.0"
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib" }
 
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 appCompat = { module = "androidx.appcompat:appcompat" , version.ref = "appcompat" }
 material = { module = "com.google.android.material:material" , version.ref = "material" }
@@ -43,3 +42,4 @@ testCore = { module = "androidx.test:core" , version.ref = "core" }
 
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }

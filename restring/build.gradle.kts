@@ -1,9 +1,9 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.dokka")
     id("jacoco-configuration")
     id("publication")
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.dokka)
 }
 
 android {
@@ -57,4 +57,10 @@ dependencies {
 
     testImplementation(libs.viewPump)
     testImplementation(libs.reword)
+}
+
+tasks.register<Jar>("dokkaHtmlJar") {
+    dependsOn(tasks.dokkaHtml)
+    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-docs")
 }

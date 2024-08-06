@@ -10,5 +10,4 @@ repositories {
 
 dependencies {
     implementation(libs.agp)
-    implementation(libs.dokka.gradle.plugin)
 }

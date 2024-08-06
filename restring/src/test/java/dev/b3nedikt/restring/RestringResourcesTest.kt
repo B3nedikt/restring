@@ -149,13 +149,13 @@ class RestringResourcesTest {
         val expectedStringArray = generateStringArray()
         whenever(repository.stringArrays).thenReturn(
             mutableMapOf(
-                fallbackLocale to mutableMapOf(STR_KEY to generateStringArray()),
+                fallbackLocale to mutableMapOf(STR_ARRAY_KEY to generateStringArray()),
                 regionLocale to mutableMapOf()
             )
         )
 
         Locale.setDefault(regionLocale)
-        val stringArray = restringResources.getStringArray(STR_RES_ID)
+        val stringArray = restringResources.getStringArray(ARRAY_STR_RES_ID)
 
         assertArrayEquals(expectedStringArray, stringArray)
     }
@@ -173,13 +173,13 @@ class RestringResourcesTest {
         val expectedQuantityString = generateQuantityString()
         whenever(repository.quantityStrings).thenReturn(
             mutableMapOf(
-                fallbackLocale to mutableMapOf(STR_KEY to expectedQuantityString),
+                fallbackLocale to mutableMapOf(QUANTITY_STR_KEY to expectedQuantityString),
                 regionLocale to mutableMapOf()
             )
         )
 
         Locale.setDefault(regionLocale)
-        val quantityString = restringResources.getQuantityString(STR_RES_ID, 0)
+        val quantityString = restringResources.getQuantityString(QUANTITY_STR_RES_ID, 0)
 
         assertEquals(expectedQuantityString[PluralKeyword.ZERO], quantityString)
     }
@@ -217,6 +217,53 @@ class RestringResourcesTest {
         val stringValue = restringResources.getString(STR_RES_ID)
 
         val expected = resources.getText(STR_RES_ID)
+        assertEquals(expected, stringValue)
+    }
+
+    @Test
+    fun shouldGetStringArrayFromResourceIfLanguageFallbackNotExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        whenever(repository.stringArrays).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
+        val stringValue = restringResources.getStringArray(ARRAY_STR_RES_ID)
+
+        val expected = resources.getStringArray(ARRAY_STR_RES_ID)
+        assertArrayEquals(expected, stringValue)
+    }
+    @Test
+    fun shouldGetQuantityStringFromResourceIfLanguageFallbackNotExists() {
+        val fallbackLocale = Locale("de")
+        val regionLocale = Locale("de", "AT")
+
+        val repository = mock<StringRepository> {
+            on { supportedLocales } doReturn setOf(fallbackLocale, regionLocale)
+        }
+        val restringResources = spy(RestringResources(resources, repository, context))
+
+        whenever(repository.quantityStrings).thenReturn(
+            mutableMapOf(
+                fallbackLocale to mutableMapOf(),
+                regionLocale to mutableMapOf()
+            )
+        )
+
+        Locale.setDefault(regionLocale)
+        val stringValue = restringResources.getQuantityString(QUANTITY_STR_RES_ID, 0)
+
+        val expected = resources.getQuantityString(QUANTITY_STR_RES_ID, 0)
         assertEquals(expected, stringValue)
     }
 
@@ -293,6 +340,13 @@ class RestringResourcesTest {
         private const val STR_KEY = "STR_KEY"
         private const val STR_VALUE = "STR_VALUE"
         private const val STR_VALUE_WITH_PARAM = "STR_VALUE %s"
+
+        private val QUANTITY_STR_RES_ID = R.plurals.QUANTITY_STR_KEY
+        private const val QUANTITY_STR_KEY = "QUANTITY_STR_KEY"
+
+        private val ARRAY_STR_RES_ID = R.array.STR_ARRAY_KEY
+        private const val STR_ARRAY_KEY = "STR_ARRAY_KEY"
+
         private val STR_VALUE_HTML = HtmlCompat.fromHtml("STR_<b>value</b>", HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         private const val STR_KEY_NOT_IN_STRINGS_XML = "STR_KEY_NOT_IN_STRINGS_XML"

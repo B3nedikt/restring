@@ -7,7 +7,22 @@
     <string name="menu2titleCondensed">Menu2</string>
     <string name="menu3title">Menu 3</string>
     <string name="menu3titleCondensed">Menu3</string>
-    <string name="STR_KEY">STR_FROM_RESOURCE_VALUE</string>
+
+    <string name="STR_KEY">STR_fromStringsXML</string>
+
+    <plurals name="QUANTITY_STR_KEY" translatable="false">
+        <item quantity="zero">zero_fromStringsXML</item>
+        <item quantity="one">one_fromStringsXML</item>
+        <item quantity="two">two_fromStringsXML</item>
+        <item quantity="few">few_fromStringsXML</item>
+        <item quantity="many">many_fromStringsXML</item>
+        <item quantity="other">other_fromStringsXML</item>
+    </plurals>
+
+    <string-array name="STR_ARRAY_KEY" translatable="false">
+        <item name="item1">item1_fromStringsXML</item>
+        <item name="item2">item2_fromStringsXML</item>
+    </string-array>
 
     <plurals name="quantity_strings" translatable="false">
         <item quantity="zero">zero</item>
